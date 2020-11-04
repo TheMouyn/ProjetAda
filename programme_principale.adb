@@ -5,6 +5,6 @@ PROCEDURE Programme_Principale IS
 
 BEGIN
 
-   Put(" ");
+ Put(" ");
 
 End Programme_principale
