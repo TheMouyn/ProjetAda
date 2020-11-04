@@ -1,8 +1,11 @@
+with Outils;
+USE Outils;
+
+
+
 package Gestion_Personnel is
   MaxEmp : constant integer := 8; -- nombre maximale d'employes
   MaxProdCh : constant integer := 4; -- nombre maximale de produits a charge pour une personne
-
-  subtype T_mot is string(1..50); -- TODO: a voir avec la prof
 
 
   type T_personnel is record

@@ -1,8 +1,11 @@
+WITH Outils;
+USE Outils;
+
+
+
 package Gestion_Sites is
   MaxSitesProd : constant integer := 3; -- nombre maximale de sites de production pour un medicament
   MaxS : constant integer := 5; -- nombre maximale de sites
-
-  subtype T_mot is string(1..50); -- TODO: a voir avec la prof
 
 
   type T_site is record
