@@ -2,6 +2,9 @@ package Gestion_Personnel is
   MaxEmp : constant integer := 8; -- nombre maximale d'employes
   MaxProdCh : constant integer := 4; -- nombre maximale de produits a charge pour une personne
 
+  subtype T_mot is string(1..50); -- TODO: a voir avec la prof
+
+
   type T_personnel is record
     nom, prenom : T_mot := (others => ' '); -- nom et prenom
     site : integer; -- numero l'index du tableau T_registreSite

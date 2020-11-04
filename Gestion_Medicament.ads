@@ -1,6 +1,9 @@
 package Gestion_Medicament is
   maxMed : constant integer :=14; -- nombre maximal de médicament
 
+  subtype T_mot is string(1..50); -- TODO: a voir avec la prof
+
+
   type T_categorie is (antimigraineux, anticancereux, antifongiques, antihistaminiques, anticoagulants, vitamines);
   type T_typePatient is (ttPublic, adulte, pedicatrique);
 
