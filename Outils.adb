@@ -5,7 +5,7 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 
 package body Outils is
 
-  procedure saisieInteger(bornInf, bornSupp : in integer; nombre : out integer) is
+  procedure saisieInteger(bornInf, bornSupp : in integer; nombre : out integer) is -- permet la saisie d'un entier entre deux bornes
 
   begin -- saisieInteger
 
@@ -26,7 +26,7 @@ package body Outils is
 -------------------------------------------------------------------------------------
 
 
-  procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float) is
+  procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float) is -- permet la saisie d'un float entre deux bornes
 
   begin -- saisieFloat
     begin
@@ -44,7 +44,7 @@ package body Outils is
 
   -------------------------------------------------------------------------------------
 
-  procedure saisieString(texte : out T_mot) is
+  procedure saisieString(texte : out T_mot) is -- permet la saisie d'un string de 50 caracteres
     k : integer:=0;
 
   begin -- saisieString
@@ -61,7 +61,7 @@ package body Outils is
   -------------------------------------------------------------------------------------
 
 
-  procedure saisieBoolean(bool : out boolean) is
+  procedure saisieBoolean(bool : out boolean) is -- permet la saisie d'un boolean via un petit menu
     car : character;
 
   begin -- saisieBoolean
