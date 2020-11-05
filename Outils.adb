@@ -11,7 +11,7 @@ package body Outils is
 
     begin
       loop
-        put("Saisie un nombre => ");
+        put("=> ");
         get(nombre); skip_line; new_line;
         exit when n in bornInf..bornSupp;
         put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
@@ -31,7 +31,7 @@ package body Outils is
   begin -- saisieFloat
     begin
       loop
-        put("Saisie un nombre a virgule => ");
+        put("=> ");
         get(nombre); skip_line; new_line;
         exit when n in bornInf..bornSupp;
         put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
@@ -40,6 +40,23 @@ package body Outils is
       end loop
     end;
   end saisieFloat;
+
+
+  -------------------------------------------------------------------------------------
+
+  procedure saisieString(texte : out T_mot) is
+    k : integer:=0;
+
+  begin -- saisieString
+    loop
+      put("=> ");
+      get_line(texte, k); new_line;
+      exit when k<=50;
+      put("Votre mot est supperieur a 50 caracteres, veuillez ecrire un mot plus court"); new_line;
+    end loop;
+
+  end saisieString;
+
 
 
 end Outils;
