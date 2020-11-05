@@ -58,5 +58,23 @@ package body Outils is
   end saisieString;
 
 
+  -------------------------------------------------------------------------------------
+
+
+  procedure saisieBoolean(bool : out boolean) is
+    car : character;
+
+  begin -- saisieBoolean
+    loop
+      put("Oui / Non (O/N)=> ");
+      get(car); skip_line; new_line;
+      case car is
+        when 'O'|'o' => bool:=TRUE; exit;
+        when 'N'|'n' => bool:=FALSE; exit;
+        when others => put_line("Le caractere n'est pas O ou N");
+      end case;
+    end loop;
+  end saisieBoolean;
+
 
 end Outils;
