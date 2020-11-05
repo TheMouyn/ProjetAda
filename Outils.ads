@@ -6,5 +6,6 @@ package Outils is
   procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float);
   procedure saisieString(texte : out T_mot);
   procedure saisieBoolean(bool : out boolean);
+  procedure afficherTexte(texte : in T_mot);
 
 end Outils;

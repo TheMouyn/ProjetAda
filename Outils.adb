@@ -76,5 +76,19 @@ package body Outils is
     end loop;
   end saisieBoolean;
 
+  -------------------------------------------------------------------------------------
+
+  procedure afficherTexte(texte : in T_mot) is
+
+  begin -- afficherTexte
+    for i in texte'range loop
+      if texte(i)=' ' then
+        exit;
+      else
+        put(texte(i));
+      end if;
+    end loop;
+  end afficherTexte;
+
 
 end Outils;

@@ -13,7 +13,7 @@ package Gestion_Medicament is
 
   type T_chefProd is record
     nuEmpolye : integer; -- numero employe du registre registrePersonnel du chef
-    libre : boolean; -- permet la gestion des cases libres/pleines
+    libre : boolean:=TRUE; -- permet la gestion des cases libres/pleines
   end record;
 
   type T_tabChefProd is array (1..MaxEmp) of T_chefProd;
