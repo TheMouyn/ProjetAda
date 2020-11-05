@@ -10,5 +10,6 @@ package Gestion_Dates is
   end record;
 
   procedure saisieDate(date : out T_date);
+  procedure affichageDate(date : in T_date);
 
 end Gestion_Dates;

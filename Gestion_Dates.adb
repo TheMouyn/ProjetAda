@@ -53,4 +53,29 @@ package body Gestion_Dates is
   end saisieDate;
 
 
+  procedure affichageDate(date : in T_date) is
+
+  begin -- affichageDate
+    if date.j< 10 then
+      put("0"); put(date.j);
+    else
+      put(date.j);
+    end if;
+
+   put("/");
+
+    if date.m<10 then
+      put("0"); put(date.m);
+    else
+      put(date.m);
+
+    end if;
+   put("/");
+
+    put(date.a);
+
+
+  end affichageDate;
+
+
 end Gestion_Dates;
