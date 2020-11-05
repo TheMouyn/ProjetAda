@@ -5,4 +5,52 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 
 package body Gestion_Dates is
 
+
+  procedure saisieDate(date : out T_date) is
+    nuJour, nuMois, nuAnnee : integer;
+
+  begin -- saisieDate
+
+    loop
+      begin
+        put("Saisir un jour => ");
+        get(nuJour);
+        exit when nuJour in 1..31;
+        put_line("Votre saisie n'est pas entre 1 et 31");
+        exception
+          when others => put("La saisie n'est pas un nombre"); skip_line; new_line;
+      end;
+    end loop;
+
+    loop
+      begin
+        put("Saisir un mois => ");
+        get(nuMois);
+        exit when nuMois in 1..12;
+        put_line("Votre saisie n'est pas entre 1 et 12");
+        exception
+          when others => put("La saisie n'est pas un nombre"); skip_line; new_line;
+      end;
+    end loop;
+
+    loop
+      begin
+        put("Saisir une annee => ");
+        get(nuAnnee);
+        exit;
+        exception
+          when others => put("La saisie n'est pas un nombre"); skip_line; new_line;
+      end;
+    end loop;
+
+    date.a := nuAnnee;
+    date.m := nuMois;
+    date.j := nuJour;
+
+
+
+
+  end saisieDate;
+
+
 end Gestion_Dates;
