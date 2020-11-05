@@ -9,42 +9,47 @@ PACKAGE BODY Gestion_Sites IS
    BEGIN
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
-            Put(T(I).Ville);Put(" ");Put(T(I).RetD);Put(" ");Put(T(I).Prod);New_Line; --doit-on afficher le numero d'index ?
+            Put(i);put(" ");Put(T(I).Ville);Put(" ");Put(T(I).RetD);Put(" ");Put(T(I).Prod);New_Line; --i est le numero d'index
          END IF;
       END LOOP;
    END Visualisation;
 
 
 
-   PROCEDURE Ajout (T : IN OUT T_RegistreSite, Laville IN T_Mot; Lenumero IN Integer; RetD,Prod IN Boolean, Ok OUT Boolean) IS
+   PROCEDURE Ajout (T : IN OUT T_RegistreSite, Laville IN T_Mot; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
       --variable ok pour verifier que l'ajout a bien ete realise
       --procedure ajout d'un nouveau site
 
    BEGIN
-      ok :=false
+      ok :=false;
          FOR I IN T'RANGE LOOP
          IF T(I).libre = true THEN
-            --T(I).Numero := Lenumero; doit-on ajouter le numero d'index ?
             T(I).Ville := Laville;
-            T(I).RetD := True; --pas forcement true ?
-            T(I).Prod := True; --pas forcement true ?
+            T(I).RetD := LeRetD;
+            T(I).Prod := LaProd;
             Ok := True;
+            exit;
          END IF;
       END LOOP;
    End Ajout;
 
 
-PROCEDURE Fermeture (T: IN OUT T_registreSite) IS --procedure fermeture d'un site
+   PROCEDURE Fermeture (T: IN OUT T_RegistreSite; Ok : OUT Boolean) IS
+      --procedure fermeture d'un site boolean ok
+      --variable ok pour verifier que l'ajout a bien ete realise
 
    BEGIN
+      Ok := False;
+      IF T(I).RetD := False AND T(I).Prod := False THEN --fermeture s'il n'y a plus de M en prod ou en RetD
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
             T(I).Ville :=(OTHERS => ' ');
-            T(I).RetD := false;
-            T(I).Prod := false;
             T(I).Libre:= True;
+            Ok := True;
+            exit;
          END IF;
       END LOOP;
+      END IF;
    END Fermeture;
 
 
