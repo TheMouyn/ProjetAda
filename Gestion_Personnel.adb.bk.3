@@ -16,35 +16,65 @@ PACKAGE BODY Gestion_Personnel IS
 
 
 
-   --PROCEDURE Ajout (T : IN OUT T_RegistreSite, Laville IN T_Mot; Lenumero IN Integer; RetD,Prod IN Boolean, Ok OUT Boolean) IS
+   PROCEDURE Ajout (T : IN OUT T_RegistrePersonnel, LeNom,LePrenom IN T_Mot; LeSite,Lenbproduit: IN integer; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
       --variable ok pour verifier que l'ajout a bien ete realise
-      --procedure ajout d'un nouveau site
+      --procedure ajout d'un nouveau responsable
 
    BEGIN
-      ok :=false
+      ok :=false;
          FOR I IN T'RANGE LOOP
          IF T(I).libre = true THEN
-            --T(I).Numero := Lenumero; doit-on ajouter le numero d'index ?
-            T(I).Ville := Laville;
-            T(I).RetD := True; --pas forcement true ?
-            T(I).Prod := True; --pas forcement true ?
+            T(I).Nom := LeNom;
+            T(I).Prenom := LePrenom;
+            T(I).Site := LeSite;
+            T(i).nbproduit := Lenbproduit;
+            T(I).RetD := LeRetD;
+            T(I).Prod := LaProd;
             Ok := True;
+            exit;
          END IF;
       END LOOP;
    End Ajout;
 
 
---PROCEDURE Fermeture (T: IN OUT T_registreSite) IS --procedure fermeture d'un site
+   PROCEDURE DepartProd (T: IN OUT T_RegistrePersonnel; Ok : OUT Boolean) IS
+      --procedure depart d'un chef de produit
+      --variable ok pour verifier que l'ajout a bien ete realise
 
    BEGIN
+      Ok := False;
       FOR I IN T'RANGE LOOP
-         IF T(I).Libre = False THEN
-            T(I).Ville :=(OTHERS => ' ');
-            T(I).RetD := false;
-            T(I).Prod := false;
-            T(I).Libre:= True;
+         IF T(I).Libre = False AND T(I).Prod := true THEN
+               T(I).Nom :=(OTHERS => ' ');
+               T(I).Prenom :=(OTHERS => ' ');
+               T(I).Site :=0;
+               T(I).nbproduit :=0; --produits transferes a ses collegues a reflechir
+               T(I).Libre:= True;
+               Ok := True;
+               exit;
          END IF;
       END LOOP;
-   END Fermeture;
+   END DepartProd;
+
+
+   PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; Ok : OUT Boolean) IS
+      --procedure depart d'un responsable de recherche
+      --variable ok pour verifier que l'ajout a bien ete realise
+
+   BEGIN
+      Ok := False;
+      FOR I IN T'RANGE LOOP
+         IF T(I).Libre = False AND T(I).RetD := true THEN
+               T(I).Nom :=(OTHERS => ' ');
+               T(I).Prenom :=(OTHERS => ' ');
+               T(I).Site :=0;
+               T(I).nbproduit :=0; --produits transferes a ses collegues a reflechir
+               T(I).Libre:= True;
+               Ok := True;
+               exit;
+         END IF;
+      END LOOP;
+   END DepartRetD;
+
 
 end Gestion_Personnel;
