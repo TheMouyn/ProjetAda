@@ -5,4 +5,22 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 
 package body Outils is
 
+  procedure saisieInteger(bornInf, bornSupp : in integer; nombre : out integer) is
+
+  begin -- saisieInteger
+
+    begin
+      loop
+        put("Saisie un nombre => ");
+        get(nombre); skip_line; new_line;
+        exit when n in bornInf..bornSupp;
+        put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
+          exception
+            when others => put("Votre saisie n'est pas un nombre"); new_line;
+      end loop
+    end;
+
+  end saisieInteger;
+
+
 end Outils;
