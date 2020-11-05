@@ -23,4 +23,23 @@ package body Outils is
   end saisieInteger;
 
 
+-------------------------------------------------------------------------------------
+
+
+  procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float) is
+
+  begin -- saisieFloat
+    begin
+      loop
+        put("Saisie un nombre a virgule => ");
+        get(nombre); skip_line; new_line;
+        exit when n in bornInf..bornSupp;
+        put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
+          exception
+            when others => put("Votre saisie n'est pas un nombre a virugle"); new_line;
+      end loop
+    end;
+  end saisieFloat;
+
+
 end Outils;
