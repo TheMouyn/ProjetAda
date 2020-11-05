@@ -28,6 +28,7 @@ package Gestion_Medicament is
     EnProd : boolean; -- si le medicament est en production
     respRecherche : integer; -- numero index registrePersonnel du responsable
     chefProd : T_tabChefProd; -- stock la liste des numero d'employer chef de prod
+    libre : boolean:= true; -- permet la gestion des cases libres/pleines
 
   end record;
 
