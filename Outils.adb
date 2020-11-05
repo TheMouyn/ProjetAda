@@ -9,16 +9,16 @@ package body Outils is
 
   begin -- saisieInteger
 
-    begin
-      loop
-        put("=> ");
-        get(nombre); skip_line; new_line;
-        exit when n in bornInf..bornSupp;
-        put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
-          exception
-            when others => put("Votre saisie n'est pas un nombre"); new_line;
-      end loop
-    end;
+    loop
+      begin
+          put("=> ");
+          get(nombre);
+          exit when nombre in bornInf..bornSupp;
+          put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
+            exception
+              when others => put("Votre saisie n'est pas un nombre"); skip_line; new_line;
+      end;
+    end loop;
 
   end saisieInteger;
 
@@ -29,16 +29,16 @@ package body Outils is
   procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float) is -- permet la saisie d'un float entre deux bornes
 
   begin -- saisieFloat
-    begin
-      loop
+    loop
+      begin
         put("=> ");
-        get(nombre); skip_line; new_line;
-        exit when n in bornInf..bornSupp;
+        get(nombre);
+        exit when nombre in bornInf..bornSupp;
         put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
           exception
-            when others => put("Votre saisie n'est pas un nombre a virugle"); new_line;
-      end loop
-    end;
+            when others => put("Votre saisie n'est pas un nombre a virugle"); skip_line; new_line;
+      end;
+    end loop;
   end saisieFloat;
 
 
