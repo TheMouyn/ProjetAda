@@ -57,22 +57,22 @@ package body Gestion_Dates is
 
   begin -- affichageDate
     if date.j< 10 then
-      put("0"); put(date.j);
+      put("0"); put(date.j,1);
     else
-      put(date.j);
+      put(date.j,1);
     end if;
 
    put("/");
 
     if date.m<10 then
-      put("0"); put(date.m);
+      put("0"); put(date.m,1);
     else
-      put(date.m);
+      put(date.m,1);
 
     end if;
    put("/");
 
-    put(date.a);
+    put(date.a,1);
 
 
   end affichageDate;
