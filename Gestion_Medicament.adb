@@ -40,15 +40,16 @@ begin -- VisualtisationMedicament
       if tableau(i).EnProd then
         put_line("Liste de(s) chef(s) de production et de leur(s) site(s) :");
         for j in tableau(i).chefProd'range loop
-          if tableau(i).chefProd(j).libre then
-            put("Nom : "); afficherTexte(regPersonnel(tableau(i).chefProd(j).nuEmpolye).nom); new_line; -- TODO:CONSTRAINT ERROR
+          if tableau(i).chefProd(j).libre = false then
+            put("Nom : "); afficherTexte(regPersonnel(tableau(i).chefProd(j).nuEmpolye).nom); new_line;
             put("Prenom : "); afficherTexte(regPersonnel(tableau(i).chefProd(j).nuEmpolye).prenom); new_line;
             put("Site : "); put(regPersonnel(tableau(i).chefProd(j).nuEmpolye).site, 1); put(" - "); afficherTexte(regSite(regPersonnel(tableau(i).chefProd(j).nuEmpolye).site).ville); new_line;
+            new_line;
           end if;
         end loop;
 
       end if;
-      new_line; new_line;
+      new_line;
       put("Appuyer sur entrer pour medicament suivant"); skip_line;
 
     end if;
