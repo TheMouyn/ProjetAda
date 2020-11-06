@@ -35,4 +35,8 @@ package Gestion_Medicament is
   type T_registreMedicament is array (1..maxMed) of T_medicament;
 
 
+
+  procedure VisualtisationMedicament(tableau : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
+
+
 end Gestion_Medicament;
