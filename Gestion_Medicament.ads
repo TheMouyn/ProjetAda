@@ -9,11 +9,11 @@ package Gestion_Medicament is
 
 
   type T_categorie is (antimigraineux, anticancereux, antifongiques, antihistaminiques, anticoagulants, vitamines);
-  type T_typePatient is (ttPublic, adulte, pedicatrique);
+  type T_typePatient is (ttPublic, adulte, pediatrique);
 
   type T_chefProd is record
     nuEmpolye : integer; -- numero employe du registre registrePersonnel du chef
-    libre : boolean; -- permet la gestion des cases libres/pleines
+    libre : boolean:=true; -- permet la gestion des cases libres/pleines
   end record;
 
   type T_tabChefProd is array (1..MaxEmp) of T_chefProd;
@@ -28,10 +28,17 @@ package Gestion_Medicament is
     EnProd : boolean; -- si le medicament est en production
     respRecherche : integer; -- numero index registrePersonnel du responsable
     chefProd : T_tabChefProd; -- stock la liste des numero d'employer chef de prod
+    libre : boolean:= true; -- permet la gestion des cases libres/pleines
 
   end record;
 
   type T_registreMedicament is array (1..maxMed) of T_medicament;
+
+
+
+  function nbMedicament(regMedicaments : in T_registreMedicament) return integer;
+  procedure VisualtisationMedicament(regMedicaments : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
+  procedure receptionAMM(regMedicament : T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
 
 
 end Gestion_Medicament;
