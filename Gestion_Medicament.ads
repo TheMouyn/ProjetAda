@@ -9,7 +9,7 @@ package Gestion_Medicament is
 
 
   type T_categorie is (antimigraineux, anticancereux, antifongiques, antihistaminiques, anticoagulants, vitamines);
-  type T_typePatient is (ttPublic, adulte, pedicatrique);
+  type T_typePatient is (ttPublic, adulte, pediatrique);
 
   type T_chefProd is record
     nuEmpolye : integer; -- numero employe du registre registrePersonnel du chef

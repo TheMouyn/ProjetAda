@@ -15,7 +15,12 @@ begin -- VisualtisationMedicament
       Clear_Screen(black);
       put("Nom : "); afficherTexte(tableau(i).nom); new_line;
       put("Categorie : "); put(T_categorie'image(tableau(i).categorie)); new_line;
-      put("Type de patient : "); put(T_typePatient'image(tableau(i).typePatient)); new_line;
+      put("Type de patient : ");
+      case tableau(i).typePatient is
+        when ttPublic => put("TOUT PUBLIC"); new_line;
+        when adulte => put("ADULTE UNIQUEMENT"); new_line;
+        when pediatrique => put("PEDIATRIQUE UNIQUEMENT"); new_line;
+      end case;
       put("A recu une AMM : ");
       if tableau(i).AMM then
         put("OUI le "); affichageDate(tableau(i).dateAMM); new_line;
