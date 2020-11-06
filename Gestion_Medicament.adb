@@ -79,6 +79,38 @@ begin -- VisualtisationMedicament
 
 end VisualtisationMedicament;
 
+-----------------------------------------------------------------------------------
+
+procedure receptionAMM(regMedicament : T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  nuMedicament : integer;
+  choixBool : boolean;
+
+begin -- receptionAMM
+  put("Quel est le numero du medicament qui recoit une AMM ?"); new_line;
+
+  put("Voulez vous voir le registre des medicaments ? ");
+  saisieBoolean(choixBool);
+  if choixBool then
+    VisualtisationMedicament(regMedicament, regPersonnel, regSite);
+  end if;
+  new_line;
+  put("Quel est le numero du medicament qui recoit une AMM ?"); new_line;
+  saisieInteger(1, maxMed, nuMedicament);
+
+  if regMedicament(nuMedicament).libre = false then
+    if regMedicament(nuMedicament).AMM = false then
+      regMedicament(nuMedicament).AMM:=true;
+      put("A quelle date l'AMM a ete recu ? "); new_line;
+      saisieDate(regMedicament(nuMedicament).dateAMM);
+    else
+      put("Ce medicament a deja recu une AMM"); new_line;
+    end if;
+  else
+    put("Numero medicament inccorect, recommencer SVP"); new_line;
+  end if;
+
+end receptionAMM;
+
 
 
 
