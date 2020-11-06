@@ -7,6 +7,20 @@ package body Gestion_Medicament is
 
 
 
+
+function nbMedicament(regMedicaments : in T_registreMedicament) return integer is -- permet de compter le nombre de medicament dans le registre
+  nombre : integer :=0;
+
+begin -- nbMedicament
+  for i in regMedicaments'range loop
+    if regMedicaments(i).libre = false then
+      nombre:= numbre+1;
+    end if;
+  end loop;
+  return(nombre);
+end nbMedicament;
+----------------------------------------------------------------------------------------------------
+
 procedure VisualtisationMedicament(tableau : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
 
 begin -- VisualtisationMedicament
