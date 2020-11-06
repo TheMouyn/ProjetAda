@@ -13,6 +13,7 @@ begin -- VisualtisationMedicament
   for i in tableau'range loop
     if tableau(i).libre = false then
       Clear_Screen(black);
+      put("Numero medicament : "); put(i,1); new_line;
       put("Nom : "); afficherTexte(tableau(i).nom); new_line;
       put("Categorie : "); put(T_categorie'image(tableau(i).categorie)); new_line;
       put("Type de patient : ");
