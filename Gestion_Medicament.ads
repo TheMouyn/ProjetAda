@@ -36,7 +36,7 @@ package Gestion_Medicament is
 
 
 
-  procedure VisualtisationMedicament(tableau : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
+  procedure VisualtisationMedicament(regMedicaments : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
 
 
 end Gestion_Medicament;
