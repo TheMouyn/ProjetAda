@@ -6,19 +6,23 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 PACKAGE BODY Gestion_Sites IS
 
 
-   PROCEDURE Visualisation (T : IN T_registreSite) IS --Procedure pour visualiser le registre des sites
+   PROCEDURE VisualisationSite (T : IN T_registreSite) IS --Procedure pour visualiser le registre des sites
 
    BEGIN
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
-            Put(i);put(" ");Put(T(I).Ville);Put(" ");Put(T(I).RetD);Put(" ");Put(T(I).Prod);New_Line; --i est le numero d'index
+            Put("Numero du site : ");Put(I);Put(" ");Put("Ville : ");Put(T(I).Ville);Put(" "); --i est le numero d'index
+            IF T(I).RetD = True THEN
+               Put("Activitee abritee : Recherche et developpement");New_Line;
+            ELSE T(I).Prod = True; Put("Activitee Abritee : Production");New_Line;
+            END IF;
          END IF;
       END LOOP;
-   END Visualisation;
+   END VisualisationSite;
 
+-----------------------------------------------------------------------------------------------------------------------------
 
-
-   PROCEDURE Ajout (T : IN OUT T_RegistreSite, Laville IN T_Mot; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
+   PROCEDURE AjoutSite (T : IN OUT T_RegistreSite, Laville IN T_Mot; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
       --variable ok pour verifier que l'ajout a bien ete realise
       --procedure ajout d'un nouveau site
 
@@ -33,10 +37,11 @@ PACKAGE BODY Gestion_Sites IS
             exit;
          END IF;
       END LOOP;
-   End Ajout;
+   End AjoutSite;
 
+--------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE Fermeture (T: IN OUT T_RegistreSite; Ok : OUT Boolean) IS
+   PROCEDURE FermetureSite (T: IN OUT T_RegistreSite; Ok : OUT Boolean) IS
       --procedure fermeture d'un site boolean ok
       --variable ok pour verifier que l'ajout a bien ete realise
 
@@ -52,7 +57,7 @@ PACKAGE BODY Gestion_Sites IS
          END IF;
       END LOOP;
       END IF;
-   END Fermeture;
+   END FermetureSite;
 
 
 end Gestion_Sites;

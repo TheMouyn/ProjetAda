@@ -17,9 +17,9 @@ package Gestion_Sites is
 
 
   type T_registreSite is array (1..MaxS) of T_site; --tableau registre des record precedent
-   PROCEDURE Visualisation (T : IN T_registreSite);
-   PROCEDURE Ajout (T : IN OUT T_registreSite);
-   PROCEDURE Fermeture (T: IN OUT T_registreSite);
+   PROCEDURE VisualisationSite (T : IN T_registreSite);
+   PROCEDURE AjoutSite (T : IN OUT T_registreSite);
+   PROCEDURE FermetureSite (T: IN OUT T_registreSite);
 
 
 end Gestion_Sites;
