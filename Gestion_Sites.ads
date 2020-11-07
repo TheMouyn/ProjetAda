@@ -17,6 +17,7 @@ package Gestion_Sites is
 
 
   type T_registreSite is array (1..MaxS) of T_site; --tableau registre des record precedent
+   function nbSiteActif(regSite : in T_registreSite) return integer;
    PROCEDURE VisualisationSite (T : IN T_registreSite);
    PROCEDURE AjoutSite (T : IN OUT T_RegistreSite; Ok : OUT Boolean);
    PROCEDURE FermetureSite (T: IN OUT T_registreSite);

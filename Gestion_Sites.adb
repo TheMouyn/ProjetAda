@@ -6,6 +6,19 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 PACKAGE BODY Gestion_Sites IS
 
 
+  function nbSiteActif(regSite : in T_registreSite) return integer is
+    nombre : integer :=0;
+
+  begin -- nbSiteActif
+    for i in regSite'range loop
+      if regSite(i).libre = false then
+        nombe := nombre+1;
+      end if;
+    end loop;
+    return(nombre);
+  end nbSiteActif;
+
+
    PROCEDURE VisualisationSite (T : IN T_registreSite) IS --Procedure pour visualiser le registre des sites
 
    BEGIN
