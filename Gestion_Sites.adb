@@ -26,16 +26,54 @@ PACKAGE BODY Gestion_Sites IS
       --variable ok pour verifier que l'ajout a bien ete realise
       --procedure ajout d'un nouveau site
 
+      Numlibre : Integer := -1;
+      Choix : Character;
+      confirm : boolean := false;
+
    BEGIN
       ok :=false;
          FOR I IN T'RANGE LOOP
-         IF T(I).libre = true THEN
-            T(I).Ville := Laville;
-            T(I).RetD := LeRetD;
-            T(I).Prod := LaProd;
+         IF T(I).Libre = True THEN
+            Numlibre := I;
             Ok := True;
-            exit;
+            EXIT;
          END IF;
+      END LOOP;
+
+         IF Ok = True THEN
+         LOOP
+            Put("Saisir votre ville : ");new_line;
+            SaisieString(T(I).Ville);
+
+
+            put("Quelle est l'activitee abritee ? (A- R&D et B- Prod)");new_line;
+            LOOP
+               put("Quel est votre choix ? =>");get(choix);skip_line;
+               CASE Choix IS
+                  WHEN A => T(I).RetD := true;T(I).Prod := false;exit;
+                  WHEN B =>T(I).RetD := False;T(I).Prod := True;exit;
+                  WHEN OTHERS => Put("Le choix n'est pas propose");
+               END CASE;
+            END LOOP;
+         ELSE Ok = False; Put("Le registre est sature");
+
+         END IF;
+
+         Affichagetexte(T(I).Ville);Put(' ');
+         IF T(I).RetD := true THEN
+               put("Activitee abritee : Recherche et developpement");
+            ELSE T(I).Prod := true;Put ("Activitee abritee : Production");
+            END IF;
+
+         Put("Confirmer ?");New_Line;
+            SaisieBoolean(confirm);
+               IF Confirm = True THEN
+               EXIT;
+            ELSE
+              put("Recommencer la saisie");
+         END IF;
+
+
       END LOOP;
    End AjoutSite;
 
