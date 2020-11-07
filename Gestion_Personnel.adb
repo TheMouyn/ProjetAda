@@ -13,8 +13,8 @@ PACKAGE BODY Gestion_Personnel IS
             Put("Nom : ");Put(T(I).Nom);Put(" ");Put("Prenom : ");Put(T(I).Prenom);Put(" ");Put("Numero de site : ");Put(T(I).Site);new_line;
             Put("Nombre de produits : ");Put(T(I).NbProduit);Put(" ");
             IF T(I).RetD = True THEN
-               Put("Type d'activite : Recherche et developpement");
-            ELSE T(I).Prod := true;Put ("Type d'activite : Production");
+               Put("Type d'activite : Recherche et developpement");New_line;
+            ELSE T(I).Prod := true;Put ("Type d'activite : Production");New_line;
             END IF;
 
          END IF;
