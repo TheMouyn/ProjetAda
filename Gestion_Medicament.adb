@@ -111,7 +111,39 @@ begin -- receptionAMM
 
 end receptionAMM;
 
+-----------------------------------------------------------------------------------
 
+procedure affichageProduitEnProdSurSite(regMedicament : T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  --Affiche les produits en production sur un site donnee
+  choixNuSite : integer;
+  choixBool : boolean;
+
+begin -- affichageProduitEnProdSurSite
+  put("Quel est le numero du site desire ?"); new_line;
+  put("Voulez vous voir le registre des sites ? ");
+  saisieBoolean(choixBool); new_line;
+  if choixBool then
+    VisualisationSite(regSite); --TODO: A ajuster en fonction du nombe de la fonction dans le package
+  end if;
+
+  put("Quel est le numero du site desire ?"); new_line;
+  saisieInteger(1, MaxS ,choixNuSite);
+  new_line;
+  if regSite(choixNuSite).prod = true then
+    put("Les medicaments en productions pour ce site sont :"); new_line;
+
+    for i in regMedicament'range loop
+      for j in regMedicament(i).chefProd'range loop
+        if regMedicament(i).chefProd(j).libre = false and then regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site = choixNuSite then
+          put("- "); afficherTexte(regMedicament(i).nom); new_line;
+        end if;
+      end loop;
+    end loop;
+  else
+    put("Le site n'est pas un site de production"); new_line;
+  end if;
+
+end affichageProduitEnProdSurSite;
 
 
 
