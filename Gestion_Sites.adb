@@ -27,66 +27,66 @@ PACKAGE BODY Gestion_Sites IS
 
 -----------------------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE AjoutSite (T : IN OUT T_RegistreSite, Ok OUT Boolean) IS
-      --variable ok pour verifier que l'ajout a bien ete realise
-      --procedure ajout d'un nouveau site
+PROCEDURE AjoutSite (T : IN OUT T_RegistreSite; Ok : OUT Boolean) IS
+   --variable ok pour verifier que l'ajout a bien ete realise
+   --procedure ajout d'un nouveau site
 
-      Numlibre : Integer := -1;
-      Choix : Character;
-      confirm : boolean := false;
+   Numlibre : Integer := -1;
+   Choix : Character;
+   confirm : boolean := false;
 
-   BEGIN
-      ok :=false;
-         FOR I IN T'RANGE LOOP
-         IF T(I).Libre = True THEN
-            Numlibre := I;
-            Ok := True;
-            EXIT;
-         END IF;
-      END LOOP;
+BEGIN
+   ok :=false;
+      FOR I IN T'RANGE LOOP
+      IF T(I).Libre = True THEN
+         Numlibre := I;
+         Ok := True;
+         EXIT;
+      END IF;
+   END LOOP;
 
-         IF Ok = True THEN
+    loop
+      IF Ok = True THEN
+         Put("Saisir votre ville : ");new_line;
+         SaisieString(T(Numlibre).Ville);
+
+
+         put("Quelle est l'activitee abritee ? (A- R&D / B- Prod / C- Les deux)");new_line;
          LOOP
-            Put("Saisir votre ville : ");new_line;
-            SaisieString(T(Numlibre).Ville);
+            put("Quel est votre choix ? =>"); get(choix); skip_line; new_line;
+            CASE Choix IS
+               WHEN 'A' => T(Numlibre).RetD := true; T(Numlibre).Prod := false; exit;
+               WHEN 'B' => T(Numlibre).RetD := False; T(Numlibre).Prod := True; exit;
+               when 'C' => T(Numlibre).RetD := True; T(Numlibre).Prod := True; exit;
+               WHEN OTHERS => Put("Le choix n'est pas propose"); new_line;
+            END CASE;
+         END LOOP;
+      ELSE
+       Put("Le registre est sature");
+      END IF;
+      new_line;
 
+      put("Numero site : "); put(Numlibre, 1); put(" - ");
+      afficherTexte(T(Numlibre).Ville);Put(" - ");
+      IF T(Numlibre).RetD = True and T(Numlibre).prod = true THEN
+         Put("R&D et Production");New_Line;
+       elsif T(Numlibre).RetD = true and T(Numlibre).prod = false then
+         put("R&D Uniquement"); new_line;
+       elsif T(Numlibre).RetD = false and T(Numlibre).prod = true then
+         put("Production Uniquement"); new_line;
+      END IF;
 
-            put("Quelle est l'activitee abritee ? (A- R&D / B- Prod / C- Les deux)");new_line;
-            LOOP
-               put("Quel est votre choix ? =>"); get(choix); skip_line; new_line;
-               CASE Choix IS
-                  WHEN 'A' => T(Numlibre).RetD := true; T(Numlibre).Prod := false; exit;
-                  WHEN 'B' => T(Numlibre).RetD := False; T(Numlibre).Prod := True; exit;
-                  when 'C' => T(Numlibre).RetD := True; T(Numlibre).Prod := True; exit;
-                  WHEN OTHERS => Put("Le choix n'est pas propose");
-               END CASE;
-            END LOOP;
-         ELSE
-          Put("Le registre est sature");
-         END IF;
-         new_line;
+      Put("Confirmer ?");New_Line;
+      SaisieBoolean(confirm);
+      IF Confirm = True THEN
+          T(Numlibre).libre := false;
+        EXIT;
+      ELSE
+         put("Recommencer la saisie"); new_line;
+      END IF;
 
-         put("Numero site : "); put(Numlibre, 1); put(" - ")
-         Affichagetexte(T(Numlibre).Ville);Put(" - ");
-         IF T(I).RetD = True and T(i).prod = true THEN
-            Put("R&D et Production");New_Line;
-          elsif T(I).RetD = true and T(I).prod = false then
-            put("R&D Uniquement"); new_line;
-          elsif T(I).RetD = false and T(I).prod = true then
-            put("Production Uniquement"); new_line;
-         END IF;
-
-         Put("Confirmer ?");New_Line;
-            SaisieBoolean(confirm);
-               IF Confirm = True THEN
-               EXIT;
-            ELSE
-              put("Recommencer la saisie");
-         END IF;
-
-
-      END LOOP;
-   End AjoutSite;
+  end loop;
+End AjoutSite;
 
 --------------------------------------------------------------------------------------------------------------
 
