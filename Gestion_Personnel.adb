@@ -5,16 +5,18 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 
 PACKAGE BODY Gestion_Personnel IS
 
-   PROCEDURE VisualisationPersonnel (T : IN T_registrePersonnel) IS --Procedure pour visualiser le registre du personnel
+   PROCEDURE VisualisationPersonnel (T : IN T_registrePersonnel; regSite : T_registreSite) IS --Procedure pour visualiser le registre du personnel
 
    BEGIN
+      put("NOM - PRENOM - NUMERO SITE - VILLE - NB PRODUIT - ACTIVITE"); new_line;
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
-            Put("Nom : ");Put(T(I).Nom);Put(" ");Put("Prenom : ");Put(T(I).Prenom);Put(" ");Put("Numero de site : ");Put(T(I).Site);new_line;
-            Put("Nombre de produits : ");Put(T(I).NbProduit);Put(" ");
+            afficherTexte(T(I).Nom); Put(" "); afficherTexte(T(I).Prenom);Put(" - "); Put(T(I).Site, 1); put(" - ");
+            afficherTexte(regSite(T(I).Site).ville); put(" - "); Put(T(I).NbProduit, 1); put(" - ");
             IF T(I).RetD = True THEN
-               Put("Type d'activite : Recherche et developpement");New_line;
-            ELSE T(I).Prod := true;Put ("Type d'activite : Production");New_line;
+               Put("R&D uniquement"); New_line;
+            ELSE
+              Put ("Production uniquement"); New_line;
             END IF;
 
          END IF;
@@ -41,7 +43,7 @@ PACKAGE BODY Gestion_Personnel IS
       END LOOP;
 
 
-      IF Ok = True THEN  --vérifier qu'il existe un site avant de faire la saisie
+      IF Ok = True THEN  --vï¿½rifier qu'il existe un site avant de faire la saisie
          LOOP
             Put("Saisir votre nom : ");new_line;
             SaisieString(T(I).Nom);
