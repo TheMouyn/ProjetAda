@@ -11,10 +11,15 @@ PACKAGE BODY Gestion_Sites IS
    BEGIN
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
-            Put("Numero du site : ");Put(I);Put(" ");Put("Ville : ");Put(T(I).Ville);Put(" "); --i est le numero d'index
-            IF T(I).RetD = True THEN
-               Put("Activitee abritee : Recherche et developpement");New_Line;
-            ELSE T(I).Prod = True; Put("Activitee Abritee : Production");New_Line;
+            put_line("NUMERO DE SITE - VILLE - ACTIVITE(S)");
+            Put(I, 1); Put(" - "); afficherTexte(T(I).Ville);Put(" - ");
+            
+            IF T(I).RetD = True and T(i).prod = true THEN
+               Put("R&D et Production");New_Line;
+             elsif T(I).RetD = true and T(I).prod = false then
+               put("R&D Uniquement"); new_line;
+             elsif T(I).RetD = false and T(I).prod = true then
+               put("Production Uniquement"); new_line;
             END IF;
          END IF;
       END LOOP;
