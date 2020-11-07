@@ -146,6 +146,39 @@ begin -- affichageProduitEnProdSurSite
 end affichageProduitEnProdSurSite;
 
 
+-----------------------------------------------------------------------------------
+
+procedure affichageProduitEnRetDSurSite(regMedicament : T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  --Affiche les produits en R&D sur un site donnee
+  choixNuSite : integer;
+  choixBool : boolean;
+
+begin -- affichageProduitEnRetDSurSite
+  put("Quel est le numero du site desire ?"); new_line;
+  put("Voulez vous voir le registre des sites ? ");
+  saisieBoolean(choixBool); new_line;
+  if choixBool then
+    VisualisationSite(regSite); --TODO: A ajuster en fonction du nombe de la fonction dans le package
+  end if;
+
+  put("Quel est le numero du site desire ?"); new_line;
+  saisieInteger(1, MaxS ,choixNuSite);
+  new_line;
+  if regSite(choixNuSite).RetD = true then
+    put("Les medicaments en R&D pour ce site sont :"); new_line;
+
+    for i in regMedicament'range loop
+      if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = choixNuSite then
+        put("- "); afficherTexte(regMedicament(i).nom); new_line;
+      end if;
+    end loop;
+  else
+    put("Le site n'est pas un site de R&D"); new_line;
+  end if;
+
+end affichageProduitEnRetDSurSite;
+
+
 
 
 end Gestion_Medicament;
