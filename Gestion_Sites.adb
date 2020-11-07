@@ -9,9 +9,9 @@ PACKAGE BODY Gestion_Sites IS
    PROCEDURE VisualisationSite (T : IN T_registreSite) IS --Procedure pour visualiser le registre des sites
 
    BEGIN
+     put_line("NUMERO DE SITE - VILLE - ACTIVITE(S)");
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
-            put_line("NUMERO DE SITE - VILLE - ACTIVITE(S)");
             Put(I, 1); Put(" - "); afficherTexte(T(I).Ville);Put(" - ");
 
             IF T(I).RetD = True and T(i).prod = true THEN
