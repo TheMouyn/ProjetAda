@@ -13,7 +13,7 @@ PACKAGE BODY Gestion_Sites IS
          IF T(I).Libre = False THEN
             put_line("NUMERO DE SITE - VILLE - ACTIVITE(S)");
             Put(I, 1); Put(" - "); afficherTexte(T(I).Ville);Put(" - ");
-            
+
             IF T(I).RetD = True and T(i).prod = true THEN
                Put("R&D et Production");New_Line;
              elsif T(I).RetD = true and T(I).prod = false then
@@ -48,27 +48,33 @@ PACKAGE BODY Gestion_Sites IS
          IF Ok = True THEN
          LOOP
             Put("Saisir votre ville : ");new_line;
-            SaisieString(T(I).Ville);
+            SaisieString(T(Numlibre).Ville);
 
 
-            put("Quelle est l'activitee abritee ? (A- R&D et B- Prod)");new_line;
+            put("Quelle est l'activitee abritee ? (A- R&D / B- Prod / C- Les deux)");new_line;
             LOOP
-               put("Quel est votre choix ? =>");get(choix);skip_line;
+               put("Quel est votre choix ? =>"); get(choix); skip_line; new_line;
                CASE Choix IS
-                  WHEN A => T(I).RetD := true;T(I).Prod := false;exit;
-                  WHEN B =>T(I).RetD := False;T(I).Prod := True;exit;
+                  WHEN 'A' => T(Numlibre).RetD := true; T(Numlibre).Prod := false; exit;
+                  WHEN 'B' => T(Numlibre).RetD := False; T(Numlibre).Prod := True; exit;
+                  when 'C' => T(Numlibre).RetD := True; T(Numlibre).Prod := True; exit;
                   WHEN OTHERS => Put("Le choix n'est pas propose");
                END CASE;
             END LOOP;
-         ELSE Ok = False; Put("Le registre est sature");
-
+         ELSE
+          Put("Le registre est sature");
          END IF;
+         new_line;
 
-         Affichagetexte(T(I).Ville);Put(' ');
-         IF T(I).RetD := true THEN
-               put("Activitee abritee : Recherche et developpement");
-            ELSE T(I).Prod := true;Put ("Activitee abritee : Production");
-            END IF;
+         put("Numero site : "); put(Numlibre, 1); put(" - ")
+         Affichagetexte(T(Numlibre).Ville);Put(" - ");
+         IF T(I).RetD = True and T(i).prod = true THEN
+            Put("R&D et Production");New_Line;
+          elsif T(I).RetD = true and T(I).prod = false then
+            put("R&D Uniquement"); new_line;
+          elsif T(I).RetD = false and T(I).prod = true then
+            put("Production Uniquement"); new_line;
+         END IF;
 
          Put("Confirmer ?");New_Line;
             SaisieBoolean(confirm);
