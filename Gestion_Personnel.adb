@@ -5,21 +5,25 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 
 PACKAGE BODY Gestion_Personnel IS
 
-   PROCEDURE VisualisationP (T : IN T_registrePersonnel) IS --Procedure pour visualiser le registre du personnel
+   PROCEDURE VisualisationPersonnel (T : IN T_registrePersonnel) IS --Procedure pour visualiser le registre du personnel
 
    BEGIN
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
-            Put("Nom : ");Put(T(I).Nom);Put(" ");Put(T(I).Prenom);Put(" ");Put(T(I).Site);Put(" ");Put(T(I).NbProduit);Put(" ");Put(T(I).RetD);Put(" ");Put(T(I).Prod);New_Line;
-            --peut etre long sur une seule ligne
-            --afficher put le ..est prod
+            Put("Nom : ");Put(T(I).Nom);Put(" ");Put("Prenom : ");Put(T(I).Prenom);Put(" ");Put("Numero de site : ");Put(T(I).Site);new_line;
+            Put("Nombre de produits : ");Put(T(I).NbProduit);Put(" ");
+            IF T(I).RetD = True THEN
+               Put("Type d'activite : Recherche et developpement");
+            ELSE T(I).Prod := true;Put ("Type d'activite : Production");
+            END IF;
+
          END IF;
       END LOOP;
-   END VisualisationP; --changer dans ads
+   END VisualisationPersonnel;
 
+---------------------------------------------------------------------------------------------------------------
 
-
-   PROCEDURE Ajout (T : IN OUT T_RegistrePersonnel;S : IN OUT T_RegistreSite; LeNom,LePrenom IN T_Mot; LeSite: IN integer; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
+   PROCEDURE AjoutPersonnel (T : IN OUT T_RegistrePersonnel;S : IN OUT T_RegistreSite; LeNom,LePrenom IN T_Mot; LeSite: IN integer; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
       --variable ok pour verifier que l'ajout a bien ete realise
       --procedure ajout d'un nouveau responsable
       Numlibre : Integer := -1;
@@ -37,14 +41,14 @@ PACKAGE BODY Gestion_Personnel IS
       END LOOP;
 
 
-      IF Ok = True THEN
+      IF Ok = True THEN  --vérifier qu'il existe un site avant de faire la saisie
          LOOP
             Put("Saisir votre nom : ");new_line;
             SaisieString(T(I).Nom);
             Put("Saisir votre prenom : ");New_Line;
             SaisieString(T(I).Prenom);
             Put("Saisir votre numero de site : ");New_Line;
-            VisualisationS(S);
+            VisualisationSite(S);
             SaisieInteger(1,nbsiteactif(S),T(I).site));
 
             put("Etes-vous charge R&D ou Production ? (A- R&D et B- Prod)");new_line;
@@ -62,8 +66,8 @@ PACKAGE BODY Gestion_Personnel IS
          Affichagetexte(T(I).Nom);Put(' ');AffichagetextePut(T(I).Prenom);Put(' ');Put(T(I).Site);Put(' ');Affichagetexte(S(T(I).Site).Ville);Put(' ');
 
          IF T(I).RetD := true THEN
-               put("
-            ELSE T(I).Prod := true;
+               put("Type d'activite : Recherche et developpement");
+            ELSE T(I).Prod := true;Put ("Type d'activite : Production");
             END IF;
 
          Put("Confirmer ?");new_line;
@@ -78,8 +82,9 @@ PACKAGE BODY Gestion_Personnel IS
                END LOOP;
             END IF;
 
-   End Ajout;
+   End AjoutPersonnel;
 
+-----------------------------------------------------------------------------------------------------------------
 
    PROCEDURE DepartProd (T: IN OUT T_RegistrePersonnel; Ok : OUT Boolean) IS
       --procedure depart d'un chef de produit
@@ -100,6 +105,7 @@ PACKAGE BODY Gestion_Personnel IS
       END LOOP;
    END DepartProd;
 
+------------------------------------------------------------------------------------------------------------------
 
    PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; Ok : OUT Boolean) IS
       --procedure depart d'un responsable de recherche

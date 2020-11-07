@@ -19,8 +19,8 @@ package Gestion_Personnel is
 
 
   type T_registrePersonnel is array (1..MaxEmp) of T_personnel;
-   PROCEDURE Visualisation (T : IN T_RegistrePersonnel);
-   PROCEDURE Ajout (T : IN OUT T_registrePersonnel);
+   PROCEDURE VisualisationPersonnel (T : IN T_RegistrePersonnel);
+   PROCEDURE AjoutPersonnel (T : IN OUT T_registrePersonnel);
    PROCEDURE DepartProd (T: IN OUT T_RegistrePersonnel);
    PROCEDURE DepartRetD (T: IN OUT T_registrePersonnel);
 
