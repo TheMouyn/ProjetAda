@@ -27,7 +27,7 @@ PACKAGE BODY Gestion_Sites IS
 
 -----------------------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE AjoutSite (T : IN OUT T_RegistreSite, Laville IN T_Mot; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
+   PROCEDURE AjoutSite (T : IN OUT T_RegistreSite, Ok OUT Boolean) IS
       --variable ok pour verifier que l'ajout a bien ete realise
       --procedure ajout d'un nouveau site
 
