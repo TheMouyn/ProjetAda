@@ -11,7 +11,7 @@ PACKAGE BODY Gestion_Personnel IS
       put("NU EMPLOYE - NOM - PRENOM - NUMERO SITE - VILLE - NB PRODUIT - ACTIVITE"); new_line;
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
-            put(i, 1); put(" - ") afficherTexte(T(I).Nom); Put(" "); afficherTexte(T(I).Prenom);Put(" - "); Put(T(I).Site, 1); put(" - ");
+            put(i, 1); put(" - "); afficherTexte(T(I).Nom); Put(" "); afficherTexte(T(I).Prenom);Put(" - "); Put(T(I).Site, 1); put(" - ");
             afficherTexte(regSite(T(I).Site).ville); put(" - "); Put(T(I).NbProduit, 1); put(" - ");
             IF T(I).RetD = True THEN
                Put("R&D uniquement"); New_line;
