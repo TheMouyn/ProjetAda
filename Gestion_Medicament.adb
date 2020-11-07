@@ -129,7 +129,7 @@ begin -- affichageProduitEnProdSurSite
   put("Quel est le numero du site desire ?"); new_line;
   saisieInteger(1, MaxS ,choixNuSite);
   new_line;
-  if regSite(choixNuSite).prod = true then
+  if regSite(choixNuSite).prod = true and regSite(choixNuSite).libre = false then
     put("Les medicaments en productions pour ce site sont :"); new_line;
 
     for i in regMedicament'range loop
@@ -164,7 +164,7 @@ begin -- affichageProduitEnRetDSurSite
   put("Quel est le numero du site desire ?"); new_line;
   saisieInteger(1, MaxS ,choixNuSite);
   new_line;
-  if regSite(choixNuSite).RetD = true then
+  if regSite(choixNuSite).RetD = true and regSite(choixNuSite).libre = false then
     put("Les medicaments en R&D pour ce site sont :"); new_line;
 
     for i in regMedicament'range loop
@@ -177,6 +177,41 @@ begin -- affichageProduitEnRetDSurSite
   end if;
 
 end affichageProduitEnRetDSurSite;
+
+-----------------------------------------------------------------------------------
+
+procedure affichageProduitGereParResponable(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  choixNuEmpolye : integer;
+  choixBool : boolean;
+
+begin -- affichageProduitGereParResponable
+  put("Quel est le numero employe ? "); new_line;
+  put("Voulez vous voir le registre du personnel ? ");
+  saisieBoolean(choixBool); new_line;
+
+  if choixBool then
+    VisualisationPersonnel(regPersonnel, regSite);
+  end if;
+  new_line;
+
+  put("Quel est le numero employe ? "); new_line;
+  saisieInteger(1, MaxEmp, choixNuEmpolye); new_line;
+
+  if regPersonnel(choixNuEmpolye).RetD and regPersonnel(choixNuEmpolye).libre = false then
+    put("Liste des medicaments gere par ce responsable : "); new_line;
+
+    for i in regMedicament'range loop
+      if regMedicament(i).libre = false and then regMedicament(i).respRecherche = choixNuEmpolye then
+        put("- "); afficherTexte(regMedicament(i).nom); new_line;
+      end if;
+    end loop;
+  else
+    put("Cet employe n'est pas un responsable de R&D"); new_line;
+  end if;
+
+end affichageProduitGereParResponable;
+
+
 
 
 
