@@ -245,7 +245,7 @@ begin -- AffichageProduitEnProdSurVille
     for i in regMedicament'range loop
       if regMedicament(i).libre = false then
         for j in regMedicament(i).chefProd'range loop
-          if regMedicament(i).chefProd(j).libre = false and then regSite(regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site).ville = choixVille then
+          if regMedicament(i).chefProd(j).libre = false and then regSite(regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site).ville = choixVille and regMedicament(i).EnProd then
             put("- "); afficherTexte(regMedicament(i).nom); new_line;
           end if;
         end loop;
