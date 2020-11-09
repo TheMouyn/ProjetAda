@@ -254,5 +254,26 @@ begin -- AffichageProduitEnProdSurVille
 
 end AffichageProduitEnProdSurVille;
 
+-----------------------------------------------------------------------------------
+
+procedure AffichageProduitEnRetDSurVille(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  -- Affichage cible de la liste des produits en production  dans une ville donnée
+  choixVille : T_mot := (others => ' ');
+
+begin -- AffichageProduitEnRetDSurVille
+  put("Saisir le nom de la ville : "); new_line;
+  saisieString(choixVille); new_line;
+  put("Liste des medicaments qui sont en R&D dans cette ville : "); new_line;
+
+    for i in regMedicament'range loop
+      if regMedicament(i).libre = false and then regSite(regPersonnel(regMedicament(i).respRecherche).site).ville = choixVille and regMedicament(i).EnProd = false then
+        -- Si seulement si en recherche et donc pas en prod
+        put("- "); afficherTexte(regMedicament(i).nom); new_line;
+      end if;
+    end loop;
+
+end AffichageProduitEnRetDSurVille;
+
+
 
 end Gestion_Medicament;
