@@ -231,8 +231,28 @@ begin -- affichageMedicamentAMMAvantDate
 end affichageMedicamentAMMAvantDate;
 
 
+-----------------------------------------------------------------------------------
 
+procedure AffichageProduitEnProdSurVille(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  -- Affichage cible de la liste des produits en production  dans une ville donnée
+  choixVille : T_mot := (others => ' ');
 
+begin -- AffichageProduitEnProdSurVille
+  put("Saisir le nom de la ville : "); new_line;
+  saisieString(choixVille); new_line;
+  put("Liste des medicaments qui sont en production dans cette ville : "); new_line;
+
+    for i in regMedicament'range loop
+      if regMedicament(i).libre = false then
+        for j in regMedicament(i).chefProd'range loop
+          if regMedicament(i).chefProd(j).libre = false and then regSite(regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site).ville = choixVille then
+            put("- "); afficherTexte(regMedicament(i).nom); new_line;
+          end if;
+        end loop;
+      end if;
+    end loop;
+
+end AffichageProduitEnProdSurVille;
 
 
 end Gestion_Medicament;
