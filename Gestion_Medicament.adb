@@ -134,7 +134,7 @@ begin -- affichageProduitEnProdSurSite
 
     for i in regMedicament'range loop
       for j in regMedicament(i).chefProd'range loop
-        if regMedicament(i).chefProd(j).libre = false and then regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site = choixNuSite then
+        if regMedicament(i).chefProd(j).libre = false and then regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site = choixNuSite and regMedicament(i).EnProd then
           put("- "); afficherTexte(regMedicament(i).nom); new_line;
         end if;
       end loop;
