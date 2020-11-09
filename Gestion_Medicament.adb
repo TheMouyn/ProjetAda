@@ -181,6 +181,7 @@ end affichageProduitEnRetDSurSite;
 -----------------------------------------------------------------------------------
 
 procedure affichageProduitGereParResponable(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  -- affiche les produit gere pas un responsable de recherche
   choixNuEmpolye : integer;
   choixBool : boolean;
 
@@ -210,6 +211,24 @@ begin -- affichageProduitGereParResponable
   end if;
 
 end affichageProduitGereParResponable;
+
+-----------------------------------------------------------------------------------
+
+procedure affichageMedicamentAMMAvantDate(regMedicament : in T_registreMedicament) is
+  choixDate : T_date;
+
+begin -- affichageMedicamentAMMAvantDate
+  put_line("Saisir une date : ");
+  saisieDate(choixDate);
+  put("Liste des medicaments qui ont recu une AMM avant le "); affichageDate(choixDate); new_line;
+  for i in regMedicament'range loop
+    if regMedicament(i).libre = false and regMedicament(i).AMM then
+      if dateEstAvant(choixDate, regMedicament(i).dateAMM) then
+        put("- "); afficherTexte(regMedicament(i).nom); new_line;
+      end if;
+    end if;
+  end loop;
+end affichageMedicamentAMMAvantDate;
 
 
 
