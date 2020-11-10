@@ -274,6 +274,37 @@ begin -- AffichageProduitEnRetDSurVille
 
 end AffichageProduitEnRetDSurVille;
 
+-----------------------------------------------------------------------------------
+
+procedure affichageMedicamentCategorie(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  -- Affichage cible de la liste des medicaments d'une categorie donnée (avec les informations sur les sites de production)
+  choixCategorie : T_categorie;
+
+begin -- affichageMedicamentCategorie
+  saisieCategorie(choixCategorie);
+  new_line;
+  put_line("Liste des medcaments qui appartiennent a cette categorie : ");
+
+  for i in regMedicament'range loop
+    if regMedicament(i).libre = false and then regMedicament(i).categorie = choixCategorie then
+      put("- "); afficherTexte(regMedicament(i).nom);
+      if regMedicament(i).EnProd then
+        put(" en production sur les sites : ");
+        for j in regMedicament(i).chefProd'range loop
+          if regMedicament(i).chefProd(j).libre = false then
+            put(regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site, 1);
+            put(" - ");
+            afficherTexte(regSite(regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site).ville);
+            put(" ");
+          end if;
+        end loop;
+      end if;
+      new_line;
+    end if;
+  end loop;
+
+end affichageMedicamentCategorie;
+
 
 
 end Gestion_Medicament;
