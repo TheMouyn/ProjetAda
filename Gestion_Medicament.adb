@@ -92,9 +92,9 @@ begin -- receptionAMM
   saisieBoolean(choixBool);
   if choixBool then
     VisualtisationMedicament(regMedicament, regPersonnel, regSite);
+    new_line;
+    put("Quel est le numero du medicament qui recoit une AMM ?"); new_line;
   end if;
-  new_line;
-  put("Quel est le numero du medicament qui recoit une AMM ?"); new_line;
   saisieInteger(1, maxMed, nuMedicament);
 
   if regMedicament(nuMedicament).libre = false then
@@ -124,9 +124,10 @@ begin -- affichageProduitEnProdSurSite
   saisieBoolean(choixBool); new_line;
   if choixBool then
     VisualisationSite(regSite); --TODO: A ajuster en fonction du nombe de la fonction dans le package
+    new_line;
+    put("Quel est le numero du site desire ?"); new_line;
   end if;
 
-  put("Quel est le numero du site desire ?"); new_line;
   saisieInteger(1, MaxS ,choixNuSite);
   new_line;
   if regSite(choixNuSite).prod = true and regSite(choixNuSite).libre = false then
@@ -159,9 +160,10 @@ begin -- affichageProduitEnRetDSurSite
   saisieBoolean(choixBool); new_line;
   if choixBool then
     VisualisationSite(regSite); --TODO: A ajuster en fonction du nombe de la fonction dans le package
+    new_line;
+    put("Quel est le numero du site desire ?"); new_line;
   end if;
 
-  put("Quel est le numero du site desire ?"); new_line;
   saisieInteger(1, MaxS ,choixNuSite);
   new_line;
   if regSite(choixNuSite).RetD = true and regSite(choixNuSite).libre = false then
@@ -192,10 +194,10 @@ begin -- affichageProduitGereParResponable
 
   if choixBool then
     VisualisationPersonnel(regPersonnel, regSite);
+    new_line;
+    put("Quel est le numero employe ? "); new_line;
   end if;
-  new_line;
 
-  put("Quel est le numero employe ? "); new_line;
   saisieInteger(1, MaxEmp, choixNuEmpolye); new_line;
 
   if regPersonnel(choixNuEmpolye).RetD and regPersonnel(choixNuEmpolye).libre = false then
