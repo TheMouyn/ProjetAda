@@ -5,7 +5,20 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 
 package body Gestion_Medicament is
 
+function nbSiteProductionMedicament(nuMed : in integer regMedicament : in T_registreMedicament) return integer is
+  -- return le nombre de site ou ce medicament est produit
+  nombre : integer := 0;
 
+begin -- nbSiteProductionMedicament
+  for i in regMedicament(nuMed).chefProd'range loop
+    if regMedicament(nuMed).chefProd(i).libre = false then
+      nombre := nombre +1;
+    end if;
+  end loop;
+  return(nombre);
+end nbSiteProductionMedicament;
+
+----------------------------------------------------------------------------------------------------
 
 
 function nbMedicament(regMedicaments : in T_registreMedicament) return integer is -- permet de compter le nombre de medicament dans le registre

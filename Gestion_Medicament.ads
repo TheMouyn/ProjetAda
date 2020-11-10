@@ -36,6 +36,7 @@ package Gestion_Medicament is
 
 
 
+  function nbSiteProductionMedicament(nuMed : in integer regMedicament : in T_registreMedicament) return integer;
   function nbMedicament(regMedicaments : in T_registreMedicament) return integer;
   procedure VisualtisationMedicament(regMedicaments : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
   procedure receptionAMM(regMedicament : T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
