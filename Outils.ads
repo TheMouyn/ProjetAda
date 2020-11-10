@@ -7,5 +7,6 @@ package Outils is
   procedure saisieString(texte : out T_mot);
   procedure saisieBoolean(bool : out boolean);
   procedure afficherTexte(texte : in T_mot);
+  procedure saisieCategorie(choixCategorie : out T_categorie);
 
 end Outils;

@@ -90,5 +90,29 @@ package body Outils is
     end loop;
   end afficherTexte;
 
+  -------------------------------------------------------------------------------------
+
+  procedure saisieCategorie(choixCategorie : out T_categorie) is
+    texte : string(1..18);
+    k : integer;
+
+  begin -- saisieCategorie
+    put("Saisir une categorie : "); new_line;
+    for i in T_categorie loop
+      put(T_categorie'image(i)); put(" - ");
+    end loop;
+    new_line;
+    loop
+      begin
+        put("=> ");
+        get_line(texte, k);
+        choixCategorie := T_categorie'value(texte(1..k));
+        exit;
+          exception
+            when others => put("Votre saisie n'est pas une categorie valide"); new_line;
+      end;
+    end loop;
+  end saisieCategorie;
+
 
 end Outils;
