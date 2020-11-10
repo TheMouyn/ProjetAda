@@ -6,7 +6,7 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 package body Outils is
 
   function desirQuitter return boolean is
-    quitter : boolean
+    quitter : boolean;
 
   begin -- desirQuitter
     put("Voulez-vous quitter la procedure acctuelle ?"); new_line;
