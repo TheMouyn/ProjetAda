@@ -93,7 +93,7 @@ package body Outils is
 
   begin -- afficherTexte
     for i in texte'range loop
-      if texte(i)=' ' then
+      if texte(i)=' ' and texte(i+1)=' ' then
         exit;
       else
         put(texte(i));
