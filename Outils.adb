@@ -5,6 +5,17 @@ pragma elaborate_body -- permet de forcer la compilation du body, je pense que l
 
 package body Outils is
 
+  function desirQuitter return boolean is
+    quitter : boolean
+
+  begin -- desirQuitter
+    put("Voulez-vous quitter la procedure acctuelle ?"); new_line;
+    saisieBoolean(quitter);
+    return(quitter);
+  end desirQuitter;
+
+  -------------------------------------------------------------------------------------
+
   procedure saisieInteger(bornInf, bornSupp : in integer; nombre : out integer) is -- permet la saisie d'un entier entre deux bornes
 
   begin -- saisieInteger
@@ -113,6 +124,8 @@ package body Outils is
       end;
     end loop;
   end saisieCategorie;
+
+  -------------------------------------------------------------------------------------
 
 
 end Outils;

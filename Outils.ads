@@ -2,6 +2,7 @@ package Outils is
 
   subtype T_mot is string(1..50);
 
+  function desirQuitter return boolean;
   procedure saisieInteger(bornInf, bornSupp : in integer; nombre : out integer);
   procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float);
   procedure saisieString(texte : out T_mot);
