@@ -320,6 +320,130 @@ begin -- affichageMedicamentCategorie
 
 end affichageMedicamentCategorie;
 
+-----------------------------------------------------------------------------------
+
+procedure miseEnProduction(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in T_registreSite) is
+  choixBool : boolean;
+  choixMedicament, choixPersonnel : integer;
+  dejaChef, choixQuitter : boolean:=false;
+
+
+
+begin -- miseEnProduction
+  loop -- boucle generale qui permet la confirmation et de recommencer
+    loop -- saisie controlee d'un numero de medciament dans le registre avec demande de visualtion du registre medicament
+      if choixQuitter then
+        exit;
+      end if;
+
+      put_line("Quel est le numero du medicament a mettre en production ?");
+      put_line("Vous vous voir le registre des medicaments ?");
+      saisieBoolean(choixBool);
+      if choixBool then
+        VisualtisationMedicament(regMedicament, regPersonnel, regSite);
+        new_line;
+        put_line("Quel est le numero du medicament a mettre en production ?");
+      end if;
+      saisieInteger(1, maxMed, choixMedicament);
+
+      if regMedicament(choixMedicament).libre = false then
+        if nbSiteProductionMedicament(choixMedicament, regMedicament) < MaxSitesProd then
+          exit;
+        else
+          put_line("Le nombre maximal de site de production pour ce medicament est atteint");
+          choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+        end if;
+      else
+        put_line("Le numero saisi ne corespond pas a un medicament du registre");
+        choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+      end if;
+    end loop;
+
+    if choixQuitter then
+      exit;
+    end if;
+
+    loop -- saisie controlee du chef de prod avec visualisation deu regPersonnel si besoin
+      if choixQuitter then
+        exit;
+      end if;
+      put_line("Quel est le numero du chef de production pour ce medicament ?");
+      put_line("Voulez-vous voir le registre des personnels ? ");
+      saisieBoolean(choixBool);
+      if choixBool then
+        VisualisationPersonnel(regPersonnel, regSite); --TODO: verifier paramettres
+        new_line;
+        put_line("Quel sera le numero du chef de production pour ce medicament ?");
+      end if;
+      saisieInteger(1, MaxS, choixPersonnel);
+
+      if regPersonnel(choixPersonnel).libre = false and then regPersonnel(choixPersonnel).prod then
+        if regPersonnel(choixPersonnel).nbProduit < MaxProdCh then
+          --verification si le chef de prod souhaite n'est pas deja chef de prod sur ce medicament
+          for i in regMedicament(choixMedicament).chefProd'range loop
+            if regMedicament(choixMedicament).chefProd(i).libre = false and then regMedicament(choixMedicament).chefProd(i).nuEmpolye = choixPersonnel then
+              dejaChef:=true;
+              exit;
+            end if;
+          end loop;
+
+          if dejaChef = false then
+            exit;
+          else
+            put_line("Ce personnel est deja chef de production pour ce produit");
+            choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+          end if;
+        else
+          put_line("Ce personnel a deja trop de produit a charge");
+          choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+        end if;
+      else
+        put_line("Le numero saisi ne correspond pas a un personnel de production dans le registre");
+        choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+      end if;
+
+    end loop;
+
+    if choixQuitter then
+      exit;
+    end if;
+
+    -- Confirmation
+    put("Vous voulez mettre en production le medicament "); put(choixMedicament, 1); put(" : "); afficherTexte(regMedicament(choixMedicament).nom); new_line;
+    put("Avec comme chef de production l'employe numero "); put(choixPersonnel, 1); put(" : "); afficherTexte(regPersonnel(choixPersonnel).nom); put(" "); put(regPersonnel(choixPersonnel).prenom); new_line;
+    put("Sur le site "); put(regPersonnel(choixPersonnel).site, 1); put(" - "); afficherTexte(regSite(regPersonnel(choixPersonnel).site).ville); new_line;
+    new_line;
+    put_line("Vous confirmer ?");
+    saisieBoolean(choixBool);
+
+    if choixBool then
+      -- toutes les condition sont validees -> association des varaibles
+      regMedicament(choixMedicament).EnProd:=true;
+      for i in regMedicament(choixMedicament).chefProd'range loop
+        if regMedicament(choixMedicament).chefProd(i).libre = true then
+          regMedicament(choixMedicament).chefProd(i).libre := false;
+          regMedicament(choixMedicament).chefProd(i).nuEmpolye := choixPersonnel;
+          regPersonnel(choixPersonnel).nbProduit:=regPersonnel(choixPersonnel).nbProduit+1;
+          choixQuitter:=TRUE;
+          exit;
+        end if;
+      end loop;
+    else
+      put_line("Mise en production annulee");
+      put_line("Voulez-vous recommencer ?");
+      saisieBoolean(choixBool);
+      if choixBool = false then
+        exit;
+      end if;
+    end if;
+
+    if choixQuitter then
+      exit;
+    end if;
+  end loop;
+
+end miseEnProduction;
+
 
 
 end Gestion_Medicament;
