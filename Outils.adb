@@ -161,6 +161,40 @@ package body Outils is
 
   end sauvegarde;
 
+  -------------------------------------------------------------------------------------
+
+  procedure restauration(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in out T_registreSite) is
+
+  begin -- restauration
+    begin -- registre medcaments
+      open(varFichier_T_registreMedicament, in_file, "RegistreMedicament");
+      read(varFichier_T_registreMedicament, regMedicament);
+      close(varFichier_T_registreMedicament);
+      exception
+        when others => put_line("Erreur restauration registre medicaments");
+
+    end;
+
+    begin -- registre personnel
+      open(varFichier_T_registrePersonnel, in_file, name=>"RegistrePersonnel");
+      read(varFichier_T_registrePersonnel, regPersonnel);
+      close(varFichier_T_registrePersonnel);
+      exception
+        when others => put_line("Erreur restauration registre personnels");
+
+    end;
+
+    begin -- registre site
+      open(varFichier_T_registreSite, in_file, name=>"RegistreSite");
+      read(varFichier_T_registreSite, regSite);
+      close(varFichier_T_registreSite);
+      exception
+        when others => put_line("Erreur restauration registre sites");
+
+    end;
+
+
+  end restauration;
 
 
 end Outils;
