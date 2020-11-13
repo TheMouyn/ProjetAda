@@ -28,5 +28,7 @@ package Outils is
   use Fichier_T_registreSite;
   varFichier_T_registreSite : Fichier_T_registreSite.File_type;
 
+  procedure sauvegarde(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
+
 
 end Outils;
