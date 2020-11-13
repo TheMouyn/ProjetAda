@@ -1,4 +1,4 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console;
+with ada.text_io, ada.integer_text_io, ada.float_text_io, sequential_io, Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console;
 USE Ada.Text_Io, Ada.Integer_Text_Io, Ada.Float_Text_Io, Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console;
 
 pragma elaborate_body -- permet de forcer la compilation du body, je pense que l'on pourra le retirer quandon aura des procedure
@@ -126,6 +126,41 @@ package body Outils is
   end saisieCategorie;
 
   -------------------------------------------------------------------------------------
+  -- Gesiton des fichier
+
+  procedure sauvegarde(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+
+  begin -- sauvegarde
+    begin -- registre medcaments
+      create(varFichier_T_registreMedicament, name=>"RegistreMedicament");
+      write(varFichier_T_registreMedicament, regMedicament);
+      close(varFichier_T_registreMedicament);
+      exception
+        when others => put_line("Erreur enregistrement registre medicaments");
+
+    end;
+
+    begin -- registre personnel
+      create(varFichier_T_registrePersonnel, name=>"RegistrePersonnel");
+      write(varFichier_T_registrePersonnel, regPersonnel);
+      close(varFichier_T_registrePersonnel);
+      exception
+        when others => put_line("Erreur enregistrement registre personnels");
+
+    end;
+
+    begin -- registre site
+      create(varFichier_T_registreSite, name=>"RegistreSite");
+      write(varFichier_T_registreSite, regSite);
+      close(varFichier_T_registreSite);
+      exception
+        when others => put_line("Erreur enregistrement registre sites");
+
+    end;
+
+
+  end sauvegarde;
+
 
 
 end Outils;
