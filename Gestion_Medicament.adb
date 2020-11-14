@@ -348,7 +348,13 @@ begin -- miseEnProduction
 
       if regMedicament(choixMedicament).libre = false then
         if nbSiteProductionMedicament(choixMedicament, regMedicament) < MaxSitesProd then
-          exit;
+          if regMedicament(choixMedicament).AMM then
+            exit;
+          else
+            put_line("Le medicament n'a pas recu d'AMM, il ne peux pas etre mis en production");
+            choixQuitter:=true; -- on impose la sortie de la procedure
+          end if;
+
         else
           put_line("Le nombre maximal de site de production pour ce medicament est atteint");
           choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
