@@ -397,7 +397,7 @@ begin -- miseEnProduction
             exit;
           else
             put_line("Ce personnel est deja chef de production pour ce produit");
-            choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+            choixQuitter:=true; -- on impose la sortie de la procedure
           end if;
         else
           put_line("Ce personnel a deja trop de produit a charge");
