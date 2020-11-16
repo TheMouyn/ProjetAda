@@ -11,6 +11,7 @@ package Outils is
   procedure saisieBoolean(bool : out boolean);
   procedure afficherTexte(texte : in T_mot);
   procedure saisieCategorie(choixCategorie : out T_categorie);
+  procedure initalisation(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in out T_registreSite);
 
 
   -------------------------------------------------------------------------------------
