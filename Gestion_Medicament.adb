@@ -451,5 +451,148 @@ begin -- miseEnProduction
 end miseEnProduction;
 
 
+-----------------------------------------------------------------------------------
+
+procedure arretDeProduction(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in T_registreSite) is
+-- un arret de production d'un medciament donne sur un site donee
+choixBool : boolean;
+choixMedicament, choixSite, chefProdSiteEnCours : integer;
+choixQuitter : boolean:=false;
+verifChefProf : boolean := false; -- vrai si il y a bien un chef de prod associe au site saisi
+toujoursEnProd : boolean := false; -- verifie si un medicament est toujours en prod somewhere
+
+
+begin -- arretDeProduction
+  loop -- boucle generale qui permet la confirmation et de recommencer
+    loop -- saisie controlee d'un numero de medciament dans le registre avec demande de visualtion du registre medicament
+      if choixQuitter then
+        exit;
+      end if;
+
+      put_line("Quel est le numero du medicament a arreter en production ?");
+      put_line("Vous vous voir le registre des medicaments ?");
+      saisieBoolean(choixBool);
+      if choixBool then
+        VisualtisationMedicament(regMedicament, regPersonnel, regSite);
+        new_line;
+        put_line("Quel est le numero du medicament a arreter en production ?");
+      end if;
+      saisieInteger(1, maxMed, choixMedicament);
+
+      if regMedicament(choixMedicament).libre = false then
+        if regMedicament(choixMedicament).EnProd = true then
+          exit;
+        else
+          put_line("Ce medicament n'est pas en production");
+          choixQuitter := true; -- on impose la sortie de la procedure
+        end if;
+      else
+        put_line("Le numero saisi ne corespond pas a un medicament du registre");
+        choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+      end if;
+    end loop;
+
+    if choixQuitter then
+      exit;
+    end if;
+
+    loop -- selection du site ou il faut arreter la production
+      if choixQuitter then
+        exit;
+      end if;
+
+      put_line("Quel est le numero du site ou vous voulez arreter la production du medicament");
+      put_line("Voulez vous voir le registre des sites ?");
+      saisieBoolean(choixBool);
+      if choixBool then
+        VisualisationSite(regSite);
+        new_line;
+        put_line("Quel est le numero du site ou vous voulez arreter la production du medicament");
+      end if;
+      saisieInteger(1, MaxS, choixSite);
+
+      if regSite(choixSite).libre = false then
+        if regSite(choixSite).prod = true then
+            -- verification que le medicament est bien en prod sur ce site
+            for i in regMedicament(choixMedicament).chefProd'range loop
+              if regMedicament(choixMedicament).chefProd(i).libre = false and then regPersonnel(regMedicament(choixMedicament).chefProd(i).nuEmpolye).site = choixSite then
+              -- car il ne peut avoir qu'un seul chef de prod par site pour un medicament
+                chefProdSiteEnCours := regMedicament(choixMedicament).chefProd(i).nuEmpolye;
+                verifChefProf := true;
+                exit;
+              end if;
+            end loop;
+
+            if verifChefProf then
+              exit;
+            else
+              put_line("Il n'y a pas de chef de production associe pour ce site dans le registe medicament");
+              choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+            end if;
+
+        else
+          put_line("Le site n'est pas un site de production");
+          choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+        end if;
+      else
+        put_line("Le site saisi n'est pas dans le registre");
+        choixQuitter:=desirQuitter; -- demande si l'utilisateur veut quitter la procedure acctuelle
+      end if;
+    end loop;
+
+    if choixQuitter then
+      exit;
+    end if;
+
+    -- Confirmation
+    put("Vous voulez stopper la production du medicament "); put(choixMedicament, 1); put(" : "); afficherTexte(regMedicament(choixMedicament).nom); new_line;
+    put("Sur le site "); put(choixSite, 1); put(" : "); afficherTexte(regSite(choixSite).ville); new_line;
+    put("Avec comme responsable l'employe "); put(chefProdSiteEnCours, 1); put(" : "); afficherTexte(regPersonnel(chefProdSiteEnCours).nom); put(" "); afficherTexte(regPersonnel(chefProdSiteEnCours).prenom); new_line;
+    new_line;
+    put_line("Vous confirmer ?");
+    saisieBoolean(choixBool);
+
+    if choixBool then
+      -- toutes les condition sont validees -> association des varaibles
+      regPersonnel(chefProdSiteEnCours).nbProduit := regPersonnel(chefProdSiteEnCours).nbProduit-1;
+      for i in regMedicament(choixMedicament).chefProd'range loop
+        if regMedicament(choixMedicament).chefProd(i).libre = false and then regMedicament(choixMedicament).chefProd(i).nuEmpolye = chefProdSiteEnCours then
+          regMedicament(choixMedicament).chefProd(i).libre := true;
+        end if;
+      end loop;
+
+
+      --verification si il n'y a plus de chef de prod -> le medicament n'est plus en production
+      for i in regMedicament(choixMedicament).chefProd'range loop
+        toujoursEnProd := false;
+        if regMedicament(choixMedicament).chefProd(i).libre = false then
+          toujoursEnProd := true;
+          exit;
+        end if;
+      end loop;
+
+      if toujoursEnProd = false then
+        regMedicament(choixMedicament).EnProd := false;
+      end if;
+
+      choixQuitter:=TRUE;
+
+    else
+      put_line("Arret de  production annulee");
+      put_line("Voulez-vous recommencer ?");
+      saisieBoolean(choixBool);
+      if choixBool = false then
+        exit;
+      end if;
+    end if;
+
+    if choixQuitter then
+      exit;
+    end if;
+
+  end loop;
+
+end arretDeProduction;
+
 
 end Gestion_Medicament;
