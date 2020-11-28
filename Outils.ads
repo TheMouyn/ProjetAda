@@ -14,23 +14,6 @@ package Outils is
   procedure initalisation(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in out T_registreSite);
 
 
-  -------------------------------------------------------------------------------------
-  -- Gesiton des fichier
-
-  package Fichier_T_registreMedicament is new sequential_io(T_registreMedicament);
-  use Fichier_T_registreMedicament;
-  varFichier_T_registreMedicament : Fichier_T_registreMedicament.File_type;
-
-  package Fichier_T_registrePersonnel is new sequential_io(T_registrePersonnel);
-  use Fichier_T_registrePersonnel;
-  varFichier_T_registrePersonnel : Fichier_T_registrePersonnel.File_type;
-
-  package Fichier_T_registreSite is new sequential_io(T_registreSite);
-  use Fichier_T_registreSite;
-  varFichier_T_registreSite : Fichier_T_registreSite.File_type;
-
-  procedure sauvegarde(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite);
-  procedure restauration(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in out T_registreSite);
 
 
 end Outils;
