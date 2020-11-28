@@ -1,4 +1,3 @@
-with sequential_io;
 
 package Outils is
 
