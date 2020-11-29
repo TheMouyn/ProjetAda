@@ -43,7 +43,7 @@ PACKAGE BODY Gestion_Personnel IS
       END LOOP;
 
 
-      IF Ok = True THEN  --vï¿½rifier qu'il existe un site avant de faire la saisie
+      IF Ok = True AND --function(S(T(i).Site).nbSiteActif) > 0 THEN  --on vérifie que la case est libre et qu'il existe un site avant de faire la saisie
          LOOP
             Put("Saisir votre nom : ");new_line;
             SaisieString(T(I).Nom);
@@ -65,7 +65,7 @@ PACKAGE BODY Gestion_Personnel IS
          ELSE Ok = False; Put("Le registre est sature");
 
          END IF;
-         Affichagetexte(T(I).Nom);Put(' ');AffichagetextePut(T(I).Prenom);Put(' ');Put(T(I).Site);Put(' ');Affichagetexte(S(T(I).Site).Ville);Put(' ');
+         Affichagetexte(T(I).Nom);Put(' ');Affichagetexte(T(I).Prenom);Put(' ');Put(T(I).Site);Put(' ');Affichagetexte(S(T(I).Site).Ville);Put(' ');
 
          IF T(I).RetD := true THEN
                put("Type d'activite : Recherche et developpement");
