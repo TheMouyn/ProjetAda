@@ -1,7 +1,7 @@
 with ada.text_io, ada.integer_text_io, ada.float_text_io, Outils, Gestion_Dates, Gestion_Medicament, Gestion_Personnel, nt_console;
 USE Ada.Text_Io, Ada.Integer_Text_Io, Ada.Float_Text_Io, Outils, Gestion_Dates, Gestion_Medicament, Gestion_Personnel, nt_console;
 
-pragma elaborate_body -- permet de forcer la compilation du body, je pense que l'on pourra le retirer quandon aura des procedure
+pragma elaborate_body; -- permet de forcer la compilation du body, je pense que l'on pourra le retirer quandon aura des procedure
 
 PACKAGE BODY Gestion_Sites IS
 
@@ -12,7 +12,7 @@ PACKAGE BODY Gestion_Sites IS
   begin -- nbSiteActif
     for i in regSite'range loop
       if regSite(i).libre = false then
-        nombe := nombre+1;
+        nombre := nombre+1;
       end if;
     end loop;
     return(nombre);
@@ -103,13 +103,13 @@ End AjoutSite;
 
 --------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE FermetureSite (T: IN OUT T_RegistreSite; Ok : OUT Boolean) IS
+   PROCEDURE FermetureSite (T: IN OUT T_RegistreSite; M : IN T_registreMedicament; Ok : OUT Boolean) IS
       --procedure fermeture d'un site boolean ok
       --variable ok pour verifier que l'ajout a bien ete realise
 
    BEGIN
       Ok := False;
-      IF T(I).RetD := False AND T(I).Prod := False THEN --fermeture s'il n'y a plus de M en prod ou en RetD
+      IF M(I).AMM = False AND M(I).EnProd = False THEN --fermeture s'il n'y a plus de M en prod ou en RetD
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
             T(I).Ville :=(OTHERS => ' ');
