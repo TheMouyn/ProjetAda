@@ -1,7 +1,7 @@
 with ada.text_io, ada.integer_text_io, ada.float_text_io, Outils, Gestion_Dates, Gestion_Sites, Gestion_Personnel, nt_console;
 USE Ada.Text_Io, Ada.Integer_Text_Io, Ada.Float_Text_Io, Outils, Gestion_Dates, Gestion_Sites, Gestion_Personnel, nt_console;
 
-pragma elaborate_body -- permet de forcer la compilation du body, je pense que l'on pourra le retirer quandon aura des procedure
+pragma elaborate_body; -- permet de forcer la compilation du body, je pense que l'on pourra le retirer quandon aura des procedure
 
 package body Gestion_Medicament is
 
@@ -27,7 +27,7 @@ function nbMedicament(regMedicaments : in T_registreMedicament) return integer i
 begin -- nbMedicament
   for i in regMedicaments'range loop
     if regMedicaments(i).libre = false then
-      nombre:= numbre+1;
+      nombre:= nombre+1;
     end if;
   end loop;
   return(nombre);
