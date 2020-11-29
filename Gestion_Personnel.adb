@@ -43,7 +43,7 @@ PACKAGE BODY Gestion_Personnel IS
       END LOOP;
 
 
-      IF Ok = True AND --function(S(T(i).Site).nbSiteActif) > 0 THEN  --on vérifie que la case est libre et qu'il existe un site avant de faire la saisie
+      IF Ok = True AND NbSiteActif(S) > 0 THEN  --on vérifie que la case est libre et qu'il existe un site avant de faire la saisie
          LOOP
             Put("Saisir votre nom : ");new_line;
             SaisieString(T(I).Nom);
