@@ -35,6 +35,7 @@ end nbMedicament;
 ----------------------------------------------------------------------------------------------------
 
 procedure VisualtisationMedicament(regMedicaments : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  car : character; --permet de savoir si on veut quitter la lecture du registre
 
 begin -- VisualtisationMedicament
   for i in regMedicaments'range loop
@@ -83,7 +84,11 @@ begin -- VisualtisationMedicament
 
       end if;
       new_line;
-      put("Appuyer sur entrer pour medicament suivant"); skip_line;
+      put("Appuyer sur entrer pour medicament suivant pour sur 'Q' pour Quitter");
+      get_immediate(car);
+      if car = 'q' or car = 'Q' then
+        exit;
+      end if;
 
     end if;
   end loop;
