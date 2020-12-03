@@ -1,7 +1,7 @@
 with ada.text_io, ada.integer_text_io, ada.float_text_io, Outils, Gestion_Dates, Gestion_Sites, Gestion_Personnel, nt_console;
 USE Ada.Text_Io, Ada.Integer_Text_Io, Ada.Float_Text_Io, Outils, Gestion_Dates, Gestion_Sites, Gestion_Personnel, nt_console;
 
-pragma elaborate_body -- permet de forcer la compilation du body, je pense que l'on pourra le retirer quandon aura des procedure
+pragma elaborate_body; -- permet de forcer la compilation du body, je pense que l'on pourra le retirer quandon aura des procedure
 
 package body Gestion_Medicament is
 
@@ -27,7 +27,7 @@ function nbMedicament(regMedicaments : in T_registreMedicament) return integer i
 begin -- nbMedicament
   for i in regMedicaments'range loop
     if regMedicaments(i).libre = false then
-      nombre:= numbre+1;
+      nombre:= nombre+1;
     end if;
   end loop;
   return(nombre);
@@ -35,6 +35,7 @@ end nbMedicament;
 ----------------------------------------------------------------------------------------------------
 
 procedure VisualtisationMedicament(regMedicaments : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+  car : character; --permet de savoir si on veut quitter la lecture du registre
 
 begin -- VisualtisationMedicament
   for i in regMedicaments'range loop
@@ -83,7 +84,11 @@ begin -- VisualtisationMedicament
 
       end if;
       new_line;
-      put("Appuyer sur entrer pour medicament suivant"); skip_line;
+      put("Appuyer sur entrer pour medicament suivant pour sur 'Q' pour Quitter");
+      get_immediate(car);
+      if car = 'q' or car = 'Q' then
+        exit;
+      end if;
 
     end if;
   end loop;
@@ -593,6 +598,217 @@ begin -- arretDeProduction
   end loop;
 
 end arretDeProduction;
+
+-----------------------------------------------------------------------------------
+
+procedure nouveauMedicament(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in T_registreSite) is
+  registreLibre : boolean := false;
+  nomMed : T_mot := (others=>' ');
+  categorieMed : T_categorie;
+  nuTypePatient : integer := 0;
+  typePatientMed : T_typePatient;
+  choixBool : boolean;
+  respRetDMed : integer;
+  choixQuitter : boolean := false;
+  existeDejaTTpublic, existeDejaAdulte, existeDejaPediatrique: boolean := false;
+
+
+begin -- nouveauMedicament
+
+  for i in regMedicament'range loop  -- verification de la saturation du registre
+    if regMedicament(i).libre then
+      registreLibre := true;
+      exit;
+    end if;
+  end loop;
+
+  if registreLibre then
+    loop -- boucle de confirmation
+
+      if choixQuitter then
+        exit;
+      end if;
+
+      -- gesiton du nom mediament, verifie si il n'y a pas un medicament qui a le meme nom et donc vérifier la catégorie
+
+        put_line("Veuillez saisir le nom du nouveau medicament :");
+        saisieString(nomMed);
+
+        for i in regMedicament'range loop
+          if regMedicament(i).nom = nomMed then
+            if regMedicament(i).typePatient = ttPublic then
+              existeDejaTTpublic := true;
+              exit;
+            end if;
+
+            if regMedicament(i).typePatient = adulte then
+              existeDejaAdulte := true;
+            end if;
+
+            if regMedicament(i).typePatient = pediatrique then
+              existeDejaPediatrique := true;
+            end if;
+
+          end if;
+        end loop;
+
+
+        if existeDejaTTpublic then
+          put_line("Un mediament sous ce nom existe deja pour le tout publique, vous ne pouvez pas ajouter une autre forme");
+          choixQuitter := true;
+        end if;
+
+        if existeDejaAdulte and existeDejaPediatrique then
+          put_line("Ce medicament existe deja sous la forme pediatrique et adulte, il est impossible d'ajouter une autre forme");
+          choixQuitter := true;
+        end if;
+
+        if existeDejaAdulte and existeDejaPediatrique = false then
+          put_line("Ce medicament existe deja sous la forme adulte, vous ne pouvez que l'ajouter sous la forme pediatrique");
+          choixQuitter := desirQuitter;
+        end if;
+
+        if existeDejaAdulte = false and existeDejaPediatrique then
+          put_line("Ce medicament existe deja sous la forme pediatrique, vous ne pouvez que l'ajouter sous la forme adulte");
+          choixQuitter := desirQuitter;
+        end if;
+
+      if choixQuitter then
+        exit;
+      end if;
+
+
+      -- saisie de la categorie si nouveau mediament si non on reprends la categorie de l'autre medicament deja present dans le registre
+      -- Saisie du type de patient pour ce medicmant ou automatique si l'autre est deja present
+
+      if existeDejaAdulte or existeDejaPediatrique then
+        for i in regMedicament'range loop
+          if regMedicament(i).nom = nomMed then
+            categorieMed := regMedicament(i).categorie;
+
+            if regMedicament(i).typePatient = adulte then -- copie du type patient sur nouveau mediament
+              typePatientMed := pediatrique;
+            else
+              typePatientMed := adulte;
+            end if;
+
+            --vérifier que le resp peut encore etre à la charge d'un produit en plus
+            if regPersonnel(regMedicament(i).respRecherche).nbProduit = MaxProdCh then
+              put_line("Le responsable de recherche qui gere ce produit a atteint le nombre maximal de produit a charge simultanement");
+              choixQuitter:=true;
+            else
+              respRetDMed := regMedicament(i).respRecherche; -- copie du numero employe du resp recherche de l'autre mediament
+            end if;
+
+
+            exit;
+          end if;
+        end loop;
+
+      else -- si nouveau mediament non connu dans le registre
+        saisieCategorie(categorieMed); new_line;
+
+        -- saisie du type de patient via petit menu
+        put_line("Pour quel type de patient est ce medicament (saisir le nombre) :");
+        put_line("1 - TOUT PUBLIC");
+        put_line("2 - ADULTE UNIQUEMENT");
+        put_line("3 - PEDIATRIQUE UNIQUEMENT");
+        new_line;
+        saisieInteger(1, 3, nuTypePatient);
+
+        case nuTypePatient is
+          when 1 => typePatientMed := ttPublic;
+          when 2 => typePatientMed := adulte;
+          when 3 => typePatientMed := pediatrique;
+          when others => null; -- ne peut pas arriver car forcement un int entre 1 et 3
+        end case;
+
+        loop -- saisie d'un responsable de recherche
+          if choixQuitter then
+            exit;
+          end if;
+
+          put_line("Quel est le numero du responsable de recherche de ce mediament ?");
+          put_line("Voulez-vous voir le registre des personnels ? ");
+          saisieBoolean(choixBool);
+          if choixBool then
+            VisualisationPersonnel(regPersonnel, regSite);
+            new_line;
+            put_line("Quel sera le numero du chef de production pour ce medicament ?");
+          end if;
+          saisieInteger(1, MaxEmp, respRetDMed);
+
+          if regPersonnel(respRetDMed).RetD = false then
+            put_line("Ce personnel n'est pas un responsable de recherche");
+            choixQuitter:=desirQuitter;
+          else
+            --vérifier que le resp peut encore etre à la charge d'un produit en plus
+            if regPersonnel(respRetDMed).nbProduit = MaxProdCh then
+              put_line("Ce personnel a atteint le nombre maximal de produit a charge simultanement");
+              choixQuitter:=desirQuitter;
+            else
+              exit;
+            end if;
+          end if;
+        end loop;
+
+      end if;
+
+      if choixQuitter then
+        exit;
+      end if;
+
+      -- Confirmation
+      put("Vous voulez ajouter un mediament "); afficherTexte(nomMed); put(" de categorie "); put(T_categorie'image(categorieMed)); new_line;
+      put("Pour le type patient ");
+      case typePatientMed is
+        when ttPublic => put("TOUT PUBLIC");
+        when adulte => put("ADULTE UNIQUEMENT");
+        when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+      end case;
+      new_line;
+      put("Le responsable de recherche est "); afficherTexte(regPersonnel(respRetDMed).nom); put(" "); afficherTexte(regPersonnel(respRetDMed).prenom); new_line;
+      put("Sur le site numero "); put(regPersonnel(respRetDMed).site, 1); put(" - "); afficherTexte(regSite(regPersonnel(respRetDMed).site).ville); new_line;
+      put_line("Le medicament que vous ajouter est en phase de recherche");
+
+      new_line;
+      put_line("Vous confirmer ?");
+      saisieBoolean(choixBool);
+
+      if choixBool then
+        -- toutes les condition sont validees -> association des varaibles dans le registre
+        for i in regMedicament'range loop
+          if regMedicament(i).libre then
+            regMedicament(i).nom := nomMed;
+            regMedicament(i).categorie := categorieMed;
+            regMedicament(i).typePatient := typePatientMed;
+            regMedicament(i).AMM := false;
+            regMedicament(i).EnProd := false;
+            regMedicament(i).respRecherche := respRetDMed;
+            regPersonnel(respRetDMed).nbProduit := regPersonnel(respRetDMed).nbProduit +1;
+            regMedicament(i).libre := false;
+            choixQuitter:=true;
+            exit;
+          end if;
+        end loop;
+
+      else
+        choixQuitter:=desirQuitter;
+      end if;
+
+      if choixQuitter then
+        exit;
+      end if;
+
+    end loop; -- fin boucle confirmation
+
+  else
+    put_line("Registre medcaments sature, ajout impossible");
+  end if;
+
+end nouveauMedicament;
+
+
 
 
 end Gestion_Medicament;
