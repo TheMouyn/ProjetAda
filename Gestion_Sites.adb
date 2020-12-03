@@ -112,7 +112,7 @@ End AjoutSite;
       Ok := False;
       Put("Quel site voulez-vous fermer ?"); put("Appuyer sur entrer pour visualiser tous les sites");
       VisualisationSite(T);
-      Put("Saisir le numero du site :");
+      Put("Saisir le numero du site :"); --saisir
       SaisieInteger(1,MaxSite,num);
 
 
