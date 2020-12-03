@@ -25,72 +25,178 @@ PACKAGE BODY Gestion_Personnel IS
 
 ---------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE AjoutPersonnel (T : IN OUT T_RegistrePersonnel;S : IN OUT T_RegistreSite; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
-      --variable ok pour verifier que l'ajout a bien ete realise
-      --procedure ajout d'un nouveau responsable
-      Numlibre : Integer := -1;
-      Choix : Character;
-      confirm : boolean := false;
+PROCEDURE AjoutPersonnel (T : IN OUT T_RegistrePersonnel; S : IN OUT T_RegistreSite) IS
+   --variable ok pour verifier que l'ajout a bien ete realise
+   --procedure ajout d'un nouveau responsable
+   -- variables temporaires pour confirmation
+   NomEmp,
+   PrenomEmp : T_Mot   := (OTHERS => ' ');
+   SiteEmp   : Integer := - 1;
+   RetDEmp,
+   ProdEmp   : Boolean := False;
 
-   BEGIN
-      ok :=false;
-         FOR I IN T'RANGE LOOP
-         IF T(I).Libre = True THEN
-            Numlibre := I;
-            Ok := True;
-            EXIT;
-         END IF;
-      END LOOP;
+   Numlibre     : Integer   := - 1;
+   Choix        : Character;
+   Confirm      : Boolean   := False;
+   ChoixQuitter,
+   ExisteDeja   : Boolean   := False;
+   ChoixBool    : Boolean   := False;
+   Ok : boolean :=False;
 
-
-      IF Ok = True AND function(S(T(i).Site).nbSiteActif) > 0 THEN  --on vérifie que la case est libre et qu'il existe un site avant de faire la saisie
-         LOOP
-            Put("Saisir votre nom : ");new_line;
-            SaisieString(T(I).Nom);
-            IF T(I).Nom IN T'RANGE THEN  -- on vérifie que il n'y a pas deux fois le meme nom
-               Put("Ce nom existe deja, veuillez saisir un autre nom : ");
-               SaisieString(T(I).Nom);
-            END IF;
-
-            Put("Saisir votre prenom : ");New_Line;
-            SaisieString(T(I).Prenom);
-            Put("Saisir votre numero de site : ");New_Line;
-            VisualisationSite(S);
-            SaisieInteger(1,MaxSite,T(I).site));
-
-            put("Etes-vous charge R&D ou Production ? (A- R&D et B- Prod)");new_line;
-            LOOP
-               put("Quel est votre choix ? =>");get(choix);skip_line;
-               CASE Choix IS
-                  WHEN 'A' => T(I).RetD := true;T(I).Prod := false;exit;
-                  WHEN 'B' =>T(I).RetD := False;T(I).Prod := True;exit;
-                  WHEN OTHERS => Put("Le choix n'est pas propose");
-               END CASE;
-            END LOOP;
-         ELSE Put("Le registre est sature");
-
-         END IF;
-         Affichagetexte(T(I).Nom);Put(' ');Affichagetexte(T(I).Prenom);Put(' ');Put(T(I).Site);Put(' ');Affichagetexte(S(T(I).Site).Ville);Put(' ');
-
-         IF T(I).RetD := true THEN
-               put("Type d'activite : Recherche et developpement");
-            ELSE T(I).Prod := true;Put ("Type d'activite : Production");
-            END IF;
-
-         Put("Confirmer ?");new_line;
-            SaisieBoolean(confirm);
-               IF Confirm = True THEN
-               EXIT;
-            ELSE
-              put("Recommencer la saisie");
-               END IF;
+BEGIN
+ FOR I IN T'RANGE LOOP
+    IF T(I).Libre = True THEN
+       Numlibre := I;
+       Ok := True;
+       EXIT;
+    END IF;
+ END LOOP;
 
 
-               END LOOP;
-            END IF;
+ IF Ok = True AND NbSiteActif(S) > 0 THEN
+    --on verifie que la case est libre et qu'il existe un site avant de faire la saisie
+    LOOP -- saisie de confirmation
+       LOOP -- saisie de nom
+          Put("Saisir votre nom : ");
+          New_Line;
+          SaisieString(NomEmp);
+          Put("Saisir votre prenom : ");
+          New_Line;
+          SaisieString(PrenomEmp);
+          New_Line;
 
-   End AjoutPersonnel;
+          -- verification homonymie
+          FOR I IN T'RANGE LOOP
+             IF T(I).Nom = NomEmp AND THEN T(I).Prenom = PrenomEmp THEN
+                ExisteDeja := True;
+                EXIT;
+             END IF;
+          END LOOP;
 
+          IF ExisteDeja THEN
+             Put_Line(
+                "Ajout impossible car un personnel de ce nom existe deja");
+             ChoixQuitter := DesirQuitter;
+             IF ChoixQuitter THEN
+                EXIT;
+             END IF;
+          ELSE
+             EXIT;
+          END IF;
+
+       END LOOP;
+
+       IF ChoixQuitter THEN
+          EXIT;
+       END IF;
+
+       -- saisie du type fonction
+
+       Put("Etes-vous charge R&D ou Production ? (A- R&D et B- Prod)");
+       New_Line;
+       LOOP
+          Put("Quel est votre choix ? => ");
+          Get(Choix);
+          Skip_Line;
+          CASE Choix IS
+             WHEN 'A' =>
+                RetDEmp := True;
+                ProdEmp := False;
+                EXIT;
+             WHEN 'B' =>
+                RetDEmp := False;
+                ProdEmp := True;
+                EXIT;
+             WHEN OTHERS =>
+                Put("Le choix n'est pas propose");
+                New_Line;
+          END CASE;
+       END LOOP;
+
+       LOOP  -- saisie du numero de site
+          Put("Saisir votre numero de site : ");
+          New_Line;
+          Put_Line("Voulez-vous voir le registre des site ? ");
+          SaisieBoolean(ChoixBool);
+          IF ChoixBool THEN
+             VisualisationSite(S);
+             New_Line;
+             Put_Line("Saisir votre numero de site : ");
+          END IF;
+          SaisieInteger(1, MaxS, SiteEmp);
+
+          IF S(SiteEmp).Libre = False THEN
+             IF (RetDEmp AND S(SiteEmp).RetD) OR (ProdEmp AND S(SiteEmp).Prod) THEN -- TODO: a verifier
+                EXIT;
+             ELSE
+                Put_Line("Le site selectionne n'est pas coherant avec votre domaine");
+                ChoixQuitter := DesirQuitter;
+                Clear_Screen(Black);
+             END IF;
+
+          ELSE
+             Put_Line("Ce site n'est pas un site du registre");
+             ChoixQuitter := DesirQuitter;
+          END IF;
+
+          IF ChoixQuitter THEN
+             EXIT;
+          END IF;
+
+       END LOOP;
+
+       IF ChoixQuitter THEN
+          EXIT;
+       END IF;
+
+       -- confirmation
+       Put_Line("Vous voulez ajouter un personnel :");
+       afficherTexte(NomEmp);
+       Put(" ");
+       afficherTexte(PrenomEmp);
+       Put(" Site : ");
+       Put(SiteEmp, 1);
+       Put(" - ");
+       afficherTexte(S(SiteEmp).Ville);
+       Put(" ");
+
+       IF RetDEmp = True THEN
+          Put("Type d'activite : Recherche et developpement");
+       ELSE
+          Put ("Type d'activite : Production");
+       END IF;
+       New_Line;
+
+       Put("Confirmer ?");
+       New_Line;
+       SaisieBoolean(Confirm);
+       IF Confirm = True THEN
+          T(Numlibre).Nom := NomEmp;
+          T(Numlibre).Prenom := PrenomEmp;
+          T(Numlibre).RetD := RetDEmp;
+          T(Numlibre).Prod := ProdEmp;
+          T(Numlibre).Site := SiteEmp;
+          T(Numlibre).NbProduit := 0;
+          T(Numlibre).Libre := False;
+
+          EXIT;
+       ELSE
+          Put("Recommencer la saisie ou quitter");
+          ChoixQuitter := DesirQuitter;
+       END IF;
+
+       IF ChoixQuitter THEN
+          EXIT;
+       END IF;
+
+
+
+    END LOOP;
+ ELSE
+    Put("Le registre est sature");
+ END IF;
+
+END AjoutPersonnel;
 -----------------------------------------------------------------------------------------------------------------
 
    PROCEDURE DepartProd (T: IN OUT T_RegistrePersonnel; Ok : OUT Boolean) IS
