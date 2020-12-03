@@ -109,7 +109,13 @@ End AjoutSite;
 
    BEGIN
       Ok := False;
-      IF M(I).AMM = False AND M(I).EnProd = False THEN --fermeture s'il n'y a plus de M en prod ou en RetD
+      Put("Quel site voulez-vous fermer ?"); put("Appuyer sur entrer pour visualiser tous les sites");
+      VisualisationSite(T);
+      Put("Saisir le numero du site :"); --saisir bonjour
+      SaisieInteger(1,MaxSite,num);
+
+
+      IF M(P(T(I).Site).Prod).EnProd = False AND M(P(T(I).Site).RetD).AMM = False THEN --fermeture s'il n'y a plus de M en prod ou en RetD et plus de personnel sur un site
       FOR I IN T'RANGE LOOP
          IF T(I).Libre = False THEN
             T(I).Ville :=(OTHERS => ' ');
