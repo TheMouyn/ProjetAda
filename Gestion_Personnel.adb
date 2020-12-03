@@ -25,7 +25,7 @@ PACKAGE BODY Gestion_Personnel IS
 
 ---------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE AjoutPersonnel (T : IN OUT T_RegistrePersonnel;S : IN OUT T_RegistreSite; LeNom,LePrenom IN T_Mot; LeSite: IN integer; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
+   PROCEDURE AjoutPersonnel (T : IN OUT T_RegistrePersonnel;S : IN OUT T_RegistreSite; LeRetD,LaProd IN Boolean, Ok OUT Boolean) IS
       --variable ok pour verifier que l'ajout a bien ete realise
       --procedure ajout d'un nouveau responsable
       Numlibre : Integer := -1;
@@ -43,10 +43,15 @@ PACKAGE BODY Gestion_Personnel IS
       END LOOP;
 
 
-      IF Ok = True AND NbSiteActif(S) > 0 THEN  --on vérifie que la case est libre et qu'il existe un site avant de faire la saisie
+      IF Ok = True AND function(S(T(i).Site).nbSiteActif) > 0 THEN  --on vérifie que la case est libre et qu'il existe un site avant de faire la saisie
          LOOP
             Put("Saisir votre nom : ");new_line;
             SaisieString(T(I).Nom);
+            IF T(I).Nom IN T'RANGE THEN  -- on vérifie que il n'y a pas deux fois le meme nom
+               Put("Ce nom existe deja, veuillez saisir un autre nom : ");
+               SaisieString(T(I).Nom);
+            END IF;
+
             Put("Saisir votre prenom : ");New_Line;
             SaisieString(T(I).Prenom);
             Put("Saisir votre numero de site : ");New_Line;
@@ -57,12 +62,12 @@ PACKAGE BODY Gestion_Personnel IS
             LOOP
                put("Quel est votre choix ? =>");get(choix);skip_line;
                CASE Choix IS
-                  WHEN A => T(I).RetD := true;T(I).Prod := false;exit;
-                  WHEN B =>T(I).RetD := False;T(I).Prod := True;exit;
+                  WHEN 'A' => T(I).RetD := true;T(I).Prod := false;exit;
+                  WHEN 'B' =>T(I).RetD := False;T(I).Prod := True;exit;
                   WHEN OTHERS => Put("Le choix n'est pas propose");
                END CASE;
             END LOOP;
-         ELSE Ok = False; Put("Le registre est sature");
+         ELSE Put("Le registre est sature");
 
          END IF;
          Affichagetexte(T(I).Nom);Put(' ');Affichagetexte(T(I).Prenom);Put(' ');Put(T(I).Site);Put(' ');Affichagetexte(S(T(I).Site).Ville);Put(' ');
