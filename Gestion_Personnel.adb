@@ -56,7 +56,7 @@ PACKAGE BODY Gestion_Personnel IS
             SaisieString(T(I).Prenom);
             Put("Saisir votre numero de site : ");New_Line;
             VisualisationSite(S);
-            SaisieInteger(1,nbsiteactif(S),T(I).site));
+            SaisieInteger(1,MaxSite,T(I).site));
 
             put("Etes-vous charge R&D ou Production ? (A- R&D et B- Prod)");new_line;
             LOOP
@@ -99,7 +99,12 @@ PACKAGE BODY Gestion_Personnel IS
 
    BEGIN
       Ok := False;
-      FOR I IN T'RANGE LOOP
+      Put("Quel chef de produit voulez-vous supprimer ?"); put("Appuyer sur entrer pour visualiser tous les personnels");
+      VisualisationPersonnel(T);
+      Put("Saisir le nom du chef de produit :");
+      SaisieString(T(I).Nom);
+
+      FOR I IN T'RANGE LOOP -- If T(i).nom in T'range then
          IF T(I).Libre = False AND T(I).Prod := true THEN
                T(I).Nom :=(OTHERS => ' ');
                T(I).Prenom :=(OTHERS => ' ');
@@ -114,18 +119,23 @@ PACKAGE BODY Gestion_Personnel IS
 
 ------------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; Ok : OUT Boolean) IS
+   PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; M : IN OUT T_RegistreMedicamment Ok : OUT Boolean) IS
       --procedure depart d'un responsable de recherche
       --variable ok pour verifier que l'ajout a bien ete realise
 
    BEGIN
       Ok := False;
-      FOR I IN T'RANGE LOOP
+      Put("Quel responsable voulez-vous supprimer ?"); put("Appuyer sur entrer pour visualiser tous les personnels");
+      VisualisationPersonnel(T);
+      Put("Saisir le nom du responsable :");
+      SaisieString(T(I).Nom);
+
+      FOR I IN T'RANGE LOOP -- If T(i).nom in T'range then
          IF T(I).Libre = False AND T(I).RetD := true THEN
                T(I).Nom :=(OTHERS => ' ');
                T(I).Prenom :=(OTHERS => ' ');
                T(I).Site :=0;
-               T(I).nbproduit :=0; --produits supprimes
+               T(I).nbproduit :=0 and M(T(i).nbproduit).RetD := 0; --produits supprimes
                T(I).Libre:= True;
                Ok := True;
                exit;
