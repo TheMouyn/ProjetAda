@@ -206,7 +206,8 @@ END AjoutPersonnel;
       Ok : Boolean :=False; --variable ok pour verifier que la suppression a bien ete realisee
       NomEmp,PrenomEmp : T_Mot   := (OTHERS => ' ');
       ProdEmp: Boolean := False;
-      SiteEmp, Min, Numlibre : Integer := - 1;
+      Numlibre: Integer := - 1;
+      SiteEmp   : Integer := - 1;
 
    BEGIN
       FOR I IN T'RANGE LOOP
@@ -276,21 +277,21 @@ END AjoutPersonnel;
           T(Numlibre).Site := 0;
           T(Numlibre).Libre := True;
 
-          Min := T(T'First); --recherche du chef de produit qui a le moins de produit
+          Min := T(T'First); --recherche du chef qui a le moins de produit
           I := T'First +1;
             WHILE I <= T'Last LOOP
                IF T(I) < Min THEN
                   Min := T(I);
                END IF;
             END LOOP;
-            IF Min < (MaxProdCh - T(Numlibre).NbProduit)  THEN
-            Min := T(Numlibre).NbProduit; --transfert des produits a son collegues qui a le moins de produit
-               T(Numlibre).NbProduit := 0; --supression de ses produits
-               M(T(Numlibre).Nbproduit).Prod := 0; --suppression des produits dans le registre medicament
-            ELSE
-               T(Numlibre).NbProduit := 0; --supression de ses produits
-               M(T(Numlibre).Nbproduit).Prod := 0; --suppression des produits dans le registre medicament
-            END IF;
+            Min := T(Numlibre).NbProduit;
+
+
+
+
+
+          T(I).nbproduit :=0; --produits transferes a ses collegues a reflechir
+
 
          EXIT;
        ELSE
