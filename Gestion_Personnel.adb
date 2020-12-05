@@ -116,7 +116,7 @@ BEGIN
        LOOP  -- saisie du numero de site
           Put("Saisir votre numero de site : ");
           New_Line;
-          Put_Line("Voulez-vous voir le registre des site ? ");
+          Put_Line("Voulez-vous voir le registre des sites ? ");
           SaisieBoolean(ChoixBool);
           IF ChoixBool THEN
              VisualisationSite(S);
@@ -225,18 +225,103 @@ END AjoutPersonnel;
 
 ------------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; M : IN OUT T_RegistreMedicamment Ok : OUT Boolean) IS
+   PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; M : IN OUT T_RegistreMedicamment) IS
       --procedure depart d'un responsable de recherche
       --variable ok pour verifier que l'ajout a bien ete realise
+      ChoixBool    : Boolean   := False;
+      Ok : Boolean :=False;
+      NomEmp,PrenomEmp : T_Mot   := (OTHERS => ' ');
+      RetDEmp: Boolean := False;
 
    BEGIN
       Ok := False;
-      Put("Quel responsable voulez-vous supprimer ?"); put("Appuyer sur entrer pour visualiser tous les personnels");
-      VisualisationPersonnel(T);
-      Put("Saisir le nom du responsable :");
-      SaisieString(T(I).Nom);
+      LOOP --saisie du responsable a supprimer
+         Put("Quel responsable voulez-vous supprimer ?"); New_Line;
+         Put_Line("Voulez vous voir le registre des personnels ?");
+         SaisieBoolean(ChoixBool);
+          IF ChoixBool THEN
+             VisualisationPersonnel(T);
+             New_Line;
+             Put_Line("Saisir le nom et le prenom du responsable : ");
+          END IF;
+         SaisieString(NomEmp);New_Line;
+         SaisieString(PrenomEmp);New_Line;
+         Put_Line("Le personnel que vous voulez supprimer est un responsable de recherche ?");
+         SaisieBoolean(RetDEmp);
 
-      FOR I IN T'RANGE LOOP -- If T(i).nom in T'range then
+
+      -- verification que le responsable existe et qu'il soit en RetD
+          FOR I IN T'RANGE LOOP
+             IF T(I).Nom = NomEmp AND THEN T(I).Prenom = PrenomEmp AND THEN T(i).RetD = RetDEmp THEN
+                Existe := True;
+                EXIT;
+             END IF;
+          END LOOP;
+
+          IF Existe THEN
+             Put_Line(
+                "Suppression du responsable de recherche possible");
+             ChoixQuitter := DesirQuitter;
+             IF ChoixQuitter THEN
+                EXIT;
+             END IF;
+          ELSE
+             EXIT;
+          END IF;
+
+
+
+
+-- confirmation
+       Put_Line("Vous voulez ajouter un personnel :");
+       afficherTexte(NomEmp);
+       Put(" ");
+       afficherTexte(PrenomEmp);
+       Put(" Site : ");
+       Put(SiteEmp, 1);
+       Put(" - ");
+       afficherTexte(S(SiteEmp).Ville);
+       Put(" ");
+
+       IF RetDEmp = True THEN
+          Put("Type d'activite : Recherche et developpement");
+       ELSE
+          Put ("Type d'activite : Production");
+       END IF;
+       New_Line;
+
+       Put("Confirmer ?");
+       New_Line;
+       SaisieBoolean(Confirm);
+       IF Confirm = True THEN
+          T(Numlibre).Nom := NomEmp;
+          T(Numlibre).Prenom := PrenomEmp;
+          T(Numlibre).RetD := RetDEmp;
+          T(Numlibre).Prod := ProdEmp;
+          T(Numlibre).Site := SiteEmp;
+          T(Numlibre).NbProduit := 0;
+          T(Numlibre).Libre := False;
+
+          EXIT;
+       ELSE
+          Put("Recommencer la saisie ou quitter");
+          ChoixQuitter := DesirQuitter;
+       END IF;
+
+       IF ChoixQuitter THEN
+          EXIT;
+         END IF;
+
+
+
+
+
+
+
+
+
+      -- verification que le responsable fasse parti de RetD
+      FOR I IN T'RANGE LOOP
          IF T(I).Libre = False AND T(I).RetD := true THEN
                T(I).Nom :=(OTHERS => ' ');
                T(I).Prenom :=(OTHERS => ' ');
