@@ -569,7 +569,6 @@ begin -- arretDeProduction
 
       --verification si il n'y a plus de chef de prod -> le medicament n'est plus en production
       for i in regMedicament(choixMedicament).chefProd'range loop
-        toujoursEnProd := false;
         if regMedicament(choixMedicament).chefProd(i).libre = false then
           toujoursEnProd := true;
           exit;
