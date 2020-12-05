@@ -807,6 +807,150 @@ begin -- nouveauMedicament
 
 end nouveauMedicament;
 
+-----------------------------------------------------------------------------------
+
+procedure supressionMedicament(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in T_registreSite) is
+  choixBool : boolean := false;
+  choixQuitter : boolean := false;
+  choixMedicament : integer := 0;
+  estEnProd : boolean := false;
+  choixArretProd : boolean := false;
+
+begin -- supressionMedicament
+  -- choix de mediament
+    -- vérifier qu'il existe
+    -- vérifier si il est en prod (ce med est encore en prod sur les sites : )-> arret prod automatique ?
+  loop -- boucle de confirmation
+    loop --boucle saisie medciament
+      put_line("Quel est le numero du medicament a supprimer ?");
+      put_line("Vous vous voir le registre des medicaments ?");
+      saisieBoolean(choixBool);
+      if choixBool then
+        VisualtisationMedicament(regMedicament, regPersonnel, regSite);
+        new_line;
+        put_line("Quel est le numero du medicament a supprimer ?");
+      end if;
+      saisieInteger(1, maxMed, choixMedicament);
+
+      if regMedicament(choixMedicament).libre = false then
+        estEnProd := regMedicament(choixMedicament).EnProd;
+        exit;
+
+      else
+        put_line("Ce medicament n'est pas dans le registre");
+        choixQuitter := desirQuitter;
+      end if;
+
+      if choixQuitter then
+        exit;
+      end if;
+
+    end loop; --boucle saisie medciament
+
+    if choixQuitter then
+      exit;
+    end if;
+
+    -- si le mediament est toujours en production
+    if estEnProd then
+      put_line("Ce mediament est encore en production, voulez vous arreter le(s) chaine(s) de produciton automatiquement?");
+      saisieBoolean(choixBool);
+      if choixBool then
+        choixArretProd := true;
+
+      else
+        put_line("Refus d'arret de(s) chaine(s) de production -> suppression impossible ");
+        choixQuitter := true;
+        exit;
+      end if;
+
+      if choixQuitter then
+        exit;
+      end if;
+
+    end if;
+
+    if choixQuitter then
+      exit;
+    end if;
+
+
+    -- Confirmation
+    put("Vous voulez supprimer le medicament "); afficherTexte(regMedicament(choixMedicament).nom); put(" de categorie "); put(T_categorie'image(regMedicament(choixMedicament).categorie)); new_line;
+    put("Pour le type patient ");
+    case regMedicament(choixMedicament).typePatient is
+      when ttPublic => put("TOUT PUBLIC");
+      when adulte => put("ADULTE UNIQUEMENT");
+      when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+    end case;
+    new_line;
+
+    if estEnProd and choixArretProd then
+      put("Qui est en produciton sur le(s) site(s) : ");
+      for i in regMedicament(choixMedicament).chefProd'range loop
+        if regMedicament(choixMedicament).chefProd(i).libre = false then
+          put(regPersonnel(regMedicament(choixMedicament).chefProd(i).nuEmpolye).site, 1);
+          put(" - ");
+          afficherTexte(regSite(regPersonnel(regMedicament(choixMedicament).chefProd(i).nuEmpolye).site).ville);
+          put(" ");
+        end if;
+      end loop;
+      new_line;
+      put_line("Avec un arret de(s) chaine(s) de production automatique");
+    end if;
+
+    new_line;
+    put_line("Vous confirmer ?");
+    saisieBoolean(choixBool);
+
+    if choixBool then
+      -- supression
+      if estEnProd and choixArretProd then
+        for i in regMedicament(choixMedicament).chefProd'range loop
+          if regMedicament(choixMedicament).chefProd(i).libre = false then
+            regPersonnel(regMedicament(choixMedicament).chefProd(i).nuEmpolye).nbProduit := regPersonnel(regMedicament(choixMedicament).chefProd(i).nuEmpolye).nbProduit -1;
+            regMedicament(choixMedicament).chefProd(i).libre := true;
+          end if;
+        end loop;
+      end if;
+
+      regPersonnel(regMedicament(choixMedicament).respRecherche).nbProduit := regPersonnel(regMedicament(choixMedicament).respRecherche).nbProduit -1;
+
+      regMedicament(choixMedicament).nom := (others => ' ');
+      regMedicament(choixMedicament).AMM := False;
+      regMedicament(choixMedicament).EnProd := false;
+      regMedicament(choixMedicament).libre := true;
+
+      choixQuitter := true;
+      exit;
+
+    else
+      put_line("Suppression annulee");
+      choixQuitter := desirQuitter;
+
+    end if;
+
+
+    if choixQuitter then
+      exit;
+    end if;
+
+
+
+  end loop; -- boucle de confirmation
+
+end supressionMedicament;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
