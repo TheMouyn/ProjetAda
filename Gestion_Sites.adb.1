@@ -134,6 +134,11 @@ End AjoutSite;
          SaisieString(NomVille);New_Line;
          Put_Line("Le site que vous voulez supprimer est un site de production ?");
          SaisieBoolean(ProdSite);New_Line;
+         IF SaisieBoolean THEN
+            Put ("Le site a fermer est un site de production");
+         ELSE
+            Put ("Le site a fermer est un site de recherche et developpement");
+         END IF;
          Put_Line("Quel est son numero de site ?");
          SaisieInteger(1, MaxS, SiteEmp);New_Line;
 
@@ -162,24 +167,56 @@ End AjoutSite;
        Put(" Site : ");
        Put(SiteEmp, 1);
        Put(" - ");
-         IF SaisieBoolean THEN
-            Put ("Type d'activite : Production");
-         ELSE
-            Put ("Type d'activite : Recherche et developpement");
+       afficherTexte(S(SiteEmp).Ville);
+       Put(" ");
+       Put("Type d'activite : Recherche et developpement");
+       New_Line;
+
+
+
+      IF M(P(T(I).Site).Prod).EnProd = False AND M(P(T(I).Site).RetD).AMM = False THEN --fermeture s'il n'y a plus de M en prod ou en RetD et plus de personnel sur un site
+      FOR I IN T'RANGE LOOP
+         IF T(I).Libre = False THEN
+            T(I).Ville :=(OTHERS => ' ');
+            T(I).Libre:= True;
+            Ok := True;
+            exit;
          END IF;
+      END LOOP;
+      END IF;
+   END FermetureSite;
+
+
+
+
+
+
+
+     -- confirmation
+       Put_Line("Etes vous sur de vouloir supprimer ce responsable de recherche ? :");
+       afficherTexte(NomEmp);
+       Put(" ");
+       afficherTexte(PrenomEmp);
+       Put(" Site : ");
+       Put(SiteEmp, 1);
+       Put(" - ");
+       afficherTexte(S(SiteEmp).Ville);
+       Put(" ");
        Put("Type d'activite : Recherche et developpement");
        New_Line;
 
        Put("Confirmer ?");
        New_Line;
        SaisieBoolean(Confirm);
-         IF Confirm = True THEN
-            M(P(T(I).Site).Prod).EnProd = False; --fermeture s'il n'y a plus de M en prod et plus de personnel sur un site
-            M(P(T(I).Site).RetD).AMM = False;  --fermeture s'il n'y a plus de M en RetD et plus de personnel sur un site
-            T(Numlibre).Ville := (OTHERS => ' ');
-            T(Numlibre).RetD := false;
-            T(Numlibre).Prod := false;
-            T(Numlibre).Site := 0;
+       IF Confirm = True THEN
+          T(Numlibre).Nom := (OTHERS => ' ');
+          T(Numlibre).Prenom := (OTHERS => ' ');
+          T(Numlibre).RetD := false;
+          T(Numlibre).Prod := false;
+          T(Numlibre).Site := 0;
+          T(Numlibre).NbProduit := 0;
+          T(Numlibre).Libre := True;
+          M(T(Numlibre).Nbproduit).RetD := 0; --suppression des produits dans le registre medicament
 
           EXIT;
        ELSE
@@ -191,6 +228,5 @@ End AjoutSite;
           EXIT;
          END IF;
 
-    END FermetureSite;
 
 end Gestion_Sites;
