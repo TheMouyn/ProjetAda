@@ -223,7 +223,7 @@ begin -- affichageProduitGereParResponable
 
   saisieInteger(1, MaxEmp, choixNuEmpolye); new_line;
 
-  if regPersonnel(choixNuEmpolye).RetD and regPersonnel(choixNuEmpolye).libre = false then
+  if  regPersonnel(choixNuEmpolye).libre = false and then regPersonnel(choixNuEmpolye).RetD then
     put("Liste des medicaments gere par ce responsable : "); new_line;
 
     for i in regMedicament'range loop
