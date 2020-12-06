@@ -195,7 +195,7 @@ package body Outils is
     regPersonnel(6).nom(1..6) := "Martel";
     regPersonnel(6).prenom(1..8) := "Florence";
     regPersonnel(6).site := 3;
-    regPersonnel(6).nbProduit := 4;
+    regPersonnel(6).nbProduit := 2;
     regPersonnel(6).prod := false;
     regPersonnel(6).RetD := true;
     regPersonnel(6).libre := false;
