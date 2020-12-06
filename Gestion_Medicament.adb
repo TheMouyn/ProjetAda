@@ -108,7 +108,7 @@ procedure receptionAMM(regMedicament : in out T_registreMedicament; regPersonnel
   nuMedicament : integer;
   choixBool : boolean;
 
-begin -- receptionAMM
+begin -- receptionAMM 
   put("Quel est le numero du medicament qui recoit une AMM ?"); new_line;
 
   put("Voulez vous voir le registre des medicaments ? ");
