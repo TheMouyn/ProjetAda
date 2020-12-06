@@ -193,7 +193,7 @@ begin -- affichageProduitEnRetDSurSite
     put("Les medicaments en R&D pour ce site sont :"); new_line;
 
     for i in regMedicament'range loop
-      if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = choixNuSite and regMedicament(i).EnProd = false then
+      if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = choixNuSite and regMedicament(i).AMM = false then
         put("- "); afficherTexte(regMedicament(i).nom); new_line;
       end if;
     end loop;
