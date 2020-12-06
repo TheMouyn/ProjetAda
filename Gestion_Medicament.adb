@@ -291,7 +291,7 @@ begin -- AffichageProduitEnRetDSurVille
   put("Liste des medicaments qui sont en R&D dans cette ville : "); new_line;
 
     for i in regMedicament'range loop
-      if regMedicament(i).libre = false and then regSite(regPersonnel(regMedicament(i).respRecherche).site).ville = choixVille and regMedicament(i).EnProd = false then
+      if regMedicament(i).libre = false and then regMedicament(i).respRecherche>0 and then regSite(regPersonnel(regMedicament(i).respRecherche).site).ville = choixVille and regMedicament(i).AMM = false then
         -- Si seulement si en recherche et donc pas en prod
         put("- "); afficherTexte(regMedicament(i).nom); new_line;
       end if;
