@@ -26,7 +26,7 @@ package Gestion_Medicament is
     AMM : boolean; -- si le medicament a recu ou non une AMM
     dateAMM : T_date; -- l'eventuelle date d'AMM du medicament
     EnProd : boolean; -- si le medicament est en production
-    respRecherche : integer; -- numero index registrePersonnel du responsable
+    respRecherche : integer; -- numero index registrePersonnel du responsable, si -1 alors le personnel est supprime
     chefProd : T_tabChefProd; -- stock la liste des numero d'employer chef de prod
     libre : boolean:= true; -- permet la gestion des cases libres/pleines
 
