@@ -18,11 +18,11 @@ package Gestion_Personnel is
   end record;
 
 
-  type T_registrePersonnel is array (1..MaxEmp) of T_personnel;
-   PROCEDURE VisualisationPersonnel (T : IN T_registrePersonnel; regSite : T_registreSite);
-   PROCEDURE AjoutPersonnel (T : IN OUT T_RegistrePersonnel; S : IN OUT T_RegistreSite);
-   PROCEDURE DepartProd (T: IN OUT T_RegistrePersonnel);
-   PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; M : IN OUT T_RegistreMedicament; S : IN OUT T_RegistreSite);
+type T_registrePersonnel is array (1..MaxEmp) of T_personnel;
+PROCEDURE VisualisationPersonnel (T : IN T_registrePersonnel; regSite : T_registreSite);
+PROCEDURE AjoutPersonnel (T : IN OUT T_RegistrePersonnel; S : IN OUT T_RegistreSite);
+PROCEDURE DepartProd (regMedicament : IN OUT T_registreMedicament; regPersonnel : IN OUT T_RegistrePersonnel; regSite : IN OUT T_registreSite);
+PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; M : IN OUT T_RegistreMedicament; S : IN OUT T_RegistreSite);
 
 
 end Gestion_Personnel;
