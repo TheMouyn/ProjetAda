@@ -104,7 +104,7 @@ end VisualtisationMedicament;
 
 -----------------------------------------------------------------------------------
 
-procedure receptionAMM(regMedicament : T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+procedure receptionAMM(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in T_registreSite) is
   nuMedicament : integer;
   choixBool : boolean;
 
@@ -125,6 +125,7 @@ begin -- receptionAMM
       regMedicament(nuMedicament).AMM:=true;
       put("A quelle date l'AMM a ete recu ? "); new_line;
       saisieDate(regMedicament(nuMedicament).dateAMM);
+      regPersonnel(regMedicament(nuMedicament).respRecherche).nbProduit := regPersonnel(regMedicament(nuMedicament).respRecherche).nbProduit -1;
     else
       put("Ce medicament a deja recu une AMM"); new_line;
     end if;
