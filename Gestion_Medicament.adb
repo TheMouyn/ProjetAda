@@ -107,8 +107,7 @@ end VisualtisationMedicament;
 procedure receptionAMM(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in T_registreSite) is
   nuMedicament : integer;
   choixBool : boolean;
-
-begin -- receptionAMM 
+begin -- receptionAMM
   put("Quel est le numero du medicament qui recoit une AMM ?"); new_line;
 
   put("Voulez vous voir le registre des medicaments ? ");
