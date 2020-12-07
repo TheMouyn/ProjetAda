@@ -125,9 +125,9 @@ BEGIN
 
                CASE Choix1 IS
                   WHEN 'Q' => EXIT;
-                  WHEN '1' => put_line("Voici le registre des sites :"); VisualisationSite(regSite);
-                  WHEN '2' => AjoutSite(regSite, Ok);
-                  WHEN '3' => FermetureSite(regMedicament, regPersonnel, regSite);
+                  WHEN '1' => put_line("Voici le registre des sites :"); VisualisationSite(regSite); exit;
+                  WHEN '2' => AjoutSite(regSite, Ok); exit;
+                  WHEN '3' => FermetureSite(regMedicament, regPersonnel, regSite); exit;
                   WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                END CASE;
             END LOOP;
@@ -145,10 +145,10 @@ BEGIN
 
                CASE Choix2 IS
                   WHEN 'Q' => EXIT;
-                  WHEN '1' => put_line("Voici le registre du personnel :"); VisualisationPersonnel(regPersonnel,regSite);
-                  WHEN '2' => AjoutPersonnel(regPersonnel,regSite);
-                  WHEN '3' => DepartProd(regMedicament, regPersonnel, regSite);
-                  WHEN '4' => DepartRetD(regMedicament, regPersonnel, regSite);
+                  WHEN '1' => put_line("Voici le registre du personnel :"); VisualisationPersonnel(regPersonnel,regSite); exit;
+                  WHEN '2' => AjoutPersonnel(regPersonnel,regSite); exit;
+                  WHEN '3' => DepartProd(regMedicament, regPersonnel, regSite); exit;
+                  WHEN '4' => DepartRetD(regMedicament, regPersonnel, regSite); exit;
                   WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                END CASE;
             END LOOP;
@@ -167,7 +167,7 @@ BEGIN
 
                CASE Choix3 IS
                   WHEN 'Q' => EXIT;
-                  WHEN '1' => put_line("Voici le registre des medicaments :"); VisualtisationMedicament(regMedicament,regPersonnel,regSite);
+                  WHEN '1' => put_line("Voici le registre des medicaments :"); VisualtisationMedicament(regMedicament,regPersonnel,regSite); exit;
                   WHEN '2' =>
                      LOOP
                         Put_Line("Vous avez accede a la fonctionnalite : mise a jour d'un produit");
@@ -180,14 +180,14 @@ BEGIN
 
                         CASE choix3A IS
                            WHEN 'Q' => EXIT;
-                           WHEN '1' => receptionAMM(regMedicament,regPersonnel,regSite);
-                           WHEN '2' => miseEnProduction(regMedicament,regPersonnel,regSite);
-                           When '3' => arretDeProduction(regMedicament,regPersonnel,regSite);
+                           WHEN '1' => receptionAMM(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '2' => miseEnProduction(regMedicament,regPersonnel,regSite); exit;
+                           When '3' => arretDeProduction(regMedicament,regPersonnel,regSite); exit;
                            WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                         END CASE;
                      END LOOP;
 
-                  WHEN '3' => nouveauMedicament(regMedicament,regPersonnel,regSite);
+                  WHEN '3' => nouveauMedicament(regMedicament,regPersonnel,regSite); exit;
                   WHEN '4' =>
                      LOOP
                         Put("Vous avez accede a la fonctionnalite : affichages cibles");
@@ -202,16 +202,16 @@ BEGIN
 
                         CASE choix3B IS
                            WHEN 'Q' => EXIT;
-                           WHEN '1' => affichageProduitEnProdSurSite(regMedicament,regPersonnel,regSite);
-                           WHEN '2' => AffichageProduitEnProdSurVille(regMedicament,regPersonnel,regSite);
-                           WHEN '3' => affichageProduitGereParResponable(regMedicament,regPersonnel,regSite);
-                           WHEN '4' => affichageMedicamentCategorie(regMedicament,regPersonnel,regSite);
-                           WHEN '5' => affichageMedicamentAMMAvantDate(regMedicament);
+                           WHEN '1' => affichageProduitEnProdSurSite(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '2' => AffichageProduitEnProdSurVille(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '3' => affichageProduitGereParResponable(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '4' => affichageMedicamentCategorie(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '5' => affichageMedicamentAMMAvantDate(regMedicament); exit;
                            WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                         END CASE;
                      END LOOP;
 
-                  WHEN '5' => supressionMedicament(regMedicament,regPersonnel,regSite);
+                  WHEN '5' => supressionMedicament(regMedicament,regPersonnel,regSite); exit;
                   WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
 
                END CASE;
@@ -229,8 +229,8 @@ BEGIN
 
                CASE Choix4 IS
                   WHEN 'Q' => EXIT;
-                  WHEN '1' => sauvegarde(regMedicament,regPersonnel,regSite);
-                  WHEN '2' => restauration(regMedicament,regPersonnel,regSite);
+                  WHEN '1' => sauvegarde(regMedicament,regPersonnel,regSite); exit;
+                  WHEN '2' => restauration(regMedicament,regPersonnel,regSite); exit;
                   WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                END CASE;
             END LOOP;
