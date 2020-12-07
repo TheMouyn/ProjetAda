@@ -7,17 +7,17 @@ PROCEDURE Programme_Principale IS
   -- Initialisation des variables pour gestion fichier registrePersonnel
   package Fichier_T_registrePersonnel is new sequential_io(T_registrePersonnel);
   use Fichier_T_registrePersonnel;
-  fichier_registrePersonnel : Fichier_T_registrePersonnel.file_type;
+  varFichier_T_registrePersonnel : Fichier_T_registrePersonnel.file_type;
 
   -- Initialisation des variables pour gestion fichier registreMedicament
   package Fichier_T_registreMedicament is new sequential_io(T_registreMedicament);
   use Fichier_T_registreMedicament;
-  fichier_registreMedicament : Fichier_T_registreMedicament.file_type;
+  varFichier_T_registreMedicament : Fichier_T_registreMedicament.file_type;
 
   -- Initialisation des variables pour gestion fichier registreSite
   package Fichier_T_registreSite is new sequential_io(T_registreSite);
   use Fichier_T_registreSite;
-  fichier_registreSite : Fichier_T_registreSite.file_type;
+  varFichier_T_registreSite : Fichier_T_registreSite.file_type;
 
 
   -------------------------------------------------------------------------------------
@@ -107,6 +107,7 @@ BEGIN
       Put_Line("2 : Acces a la gestion du personnel");
       Put_Line("3 : Acces a la gestion des medicaments");
       Put_Line("4 : Sauvegarde/Restauration des donnees");
+      Put_Line("5 : Initialisation des donnees de tests");
       Put_Line("Q : Quitter le programme");
       Put("Que souhaitez vous faire ? (1,2,3,4,Q)");New_Line;
       Get(Choix); Skip_Line;
@@ -148,7 +149,7 @@ BEGIN
                   WHEN '1' => put_line("Voici le registre du personnel :"); VisualisationPersonnel(regPersonnel,regSite); exit;
                   WHEN '2' => AjoutPersonnel(regPersonnel,regSite); exit;
                   WHEN '3' => DepartProd(regMedicament, regPersonnel, regSite); exit;
-                  WHEN '4' => DepartRetD(regMedicament, regPersonnel, regSite); exit;
+                  WHEN '4' => DepartRetD(regPersonnel, regMedicament, regSite); exit;
                   WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                END CASE;
             END LOOP;
@@ -235,6 +236,7 @@ BEGIN
                END CASE;
             END LOOP;
 
+          when '5' => initalisation(regMedicament, regPersonnel, regSite);
          WHEN OTHERS => Put_Line("Le choix n'est pas propose"); put_line("Veuilez-recommencer"); New_Line;
 
       END CASE;

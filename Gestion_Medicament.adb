@@ -158,7 +158,7 @@ begin -- affichageProduitEnProdSurSite
 
     for i in regMedicament'range loop
       for j in regMedicament(i).chefProd'range loop
-        if regMedicament(i).chefProd(j).libre = false and then regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site = choixNuSite and regMedicament(i).EnProd then
+        if regMedicament(i).chefProd(j).libre = false and then regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site = choixNuSite and then regMedicament(i).EnProd then
           put("- "); afficherTexte(regMedicament(i).nom); new_line;
         end if;
       end loop;
@@ -193,7 +193,7 @@ begin -- affichageProduitEnRetDSurSite
     put("Les medicaments en R&D pour ce site sont :"); new_line;
 
     for i in regMedicament'range loop
-      if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = choixNuSite and regMedicament(i).AMM = false then
+      if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = choixNuSite and then regMedicament(i).AMM = false then
         put("- "); afficherTexte(regMedicament(i).nom); new_line;
       end if;
     end loop;
@@ -270,7 +270,7 @@ begin -- AffichageProduitEnProdSurVille
     for i in regMedicament'range loop
       if regMedicament(i).libre = false then
         for j in regMedicament(i).chefProd'range loop
-          if regMedicament(i).chefProd(j).libre = false and then regSite(regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site).ville = choixVille and regMedicament(i).EnProd then
+          if regMedicament(i).chefProd(j).libre = false and then regSite(regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site).ville = choixVille and then regMedicament(i).EnProd then
             put("- "); afficherTexte(regMedicament(i).nom); new_line;
           end if;
         end loop;
@@ -291,7 +291,7 @@ begin -- AffichageProduitEnRetDSurVille
   put("Liste des medicaments qui sont en R&D dans cette ville : "); new_line;
 
     for i in regMedicament'range loop
-      if regMedicament(i).libre = false and then regMedicament(i).respRecherche>0 and then regSite(regPersonnel(regMedicament(i).respRecherche).site).ville = choixVille and regMedicament(i).AMM = false then
+      if regMedicament(i).libre = false and then regMedicament(i).respRecherche>0 and then regSite(regPersonnel(regMedicament(i).respRecherche).site).ville = choixVille and then regMedicament(i).AMM = false then
         -- Si seulement si en recherche et donc pas en prod
         put("- "); afficherTexte(regMedicament(i).nom); new_line;
       end if;
