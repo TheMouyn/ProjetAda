@@ -103,94 +103,118 @@ End AjoutSite;
 
 --------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE FermetureSite (T: IN OUT T_RegistreSite; M : IN T_registreMedicament; P: IN OUT T_RegistrePersonnel;) IS
-      --procedure fermeture d'un site
+PROCEDURE FermetureSite (regMedicament : IN OUT T_registreMedicament; regPersonnel : IN OUT T_RegistrePersonnel; regSite : IN OUT T_registreSite) IS
+   --procedure fermeture d'un site
+   ChoixBool    : Boolean := False;
+   Ok           : Boolean := False;    --variable ok pour verifier que la suppression a bien ete realisee
+   ChoixSite    : Integer;
+   ChoixQuitter : Boolean := False;
+   estUtilise : boolean := false;
 
-      ChoixBool : Boolean := False;
-      Ok : Boolean := False;  --variable ok pour verifier que la suppression a bien ete realisee
-      NomVille : T_Mot   := (OTHERS => ' ');
-      ProdSite: Boolean := False;
-      Numlibre: Integer := - 1;
-      SiteEmp : Integer := - 1;
 
-   BEGIN
-       FOR I IN T'RANGE LOOP
-    IF T(I).Libre = false THEN
-       Numlibre := I;
-       Ok := True;
-       EXIT;
-    END IF;
-      END LOOP;
-
+BEGIN
+   LOOP -- boucle de confirmation
       LOOP --saisie du site a supprimer
-         Put("Quel site voulez-vous supprimer ?"); New_Line;
+         Put("Quel est le numero du site que vous voulez supprimer ?");
+         New_Line;
          Put_Line("Voulez vous voir le registre des sites ?");
          SaisieBoolean(ChoixBool);
-          IF ChoixBool THEN
-             VisualisationSite(T);
-             New_Line;
-             Put_Line("Saisir la ville : ");
-          END IF;
-         SaisieString(NomVille);New_Line;
-         Put_Line("Le site que vous voulez supprimer est un site de production ?");
-         SaisieBoolean(ProdSite);New_Line;
-         Put_Line("Quel est son numero de site ?");
-         SaisieInteger(1, MaxS, SiteEmp);New_Line;
+         IF ChoixBool THEN
+            VisualisationSite(regSite);
+            New_Line;
+            Put_Line("Quel est le numero du site que vous voulez supprimer ?");
+         END IF;
+         SaisieInteger(1, MaxS, ChoixSite);
+         New_Line;
 
-         -- verification que le site existe
-          FOR I IN T'RANGE LOOP
-             IF T(I).Ville = NomVille THEN
-                Existe := True;
-                EXIT;
-             END IF;
-          END LOOP;
+         IF RegSite(ChoixSite).Libre = false THEN
+            EXIT;
 
-          IF Existe THEN
-             Put_Line(
-                "Suppression du site possible");
-             ChoixQuitter := DesirQuitter;
-             IF ChoixQuitter THEN
-                EXIT;
-             END IF;
-          ELSE
-             EXIT;
-          END IF;
-
-       -- confirmation
-       Put_Line("Etes vous sur de vouloir supprimer ce site ? :");
-       afficherTexte(NomVille);
-       Put(" Site : ");
-       Put(SiteEmp, 1);
-       Put(" - ");
-         IF SaisieBoolean THEN
-            Put ("Type d'activite : Production");
          ELSE
-            Put ("Type d'activite : Recherche et developpement");
-         END IF;
-       Put("Type d'activite : Recherche et developpement");
-       New_Line;
-
-       Put("Confirmer ?");
-       New_Line;
-       SaisieBoolean(Confirm);
-         IF Confirm = True THEN
-            M(P(T(I).Site).Prod).EnProd = False; --fermeture s'il n'y a plus de M en prod et plus de personnel sur un site
-            M(P(T(I).Site).RetD).AMM = False;  --fermeture s'il n'y a plus de M en RetD et plus de personnel sur un site
-            T(Numlibre).Ville := (OTHERS => ' ');
-            T(Numlibre).RetD := false;
-            T(Numlibre).Prod := false;
-            T(Numlibre).Site := 0;
-
-          EXIT;
-       ELSE
-          Put("Recommencer la saisie ou quitter");
-          ChoixQuitter := DesirQuitter;
-       END IF;
-
-       IF ChoixQuitter THEN
-          EXIT;
+            Put_Line("Ce site n'est pas dans le registre");
+            ChoixQuitter := DesirQuitter;
          END IF;
 
-    END FermetureSite;
+         IF ChoixQuitter THEN
+            EXIT;
+         END IF;
+
+      END LOOP; -- boucle de saisie site
+
+      IF ChoixQuitter THEN
+         EXIT;
+      END IF;
+
+      -- verification si il y a des medicaments en recherche sur ce site
+      if regSite(ChoixSite).RetD then
+        for i in regMedicament'RANGE loop
+          if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = ChoixSite and then regMedicament(i).AMM = false then
+            put_line("Supression impossible il y a encore de(s) médicament(s) en recherche sur ce site");
+            estUtilise := true;
+            exit;
+          end if;
+        end loop;
+      end if;
+
+      -- verification si il y a des medicaments en production sur ce site
+      if regSite(ChoixSite).prod then
+        for i in regMedicament'range loop
+          if regMedicament(i).libre = false and then regMedicament(i).EnProd then
+            for j in regMedicament(i).chefProd'range loop
+              if regMedicament(i).chefProd(j).libre = false and then regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site = ChoixSite then
+                put_line("Supression impossible il y a encore de(s) medicament(s) en productions sur ce site");
+                estUtilise := true;
+                exit;
+              end if;
+            end loop;
+          end if;
+          if estUtilise then
+            exit;
+          end if;
+        end loop;
+      end if;
+
+      -- verification si il y a du personnel en fonction sur ce site
+      for i in regPersonnel'range loop
+        if regPersonnel(i).libre = false and then regPersonnel(i).site = ChoixSite then
+          put_line("Supression impossible il y a encore de(s) personnel(s) en fonction sur ce site");
+          estUtilise := true;
+          exit;
+        end if;
+      end loop;
+
+      if estUtilise then
+        exit;
+
+      else
+        -- confirmation
+        put_line("Vous voulez supprimer le site nuemro ");
+        put(ChoixSite, 1);
+        put(" - ");
+        afficherTexte(regSite(ChoixSite).ville);
+        new_line;
+
+        put_line("Vous confirmez ?");
+        SaisieBoolean(ChoixBool);
+        if ChoixBool then
+          regSite(ChoixSite).ville := (others=>' ');
+          regSite(ChoixSite).RetD := false;
+          regSite(ChoixSite).prod := false;
+          regSite(ChoixSite).libre := true;
+          ChoixQuitter:= true;
+        else
+          put_line("Suppression annulee");
+          ChoixQuitter := desirQuitter;
+        end if;
+      end if;
+
+      IF ChoixQuitter THEN
+         EXIT;
+      END IF;
+
+
+   END LOOP; --boucle de confirmation
+END FermetureSite;
+
 
 end Gestion_Sites;

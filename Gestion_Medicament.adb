@@ -64,8 +64,13 @@ begin -- VisualtisationMedicament
       end if;
 
       -- Affichage responsable recherche
-      put("Responsable de recherche : "); afficherTexte(regPersonnel(regMedicaments(i).respRecherche).nom); put(" "); afficherTexte(regPersonnel(regMedicaments(i).respRecherche).prenom); new_line;
-      put("Present sur le site : "); put(regPersonnel(regMedicaments(i).respRecherche).site, 1); put(" - "); afficherTexte(regSite(regPersonnel(regMedicaments(i).respRecherche).site).ville); new_line;
+      if regMedicaments(i).respRecherche = -1 then
+        put("Responsable de recherche : PERSONNEL SUPPRIME");
+      ELSE
+        put("Responsable de recherche : "); afficherTexte(regPersonnel(regMedicaments(i).respRecherche).nom); put(" "); afficherTexte(regPersonnel(regMedicaments(i).respRecherche).prenom); new_line;
+        put("Present sur le site : "); put(regPersonnel(regMedicaments(i).respRecherche).site, 1); put(" - "); afficherTexte(regSite(regPersonnel(regMedicaments(i).respRecherche).site).ville); new_line;
+
+      end if;
 
       new_line;
 
@@ -99,10 +104,9 @@ end VisualtisationMedicament;
 
 -----------------------------------------------------------------------------------
 
-procedure receptionAMM(regMedicament : T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
+procedure receptionAMM(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in T_registreSite) is
   nuMedicament : integer;
   choixBool : boolean;
-
 begin -- receptionAMM
   put("Quel est le numero du medicament qui recoit une AMM ?"); new_line;
 
@@ -120,6 +124,7 @@ begin -- receptionAMM
       regMedicament(nuMedicament).AMM:=true;
       put("A quelle date l'AMM a ete recu ? "); new_line;
       saisieDate(regMedicament(nuMedicament).dateAMM);
+      regPersonnel(regMedicament(nuMedicament).respRecherche).nbProduit := regPersonnel(regMedicament(nuMedicament).respRecherche).nbProduit -1;
     else
       put("Ce medicament a deja recu une AMM"); new_line;
     end if;
@@ -188,7 +193,7 @@ begin -- affichageProduitEnRetDSurSite
     put("Les medicaments en R&D pour ce site sont :"); new_line;
 
     for i in regMedicament'range loop
-      if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = choixNuSite and regMedicament(i).EnProd = false then
+      if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = choixNuSite and regMedicament(i).AMM = false then
         put("- "); afficherTexte(regMedicament(i).nom); new_line;
       end if;
     end loop;
@@ -218,7 +223,7 @@ begin -- affichageProduitGereParResponable
 
   saisieInteger(1, MaxEmp, choixNuEmpolye); new_line;
 
-  if regPersonnel(choixNuEmpolye).RetD and regPersonnel(choixNuEmpolye).libre = false then
+  if  regPersonnel(choixNuEmpolye).libre = false and then regPersonnel(choixNuEmpolye).RetD then
     put("Liste des medicaments gere par ce responsable : "); new_line;
 
     for i in regMedicament'range loop
@@ -286,7 +291,7 @@ begin -- AffichageProduitEnRetDSurVille
   put("Liste des medicaments qui sont en R&D dans cette ville : "); new_line;
 
     for i in regMedicament'range loop
-      if regMedicament(i).libre = false and then regSite(regPersonnel(regMedicament(i).respRecherche).site).ville = choixVille and regMedicament(i).EnProd = false then
+      if regMedicament(i).libre = false and then regMedicament(i).respRecherche>0 and then regSite(regPersonnel(regMedicament(i).respRecherche).site).ville = choixVille and regMedicament(i).AMM = false then
         -- Si seulement si en recherche et donc pas en prod
         put("- "); afficherTexte(regMedicament(i).nom); new_line;
       end if;

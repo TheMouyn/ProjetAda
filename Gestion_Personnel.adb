@@ -199,205 +199,272 @@ BEGIN
 END AjoutPersonnel;
 -----------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE DepartProd (T: IN OUT T_RegistrePersonnel; S : IN OUT T_RegistreSite; M : IN OUT T_RegistreMedicamment) IS
-      --procedure depart d'un chef de produit
+PROCEDURE DepartProd (regMedicament : IN OUT T_registreMedicament; regPersonnel : IN OUT T_RegistrePersonnel; regSite : IN OUT T_registreSite) IS
+   --procedure depart d'un chef de produit
+   choixBool : Boolean := False;
+   choixEmp : integer;
+   choixQuitter : boolean;
+   medicamentAArreter : boolean := false; -- est vrai il y a des medicament en prod a stopper
 
-      ChoixBool : Boolean := False;
-      Ok : Boolean :=False; --variable ok pour verifier que la suppression a bien ete realisee
-      NomEmp,PrenomEmp : T_Mot   := (OTHERS => ' ');
-      ProdEmp: Boolean := False;
-      SiteEmp, Min, Numlibre : Integer := - 1;
+BEGIN
+  loop -- boucle de confirmation
+   LOOP --saisie du chef de produit a supprimer
+      Put_Line("Quel est le numero du chef de produit que vous voulez supprimer ?");
+      Put_Line("Voulez vous voir le registre des personnels ?");
+      SaisieBoolean(choixBool);
+      IF ChoixBool THEN
+         VisualisationPersonnel(regPersonnel, regSite);
+         New_Line;
+         Put_Line("Quel est le numero du chef de produit que vous voulez supprimer ?");
+      END IF;
+      saisieInteger(1, MaxEmp, choixEmp);
 
-   BEGIN
-      FOR I IN T'RANGE LOOP
-    IF T(I).Libre = false THEN
-       Numlibre := I;
-       Ok := True;
-       EXIT;
-    END IF;
-      END LOOP;
+      if regPersonnel(choixEmp).libre = false then
+        if regPersonnel(choixEmp).prod then
+          exit;
+        else
+          put_line("Ce personnel n'est pas chef de production, veuillez utiliser l'autre option du menu");
+          choixQuitter := true;
+          skip_line;
+        end if;
 
-      LOOP --saisie du chef de produit a supprimer
-         Put("Quel chef de produit voulez-vous supprimer ?"); New_Line;
-         Put_Line("Voulez vous voir le registre des personnels ?");
-         SaisieBoolean(ChoixBool);
-          IF ChoixBool THEN
-             VisualisationPersonnel(T);
-             New_Line;
-             Put_Line("Saisir le nom et le prenom du chef de produit : ");
-          END IF;
-         SaisieString(NomEmp);New_Line;
-         SaisieString(PrenomEmp);New_Line;
-         Put_Line("Le personnel que vous voulez supprimer est un chef de produit ?");
-         SaisieBoolean(ProdEmp);New_Line;
-         Put_Line("Quel est son numero de site ?");
-         SaisieInteger(1, MaxS, SiteEmp);New_line;
+      else
+        put_line("Ce personnel n'est pas dans le registre");
+        choixQuitter := desirQuitter;
+      end if;
 
-      -- verification que le chef existe et qu'il soit en Prod
-      FOR I IN T'RANGE LOOP
-             IF T(I).Nom = NomEmp AND THEN T(I).Prenom = PrenomEmp AND THEN T(i).Prod = ProdEmp THEN
-                Existe := True;
-                EXIT;
-             END IF;
-          END LOOP;
-
-          IF Existe THEN
-             Put_Line(
-                "Suppression du chef de produit possible");
-             ChoixQuitter := DesirQuitter;
-             IF ChoixQuitter THEN
-                EXIT;
-             END IF;
-          ELSE
-             EXIT;
-          END IF;
-
-       -- confirmation
-       Put_Line("Etes vous sur de vouloir supprimer ce chef de produit ? :");
-       afficherTexte(NomEmp);
-       Put(" ");
-       afficherTexte(PrenomEmp);
-       Put(" Site : ");
-       Put(SiteEmp, 1);
-       Put(" - ");
-       afficherTexte(S(SiteEmp).Ville);
-       Put(" ");
-       Put("Type d'activite : Production");
-       New_Line;
-
-       Put("Confirmer ?");
-       New_Line;
-       SaisieBoolean(Confirm);
-       IF Confirm = True THEN
-          T(Numlibre).Nom := (OTHERS => ' ');
-          T(Numlibre).Prenom := (OTHERS => ' ');
-          T(Numlibre).RetD := false;
-          T(Numlibre).Prod := false;
-          T(Numlibre).Site := 0;
-          T(Numlibre).Libre := True;
-
-          Min := T(T'First); --recherche du chef de produit qui a le moins de produit
-          I := T'First +1;
-            WHILE I <= T'Last LOOP
-               IF T(I) < Min THEN
-                  Min := T(I);
-               END IF;
-            END LOOP;
-            IF Min < (MaxProdCh - T(Numlibre).NbProduit)  THEN
-            Min := T(Numlibre).NbProduit; --transfert des produits a son collegues qui a le moins de produit
-               T(Numlibre).NbProduit := 0; --supression de ses produits
-               M(T(Numlibre).Nbproduit).Prod := 0; --suppression des produits dans le registre medicament
-            ELSE
-               T(Numlibre).NbProduit := 0; --supression de ses produits
-               M(T(Numlibre).Nbproduit).Prod := 0; --suppression des produits dans le registre medicament
-            END IF;
-
+      IF ChoixQuitter THEN
          EXIT;
-       ELSE
-          Put("Recommencer la saisie ou quitter");
-          ChoixQuitter := DesirQuitter;
-       END IF;
+      END IF;
 
-       IF ChoixQuitter THEN
-          EXIT;
-         END IF;
+    end loop; -- boucle saisie chef de prod
 
-   END DepartProd;
+  IF ChoixQuitter THEN
+     EXIT;
+  END IF;
 
+  -- confirmation
+  Put_Line("Vous voulez supprimer le personnel :");
+  afficherTexte(regPersonnel(choixEmp).nom); Put(" "); afficherTexte(regPersonnel(choixEmp).prenom); Put(" Type d'activite : chef de production"); new_line;
+  Put("Site : "); Put(regPersonnel(choixEmp).site, 1); Put(" - "); afficherTexte(regSite(regPersonnel(choixEmp).site).Ville); new_line;
+
+  -- Afficher les medicmants dont la production va etre transfere aux collegues si possible
+
+  -- permet de verifier si il y a au moins un medicmaent a stopper la production
+  for i in regMedicament'range loop
+    if regMedicament(i).libre = false and then regMedicament(i).EnProd then
+      for j in regMedicament(i).chefProd'range loop
+        if regMedicament(i).chefProd(j).libre = false and then regMedicament(i).chefProd(j).nuEmpolye = choixEmp then
+          medicamentAArreter := true;
+          exit;
+        end if;
+      end loop;
+    end if;
+    if medicamentAArreter then
+      exit;
+    end if;
+  end loop;
+
+  --Afiche la liste des medicaments qui vont etre transfere ou stopper uniquement si il y en a
+  if medicamentAArreter then
+    put_line("La production de(s) medicament(s) suivant(s) sera transfere ou arreter :");
+    for i in regMedicament'range loop
+      if regMedicament(i).libre = false and then regMedicament(i).EnProd then
+        for j in regMedicament(i).chefProd'range loop
+          if regMedicament(i).chefProd(j).libre = false and then regMedicament(i).chefProd(j).nuEmpolye = choixEmp then
+            put(i, 1);
+            put(" - ");
+            afficherTexte(regMedicament(i).nom);
+            new_line;
+          end if;
+        end loop;
+      end if;
+    end loop;
+  end if;
+
+  new_line; new_line;
+  Put_Line("Vous confirmez ?");
+  SaisieBoolean(choixBool);
+  if choixBool then
+    if medicamentAArreter then -- si il y a des med a stopper
+      --transfere ou stop
+      -- changer le numero d'emp dans le tableau prod du med
+      -- faire +1 au nb produit charge dans la limite de MaxProdCh
+
+      for i in regMedicament'range loop
+        if regMedicament(i).libre = false and then regMedicament(i).EnProd then
+          for j in regMedicament(i).chefProd'range loop
+            if regMedicament(i).chefProd(j).libre = false and then regMedicament(i).chefProd(j).nuEmpolye = choixEmp then
+              for k in regPersonnel'range loop
+                if regPersonnel(k).libre = false and then regPersonnel(k).site = regPersonnel(choixEmp).site and then regPersonnel(k).prod and then k /= choixEmp and then regPersonnel(k).nbProduit < MaxProdCh then
+                  regMedicament(i).chefProd(j).nuEmpolye := k;
+                  regPersonnel(k).nbProduit := regPersonnel(k).nbProduit +1;
+                  regPersonnel(choixEmp).nbProduit := regPersonnel(choixEmp).nbProduit -1;
+                  exit;
+                end if;
+              end loop;
+              exit; -- 1 seule chaine de prod pour ce med i sur ce site
+            end if;
+          end loop;
+        end if;
+      end loop;
+      -- les tranferes on ete fait.
+
+      --arret des chaines de prod si il reste des medicmants a la charge de choixEmp
+
+      if regPersonnel(choixEmp).nbProduit > 0 then
+        for i in regMedicament'range loop
+          if regMedicament(i).libre = false and then regMedicament(i).EnProd then
+            for j in regMedicament(i).chefProd'range loop
+              if regMedicament(i).chefProd(j).libre = false and then regMedicament(i).chefProd(j).nuEmpolye = choixEmp then
+                regMedicament(i).chefProd(j).nuEmpolye := 0;
+                regMedicament(i).chefProd(j).libre := true;
+
+                --verifie si il y a encore des chaines de prod acitve -> bool enprod a mettre en false
+                for z in regMedicament(i).chefProd'range loop
+                  if regMedicament(i).chefProd(z).libre = false then
+                    regMedicament(i).EnProd := true;
+                    exit;
+                  else
+                    regMedicament(i).EnProd := false;
+                  end if;
+
+                end loop;
+                exit;
+              end if;
+            end loop;
+          end if;
+        end loop;
+      end if;
+
+    end if;
+
+  regPersonnel(choixEmp).Nom := (OTHERS => ' ');
+  regPersonnel(choixEmp).Prenom := (OTHERS => ' ');
+  regPersonnel(choixEmp).RetD := False;
+  regPersonnel(choixEmp).Prod := False;
+  regPersonnel(choixEmp).nbProduit := 0;
+  regPersonnel(choixEmp).Libre := True;
+  choixQuitter := true;
+  exit;
+
+  else
+    put_line("Suppression annulee, recommencer la saisie ou quitter la procedure");
+    choixQuitter := desirQuitter;
+
+  end if;
+
+  IF ChoixQuitter THEN
+     EXIT;
+  END IF;
+
+
+  end loop; -- boucle de confirmation
+
+
+ END DepartProd;
 ------------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; M : IN OUT T_RegistreMedicamment; S : IN OUT T_RegistreSite) IS
-      --procedure depart d'un responsable de recherche
+PROCEDURE DepartRetD (T: IN OUT T_RegistrePersonnel; M : IN OUT T_RegistreMedicament; S : IN OUT T_RegistreSite) IS
+  --procedure depart d'un responsable de recherche
+  choixQuitter : boolean := false;
+  choixBool : Boolean := False;
+  choixEmp : integer;
 
-      ChoixBool : Boolean := False;
-      Ok : Boolean := False;  --variable ok pour verifier que la suppression a bien ete realisee
-      NomEmp,PrenomEmp : T_Mot   := (OTHERS => ' ');
-      RetDEmp: Boolean := False;
-      Numlibre: Integer := - 1;
-      SiteEmp : Integer := - 1;
+BEGIN
 
-   BEGIN
-      FOR I IN T'RANGE LOOP
-    IF T(I).Libre = false THEN
-       Numlibre := I;
-       Ok := True;
+  loop -- boucle de confirmation
+    LOOP --saisie du responsable a supprimer
+     Put_Line("Quel est le numero du responsable R&D que vous voulez supprimer ?");
+     Put_Line("Voulez vous voir le registre des personnels ?");
+     SaisieBoolean(ChoixBool);
+      IF ChoixBool THEN
+         VisualisationPersonnel(T, S);
+         New_Line;
+         Put_Line("Quel est le numero du responsable R&D que vous voulez supprimer ?");
+      END IF;
+      SaisieInteger(1, MaxEmp, choixEmp);
+
+      if T(choixEmp).libre = false then
+        if T(choixEmp).RetD then
+          exit;
+        else
+          Put_Line("Ce personnel n'est pas responsable de recherche, veuillez utiliser l'autre option du menu");
+          ChoixQuitter := true;
+        end if;
+
+      ELSE
+        Put_Line("Ce personnel n'est pas dans le registre");
+        ChoixQuitter := DesirQuitter;
+      end if;
+
+
+      IF ChoixQuitter THEN
        EXIT;
+      END IF;
+    end loop; --saisie du responsable a supprimer
+
+    IF ChoixQuitter THEN
+     EXIT;
     END IF;
-      END LOOP;
 
-      LOOP --saisie du responsable a supprimer
-         Put("Quel responsable voulez-vous supprimer ?"); New_Line;
-         Put_Line("Voulez vous voir le registre des personnels ?");
-         SaisieBoolean(ChoixBool);
-          IF ChoixBool THEN
-             VisualisationPersonnel(T);
-             New_Line;
-             Put_Line("Saisir le nom et le prenom du responsable : ");
-          END IF;
-         SaisieString(NomEmp);New_Line;
-         SaisieString(PrenomEmp);New_Line;
-         Put_Line("Le personnel que vous voulez supprimer est un responsable de recherche ?");
-         SaisieBoolean(RetDEmp);New_Line;
-         Put_Line("Quel est son numero de site ?");
-         SaisieInteger(1, MaxS, SiteEmp);New_line;
+    -- confirmation
+    Put_Line("Vous voulez supprimer le personnel :");
+    afficherTexte(T(choixEmp).nom); Put(" "); afficherTexte(T(choixEmp).prenom); Put(" Type d'activite : Recherche et developpement"); new_line;
+    Put("Site : "); Put(T(choixEmp).site, 1); Put(" - "); afficherTexte(S(T(choixEmp).site).Ville); new_line;
 
-      -- verification que le responsable existe et qu'il soit en RetD
-          FOR I IN T'RANGE LOOP
-             IF T(I).Nom = NomEmp AND THEN T(I).Prenom = PrenomEmp AND THEN T(i).RetD = RetDEmp THEN
-                Existe := True;
-                EXIT;
-             END IF;
-          END LOOP;
+    -- Afficher les medicmants qui vont etre supprimés car ils ne sont qu'en recherche
+    if T(choixEmp).nbProduit > 0 then
+      put_line("Le(s) medicament(s) suivants vont etre supprimés :");
+      for i in M'range loop
+        if M(i).libre = false and then M(i).respRecherche = choixEmp and then M(i).AMM = false then
+          afficherTexte(M(i).nom); put(" ");
+        end if;
+      end loop;
+      new_line;
+    end if;
 
-          IF Existe THEN
-             Put_Line(
-                "Suppression du responsable de recherche possible");
-             ChoixQuitter := DesirQuitter;
-             IF ChoixQuitter THEN
-                EXIT;
-             END IF;
-          ELSE
-             EXIT;
-          END IF;
+    New_Line;
+    Put_Line("Confirmer ?");
+    SaisieBoolean(choixBool);
+    IF choixBool THEN
+      -- application dans le registre
+      for i in M'range loop
+        if M(i).libre = false and then M(i).respRecherche = choixEmp then
+          if M(i).AMM = false then -- si encore en recherche
+            M(i).nom := (others => ' ');
+            M(i).EnProd := false;
+            M(i).libre := true;
 
-     -- confirmation
-       Put_Line("Etes vous sur de vouloir supprimer ce responsable de recherche ? :");
-       afficherTexte(NomEmp);
-       Put(" ");
-       afficherTexte(PrenomEmp);
-       Put(" Site : ");
-       Put(SiteEmp, 1);
-       Put(" - ");
-       afficherTexte(S(SiteEmp).Ville);
-       Put(" ");
-       Put("Type d'activite : Recherche et developpement");
-       New_Line;
+          else -- si il n'est en recherche : en prod ou en attente de prod
+            M(i).respRecherche := -1;
 
-       Put("Confirmer ?");
-       New_Line;
-       SaisieBoolean(Confirm);
-       IF Confirm = True THEN
-          T(Numlibre).Nom := (OTHERS => ' ');
-          T(Numlibre).Prenom := (OTHERS => ' ');
-          T(Numlibre).RetD := false;
-          T(Numlibre).Prod := false;
-          T(Numlibre).Site := 0;
-          T(Numlibre).NbProduit := 0;
-          T(Numlibre).Libre := True;
-          M(T(Numlibre).Nbproduit).RetD := 0; --suppression des produits dans le registre medicament
+          end if;
+        end if;
+      end loop;
 
-          EXIT;
-       ELSE
-          Put("Recommencer la saisie ou quitter");
-          ChoixQuitter := DesirQuitter;
-       END IF;
+       T(choixEmp).Nom := (OTHERS => ' ');
+       T(choixEmp).Prenom := (OTHERS => ' ');
+       T(choixEmp).RetD := false;
+       T(choixEmp).Prod := false;
+       T(choixEmp).Site := 0;
+       T(choixEmp).NbProduit := 0;
+       T(choixEmp).Libre := True;
 
-       IF ChoixQuitter THEN
-          EXIT;
-         END IF;
+       EXIT;
+    ELSE
+       Put("Recommencer la saisie ou quitter");
+       ChoixQuitter := DesirQuitter;
+    END IF;
+
+    IF ChoixQuitter THEN
+     EXIT;
+    END IF;
 
 
-      END DepartRetD;
+    end loop; -- boucle de confirmation
+
+  END DepartRetD;
 
 
 end Gestion_Personnel;
