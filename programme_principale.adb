@@ -92,11 +92,12 @@ PROCEDURE Programme_Principale IS
   end restauration;
 
   -------------------------------------------------------------------------------------
- Choix, choix1, choix2, choix3, choix3.2, choix3.4, choix4 : Character;
+ Choix, choix1, choix2, choix3, choix3A, choix3B, choix4 : Character;
  ChoixBool : Boolean := False;
- RegSite : T_RegistreSite
- RegMedicament : T_RegistreMedicament
- RegPersonnel : T_RegistrePersonnel
+ RegSite : T_RegistreSite;
+ RegMedicament : T_RegistreMedicament;
+ RegPersonnel : T_RegistrePersonnel;
+ ok : Boolean;
 
 
 BEGIN
@@ -106,124 +107,88 @@ BEGIN
       Put_Line("2 : Acces a la gestion du personnel");
       Put_Line("3 : Acces a la gestion des medicaments");
       Put_Line("4 : Sauvegarde/Restauration des donnees");
-      Put_Line("Q : Quitter");
+      Put_Line("Q : Quitter le programme");
       Put("Que souhaitez vous faire ? (1,2,3,4,Q)");New_Line;
       Get(Choix); Skip_Line;
-      Put("Vous avez selectionne : ");Put(Choix); New_Line;
-      Put(" Etes vous sur ? O/N");
-      SaisieBoolean(ChoixBool);
-          IF ChoixBool = false THEN
-             exit;
-             New_Line;
-          END IF;
 
       CASE Choix IS
-         WHEN Q => EXIT;
-         WHEN 1 =>
+         WHEN 'Q' => EXIT;
+         WHEN '1' =>
             LOOP
-               Put("Vous avez accede a la gestion des sites");
-               Put_Line("1 : Visualisation du registre");
+               Put_Line("Vous avez accede a la gestion des sites");
+               Put_Line("1 : Visualisation du registre des sites");
                Put_Line("2 : Ajout d'un nouveau site");
                Put_Line("3 : Fermeture d'un site");
-               Put_Line("Q : Quitter");
+               Put_Line("Q : Revenir au menu precedent");
                Put("Que souhaitez vous faire ? (1,2,3,Q)");New_Line;
                Get(Choix1); Skip_Line;
-               Put("Vous avez selectionne : ");Put(Choix1); New_Line;
-               Put(" Etes vous sur ? O/N");
-               SaisieBoolean(ChoixBool);
-               IF ChoixBool = False THEN
-                  EXIT;
-                  New_Line;
-               END IF;
 
                CASE Choix1 IS
-                  WHEN Q => EXIT;
-                  WHEN 1 => put_line("Voici le registre des sites :"); VisualisationSite(regSite);
-                  WHEN 2 => AjoutSite(regSite, Ok);
-                  WHEN 3 => FermetureSite(regSite,regMedicament,regPersonnel);
-                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer");
+                  WHEN 'Q' => EXIT;
+                  WHEN '1' => put_line("Voici le registre des sites :"); VisualisationSite(regSite);
+                  WHEN '2' => AjoutSite(regSite, Ok);
+                  WHEN '3' => FermetureSite(regMedicament, regPersonnel, regSite);
+                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                END CASE;
             END LOOP;
 
-         WHEN 2 =>
+         WHEN '2' =>
             LOOP
-               Put("Vous avez accede a la gestion du personnel");
-               Put_Line("1 : Visualisation du registre");
+               Put_Line("Vous avez accede a la gestion du personnel");
+               Put_Line("1 : Visualisation du registre du personnel");
                Put_Line("2 : Ajout d'un nouveau responsable sur un site");
                Put_Line("3 : Depart d'un chef de produit");
                Put_Line("4 : Depart d'un responsable de recherche");
-               Put_Line("Q : Quitter");
+               Put_Line("Q : Revenir au menu precedent");
                Put("Que souhaitez vous faire ? (1,2,3,4,Q)");New_Line;
                Get(Choix2); Skip_Line;
-               Put("Vous avez selectionne : ");Put(Choix2); New_Line;
-               Put(" Etes vous sur ? O/N");
-               SaisieBoolean(ChoixBool);
-               IF ChoixBool = False THEN
-                  EXIT;
-                  New_Line;
-               END IF;
 
                CASE Choix2 IS
-                  WHEN Q => EXIT;
-                  WHEN 1 => put_line("Voici le registre du personnel :"); VisualisationPersonnel(regPersonnel,regSite);
-                  WHEN 2 => AjoutPersonnel(regPersonnel,regSite);
-                  WHEN 3 => DepartProd(regPersonnel,regSite,regMedicament);
-                  WHEN 4 => DepartRetD(regPersonnel,regMedicament,regSite);
-                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer");
+                  WHEN 'Q' => EXIT;
+                  WHEN '1' => put_line("Voici le registre du personnel :"); VisualisationPersonnel(regPersonnel,regSite);
+                  WHEN '2' => AjoutPersonnel(regPersonnel,regSite);
+                  WHEN '3' => DepartProd(regMedicament, regPersonnel, regSite);
+                  WHEN '4' => DepartRetD(regMedicament, regPersonnel, regSite);
+                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                END CASE;
             END LOOP;
 
-         WHEN 3 =>
+         WHEN '3' =>
             LOOP
-               Put("Vous avez accede a la gestion des medicaments");
-               Put_Line("1 : Visualisation du registre");
+               Put_Line("Vous avez accede a la gestion des medicaments");
+               Put_Line("1 : Visualisation du registre des medcaments");
                Put_Line("2 : Mise a jour d'un produit");
-               Put_Line("3 : Ajout d'un nouveau produit sur un site donne");
+               Put_Line("3 : Ajout d'un nouveau medcament sur un site donne");
                Put_Line("4 : Affichages cibles");
                Put_Line("5 : Supression d'un medicament");
-               Put_Line("Q : Quitter");
+               Put_Line("Q : Revenir au menu precedent");
                Put("Que souhaitez vous faire ? (1,2,3,4,5,Q)");New_Line;
                Get(Choix3); Skip_Line;
-               Put("Vous avez selectionne : ");Put(Choix3); New_Line;
-               Put(" Etes vous sur ? O/N");
-               SaisieBoolean(ChoixBool);
-               IF ChoixBool = False THEN
-                  EXIT;
-                  New_Line;
-               END IF;
 
                CASE Choix3 IS
-                  WHEN Q => EXIT;
-                  WHEN 1 => put_line("Voici le registre des medicaments :"); VisualisationMedicament(regMedicament,regPersonnel,regSite);
-                  WHEN 2 =>
+                  WHEN 'Q' => EXIT;
+                  WHEN '1' => put_line("Voici le registre des medicaments :"); VisualtisationMedicament(regMedicament,regPersonnel,regSite);
+                  WHEN '2' =>
                      LOOP
-                        Put("Vous avez accede a la fonctionnalite : mise a jour d'un produit");
+                        Put_Line("Vous avez accede a la fonctionnalite : mise a jour d'un produit");
                         Put_Line("1 : Reception d'une AMM");
                         Put_Line("2 : Mise en production sur un site donne");
                         Put_Line("3 : Arret de production sur site");
-                        Put_Line("Q : Quitter");
+                        Put_Line("Q : Revenir au menu precedent");
                         Put("Que souhaitez vous faire ? (1,2,3,Q)");New_Line;
-                        Get(Choix3.2); Skip_Line;
+                        Get(choix3A); Skip_Line;
 
-                        Put("Vous avez selectionne : ");Put(Choix3.2); New_Line;
-                        Put(" Etes vous sur ? O/N");
-                        SaisieBoolean(ChoixBool);
-                        IF ChoixBool = False THEN
-                           EXIT;
-                           New_Line;
-                        END IF;
-
-                        CASE Choix3.2 IS
-                           WHEN Q => EXIT;
-                           WHEN 1 => receptionAMM(regMedicament,regPersonnel,regSite);
-                           WHEN 2 => miseEnProduction(regMedicament,regPersonnel,regSite);
-                           When 3 => arretDeProduction(regMedicament,regPersonnel,regSite);
-                           WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer");
+                        CASE choix3A IS
+                           WHEN 'Q' => EXIT;
+                           WHEN '1' => receptionAMM(regMedicament,regPersonnel,regSite);
+                           WHEN '2' => miseEnProduction(regMedicament,regPersonnel,regSite);
+                           When '3' => arretDeProduction(regMedicament,regPersonnel,regSite);
+                           WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                         END CASE;
                      END LOOP;
 
-                  WHEN 3 => nouveauMedicament(regMedicament,regPersonnel,regSite);
-                  WHEN 4 =>
+                  WHEN '3' => nouveauMedicament(regMedicament,regPersonnel,regSite);
+                  WHEN '4' =>
                      LOOP
                         Put("Vous avez accede a la fonctionnalite : affichages cibles");
                         Put_Line("1 : Affichage des produits en production sur un site donne");
@@ -231,61 +196,46 @@ BEGIN
                         Put_Line("3 : Affichage des produits geres par un responsable donne");
                         Put_Line("4 : Affichage des medicaments d'une categorie donnee");
                         Put_Line("5 : Affichage des medicaments ayant recu leur AMM avant une date donnee");
-                        Put_Line("Q : Quitter");
+                        Put_Line("Q : Revenir au menu precedent");
                         Put("Que souhaitez vous faire ? (1,2,3,4,5,Q)");New_Line;
-                        Get(Choix3.4); Skip_Line;
+                        Get(choix3B); Skip_Line;
 
-                        Put("Vous avez selectionne : ");Put(Choix3.4); New_Line;
-                        Put(" Etes vous sur ? O/N");
-                        SaisieBoolean(ChoixBool);
-                        IF ChoixBool = False THEN
-                           EXIT;
-                           New_Line;
-                        END IF;
-
-                        CASE Choix3.4 IS
-                           WHEN Q => EXIT;
-                           WHEN 1 => affichageProduitEnProdSurSite(regMedicament,regPersonnel,regSite);
-                           WHEN 2 => AffichageProduitEnProdSurVille(regMedicament,regPersonnel,regSite);
-                           WHEN 3 => affichageProduitGereParResponable(regMedicament,regPersonnel,regSite);
-                           WHEN 4 => affichageMedicamentCategorie(regMedicament,regPersonnel,regSite);
-                           WHEN 5 => affichageMedicamentAMMAvantDate(regMedicament);
-                           WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer");
+                        CASE choix3B IS
+                           WHEN 'Q' => EXIT;
+                           WHEN '1' => affichageProduitEnProdSurSite(regMedicament,regPersonnel,regSite);
+                           WHEN '2' => AffichageProduitEnProdSurVille(regMedicament,regPersonnel,regSite);
+                           WHEN '3' => affichageProduitGereParResponable(regMedicament,regPersonnel,regSite);
+                           WHEN '4' => affichageMedicamentCategorie(regMedicament,regPersonnel,regSite);
+                           WHEN '5' => affichageMedicamentAMMAvantDate(regMedicament);
+                           WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                         END CASE;
                      END LOOP;
 
-                  WHEN 5 => supressionMedicament(regMedicament,regPersonnel,regSite);
-                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer");
+                  WHEN '5' => supressionMedicament(regMedicament,regPersonnel,regSite);
+                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
 
                END CASE;
             END LOOP;
 
-         WHEN 4 =>
+         WHEN '4' =>
             LOOP
-               Put("Vous avez accede a la fonctionnalite : Sauvegarde/Restauration des donnees");
+               Put_Line("Vous avez accede a la fonctionnalite : Sauvegarde/Restauration des donnees");
                Put_Line("1 : Sauvegarde");
                Put_Line("2 : Restauration");
-               Put_Line("Q : Quitter");
+               Put_Line("Q : Revenir au menu precedent");
                Put("Que souhaitez vous faire ? (1,2,Q)");New_Line;
                Get(Choix4); Skip_Line;
                Put("Vous avez selectionne : ");Put(Choix4); New_Line;
-               Put(" Etes vous sur ? O/N");
-               SaisieBoolean(ChoixBool);
-               IF ChoixBool = False THEN
-                  EXIT;
-                  New_Line;
-               END IF;
 
                CASE Choix4 IS
-                  WHEN Q => EXIT;
-                  WHEN 1 => sauvegarde(regMedicament,regPersonnel,regSite);
-                  WHEN 2 => restauration(regMedicament,regPersonnel,regSite);
-                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer");
+                  WHEN 'Q' => EXIT;
+                  WHEN '1' => sauvegarde(regMedicament,regPersonnel,regSite);
+                  WHEN '2' => restauration(regMedicament,regPersonnel,regSite);
+                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                END CASE;
             END LOOP;
 
-         WHEN OTHERS => Put_Line("Le choix n'est pas propose"); put_line("Veuilez-recommencer");
-
+         WHEN OTHERS => Put_Line("Le choix n'est pas propose"); put_line("Veuilez-recommencer"); New_Line;
 
       END CASE;
     END LOOP;
