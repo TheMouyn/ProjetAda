@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, declaration, Outils, Gestion_Dates, Gestion_Sites, Gestion_Medicament, nt_console;
-USE Ada.Text_Io, Ada.Integer_Text_Io, declaration, Outils, Gestion_Dates, Gestion_Sites, Gestion_Medicament, nt_console;
+with ada.text_io, ada.integer_text_io, declaration, Outils, Gestion_Sites, nt_console;
+USE Ada.Text_Io, Ada.Integer_Text_Io, Outils, Gestion_Sites, nt_console;
 
 
 PACKAGE BODY Gestion_Personnel IS

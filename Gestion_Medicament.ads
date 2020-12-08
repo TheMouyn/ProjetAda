@@ -1,6 +1,5 @@
-with  declaration, Outils, Gestion_Dates, Gestion_Sites, Gestion_Personnel;
-USE  declaration, Outils, Gestion_Dates, Gestion_Sites, Gestion_Personnel;
-
+with  declaration;
+use declaration;
 
 package Gestion_Medicament is
 

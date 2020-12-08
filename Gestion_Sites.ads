@@ -1,5 +1,5 @@
-WITH  declaration, Outils;
-USE  declaration, Outils;
+WITH  declaration;
+USE  declaration;
 
 
 

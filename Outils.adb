@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, declaration, sequential_io, Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console;
-USE Ada.Text_Io, Ada.Integer_Text_Io, declaration, Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console;
+with ada.text_io, ada.integer_text_io, declaration;
+USE Ada.Text_Io, Ada.Integer_Text_Io;
 
 
 package body Outils is

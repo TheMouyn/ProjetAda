@@ -1,5 +1,5 @@
 with  declaration;
- use  declaration;
+use declaration;
 
 
 package Outils is
