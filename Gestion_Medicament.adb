@@ -21,17 +21,17 @@ end nbSiteProductionMedicament;
 ----------------------------------------------------------------------------------------------------
 
 
-function nbMedicament(regMedicaments : in T_registreMedicament) return integer is -- permet de compter le nombre de medicament dans le registre
-  nombre : integer :=0;
-
-begin -- nbMedicament
-  for i in regMedicaments'range loop
-    if regMedicaments(i).libre = false then
-      nombre:= nombre+1;
-    end if;
-  end loop;
-  return(nombre);
-end nbMedicament;
+-- function nbMedicament(regMedicaments : in T_registreMedicament) return integer is -- permet de compter le nombre de medicament dans le registre
+--   nombre : integer :=0;
+--
+-- begin -- nbMedicament
+--   for i in regMedicaments'range loop
+--     if regMedicaments(i).libre = false then
+--       nombre:= nombre+1;
+--     end if;
+--   end loop;
+--   return(nombre);
+-- end nbMedicament;
 ----------------------------------------------------------------------------------------------------
 
 procedure VisualtisationMedicament(regMedicaments : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is

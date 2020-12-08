@@ -37,20 +37,20 @@ package body Outils is
 -------------------------------------------------------------------------------------
 
 
-  procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float) is -- permet la saisie d'un float entre deux bornes
-
-  begin -- saisieFloat
-    loop
-      begin
-        put("=> ");
-        get(nombre);
-        exit when nombre in bornInf..bornSupp;
-        put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
-          exception
-            when others => put("Votre saisie n'est pas un nombre a virugle"); skip_line; new_line;
-      end;
-    end loop;
-  end saisieFloat;
+  -- procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float) is -- permet la saisie d'un float entre deux bornes
+  --
+  -- begin -- saisieFloat
+  --   loop
+  --     begin
+  --       put("=> ");
+  --       get(nombre);
+  --       exit when nombre in bornInf..bornSupp;
+  --       put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
+  --         exception
+  --           when others => put("Votre saisie n'est pas un nombre a virugle"); skip_line; new_line;
+  --     end;
+  --   end loop;
+  -- end saisieFloat;
 
 
   -------------------------------------------------------------------------------------
