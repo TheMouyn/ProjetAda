@@ -73,29 +73,32 @@ BEGIN
                WHEN OTHERS => Put("Le choix n'est pas propose"); new_line;
             END CASE;
          END LOOP;
+
+
+         put("Numero site : "); put(Numlibre, 1); put(" - ");
+         afficherTexte(T(Numlibre).Ville);Put(" - ");
+         IF T(Numlibre).RetD = True and T(Numlibre).prod = true THEN
+            Put("R&D et Production");New_Line;
+          elsif T(Numlibre).RetD = true and T(Numlibre).prod = false then
+            put("R&D Uniquement"); new_line;
+          elsif T(Numlibre).RetD = false and T(Numlibre).prod = true then
+            put("Production Uniquement"); new_line;
+         END IF;
+
+         Put("Confirmer ?");New_Line;
+         SaisieBoolean(confirm);
+         IF Confirm = True THEN
+             T(Numlibre).libre := false;
+           EXIT;
+         ELSE
+            put("Recommencer la saisie"); new_line;
+         END IF;
+
       ELSE
        Put("Le registre est sature");
       END IF;
       new_line;
 
-      put("Numero site : "); put(Numlibre, 1); put(" - ");
-      afficherTexte(T(Numlibre).Ville);Put(" - ");
-      IF T(Numlibre).RetD = True and T(Numlibre).prod = true THEN
-         Put("R&D et Production");New_Line;
-       elsif T(Numlibre).RetD = true and T(Numlibre).prod = false then
-         put("R&D Uniquement"); new_line;
-       elsif T(Numlibre).RetD = false and T(Numlibre).prod = true then
-         put("Production Uniquement"); new_line;
-      END IF;
-
-      Put("Confirmer ?");New_Line;
-      SaisieBoolean(confirm);
-      IF Confirm = True THEN
-          T(Numlibre).libre := false;
-        EXIT;
-      ELSE
-         put("Recommencer la saisie"); new_line;
-      END IF;
 
   end loop;
 End AjoutSite;
