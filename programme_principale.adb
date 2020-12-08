@@ -193,10 +193,12 @@ BEGIN
                      LOOP
                         Put("Vous avez accede a la fonctionnalite : affichages cibles");
                         Put_Line("1 : Affichage des produits en production sur un site donne");
-                        Put_Line("2 : Affichage des produits en production dans une ville donnee");
-                        Put_Line("3 : Affichage des produits geres par un responsable donne");
-                        Put_Line("4 : Affichage des medicaments d'une categorie donnee");
-                        Put_Line("5 : Affichage des medicaments ayant recu leur AMM avant une date donnee");
+                        put_line("2 : Affichage des produits en R&D sur un site donne");
+                        Put_Line("3 : Affichage des produits en production dans une ville donnee");
+                        put_line("4 : Affichage des produits en R&D dans une ville donnee");
+                        Put_Line("5 : Affichage des produits geres par un responsable donne");
+                        Put_Line("6 : Affichage des medicaments d'une categorie donnee");
+                        Put_Line("7 : Affichage des medicaments ayant recu leur AMM avant une date donnee");
                         Put_Line("Q : Revenir au menu precedent");
                         Put("Que souhaitez vous faire ? (1,2,3,4,5,Q)");New_Line;
                         Get(choix3B); Skip_Line;
@@ -204,10 +206,12 @@ BEGIN
                         CASE choix3B IS
                            WHEN 'Q' => EXIT;
                            WHEN '1' => affichageProduitEnProdSurSite(regMedicament,regPersonnel,regSite); exit;
-                           WHEN '2' => AffichageProduitEnProdSurVille(regMedicament,regPersonnel,regSite); exit;
-                           WHEN '3' => affichageProduitGereParResponable(regMedicament,regPersonnel,regSite); exit;
-                           WHEN '4' => affichageMedicamentCategorie(regMedicament,regPersonnel,regSite); exit;
-                           WHEN '5' => affichageMedicamentAMMAvantDate(regMedicament); exit;
+                           WHEN '2' => affichageProduitEnRetDSurSite(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '3' => AffichageProduitEnProdSurVille(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '4' => AffichageProduitEnRetDSurVille(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '5' => affichageProduitGereParResponable(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '6' => affichageMedicamentCategorie(regMedicament,regPersonnel,regSite); exit;
+                           WHEN '7' => affichageMedicamentAMMAvantDate(regMedicament); exit;
                            WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
                         END CASE;
                      END LOOP;
