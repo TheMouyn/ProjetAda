@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io,Outils , Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console;
-USE Ada.Text_Io, Ada.Integer_Text_Io,Outils , Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console;
+with ada.text_io, ada.integer_text_io, declaration,Outils , Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console, sequential_io;
+USE Ada.Text_Io, Ada.Integer_Text_Io, declaration,Outils , Gestion_Dates, Gestion_Sites, Gestion_Medicament, Gestion_Personnel, nt_console;
 
 PROCEDURE Programme_Principale IS
 
