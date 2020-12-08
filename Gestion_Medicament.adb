@@ -88,7 +88,7 @@ begin -- VisualtisationMedicament
 
       end if;
       new_line;
-      put("Appuyer sur entrer pour medicament suivant pour sur 'Q' pour Quitter");
+      put("Appuyer sur entrer pour medicament suivant, Appuyez sur 'Q' pour Quitter");
       get_immediate(car);
       if car = 'q' or car = 'Q' then
         exit;
