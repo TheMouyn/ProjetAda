@@ -93,7 +93,6 @@ PROCEDURE Programme_Principale IS
 
   -------------------------------------------------------------------------------------
  Choix, choix1, choix2, choix3, choix3A, choix3B, choix4 : Character;
- ChoixBool : Boolean := False;
  RegSite : T_RegistreSite;
  RegMedicament : T_RegistreMedicament;
  RegPersonnel : T_RegistrePersonnel;
