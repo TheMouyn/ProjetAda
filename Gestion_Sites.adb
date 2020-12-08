@@ -103,10 +103,9 @@ End AjoutSite;
 
 --------------------------------------------------------------------------------------------------------------
 
-PROCEDURE FermetureSite (regMedicament : IN OUT T_registreMedicament; regPersonnel : IN OUT T_RegistrePersonnel; regSite : IN OUT T_registreSite) IS
+PROCEDURE FermetureSite (regMedicament : IN T_registreMedicament; regPersonnel : IN T_RegistrePersonnel; regSite : IN OUT T_registreSite) IS
    --procedure fermeture d'un site
    ChoixBool    : Boolean := False;
-   Ok           : Boolean := False;    --variable ok pour verifier que la suppression a bien ete realisee
    ChoixSite    : Integer;
    ChoixQuitter : Boolean := False;
    estUtilise : boolean := false;
