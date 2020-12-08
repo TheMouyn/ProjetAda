@@ -142,7 +142,7 @@ BEGIN
                Get(Choix1); Skip_Line;
 
                CASE Choix1 IS
-                  WHEN 'Q' | 'q' => EXIT;
+                  WHEN 'Q' | 'q' => clear_screen(black); EXIT;
                   WHEN '1' => clear_screen(black); put_line("Voici le registre des sites :"); VisualisationSite(regSite); suivant; exit;
                   WHEN '2' => clear_screen(black); AjoutSite(regSite, Ok); suivant; exit;
                   WHEN '3' => clear_screen(black); FermetureSite(regMedicament, regPersonnel, regSite); suivant; exit;
@@ -162,7 +162,7 @@ BEGIN
                Get(Choix2); Skip_Line;
 
                CASE Choix2 IS
-                  WHEN 'Q' | 'q' => EXIT;
+                  WHEN 'Q' | 'q' => clear_screen(black); EXIT;
                   WHEN '1' => clear_screen(black); put_line("Voici le registre du personnel :"); VisualisationPersonnel(regPersonnel,regSite); suivant; exit;
                   WHEN '2' => clear_screen(black); AjoutPersonnel(regPersonnel,regSite); suivant; exit;
                   WHEN '3' => clear_screen(black); DepartProd(regMedicament, regPersonnel, regSite); suivant; exit;
@@ -184,7 +184,7 @@ BEGIN
                Get(Choix3); Skip_Line;
 
                CASE Choix3 IS
-                  WHEN 'Q' | 'q' => EXIT;
+                  WHEN 'Q' | 'q' => clear_screen(black); EXIT;
                   WHEN '1' => clear_screen(black); put_line("Voici le registre des medicaments :"); VisualtisationMedicament(regMedicament,regPersonnel,regSite); suivant; exit;
                   WHEN '2' => clear_screen(black);
                      LOOP
@@ -197,7 +197,7 @@ BEGIN
                         Get(choix3A); Skip_Line;
 
                         CASE choix3A IS
-                           WHEN 'Q' | 'q' => EXIT;
+                           WHEN 'Q' | 'q' => clear_screen(black); EXIT;
                            WHEN '1' => clear_screen(black); receptionAMM(regMedicament,regPersonnel,regSite); suivant; exit;
                            WHEN '2' => clear_screen(black); miseEnProduction(regMedicament,regPersonnel,regSite); suivant; exit;
                            When '3' => clear_screen(black); arretDeProduction(regMedicament,regPersonnel,regSite); suivant; exit;
@@ -221,7 +221,7 @@ BEGIN
                         Get(choix3B); Skip_Line;
 
                         CASE choix3B IS
-                           WHEN 'Q' | 'q' => EXIT;
+                           WHEN 'Q' | 'q' => clear_screen(black); EXIT;
                            WHEN '1' => clear_screen(black); affichageProduitEnProdSurSite(regMedicament,regPersonnel,regSite); suivant; exit;
                            WHEN '2' => clear_screen(black); affichageProduitEnRetDSurSite(regMedicament,regPersonnel,regSite); suivant; exit;
                            WHEN '3' => clear_screen(black); AffichageProduitEnProdSurVille(regMedicament,regPersonnel,regSite); suivant; exit;
@@ -250,7 +250,7 @@ BEGIN
                Put("Vous avez selectionne : ");Put(Choix4); New_Line;
 
                CASE Choix4 IS
-                  WHEN 'Q' | 'q' => EXIT;
+                  WHEN 'Q' | 'q' => clear_screen(black); EXIT;
                   WHEN '1' => clear_screen(black); sauvegarde(regMedicament,regPersonnel,regSite); suivant; exit;
                   WHEN '2' => clear_screen(black); restauration(regMedicament,regPersonnel,regSite); suivant; exit;
                   WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
