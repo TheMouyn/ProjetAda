@@ -272,7 +272,7 @@ begin -- affichageMedicamentAMMAvantDate
   put("Liste des medicaments qui ont recu une AMM avant le "); affichageDate(choixDate); new_line;
   for i in regMedicament'range loop
     if regMedicament(i).libre = false and regMedicament(i).AMM then
-      if dateEstAvant(choixDate, regMedicament(i).dateAMM) then
+      if dateEstAvant(choixDate, regMedicament(i).dateAMM) = false then
         put("- "); afficherTexte(regMedicament(i).nom);
         case regMedicament(i).typePatient is
           when ttPublic => put(" - TOUT PUBLIC");
