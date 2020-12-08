@@ -208,7 +208,7 @@ BEGIN
                   WHEN '3' => clear_screen(black); nouveauMedicament(regMedicament,regPersonnel,regSite); suivant; exit;
                   WHEN '4' => clear_screen(black);
                      LOOP
-                        Put("Vous avez accede a la fonctionnalite : affichages cibles");
+                        Put_Line("Vous avez accede a la fonctionnalite : affichages cibles");
                         Put_Line("1 : Affichage des produits en production sur un site donne");
                         put_line("2 : Affichage des produits en R&D sur un site donne");
                         Put_Line("3 : Affichage des produits en production dans une ville donnee");

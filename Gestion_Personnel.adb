@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, declaration, Outils, Gestion_Sites, nt_console;
-USE Ada.Text_Io, Ada.Integer_Text_Io, Outils, Gestion_Sites, nt_console;
+with ada.text_io, ada.integer_text_io, declaration, Outils, Gestion_Sites;
+USE Ada.Text_Io, Ada.Integer_Text_Io, Outils, Gestion_Sites;
 
 
 PACKAGE BODY Gestion_Personnel IS
@@ -130,7 +130,6 @@ BEGIN
              ELSE
                 Put_Line("Le site selectionne n'est pas coherant avec votre domaine");
                 ChoixQuitter := DesirQuitter;
-                Clear_Screen(Black);
              END IF;
 
           ELSE
@@ -180,7 +179,7 @@ BEGIN
 
           EXIT;
        ELSE
-          Put("Recommencer la saisie ou quitter");
+          Put_Line("Recommencer la saisie ou quitter");
           ChoixQuitter := DesirQuitter;
        END IF;
 

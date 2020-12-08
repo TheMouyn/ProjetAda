@@ -124,11 +124,15 @@ begin -- receptionAMM
       put("A quelle date l'AMM a ete recu ? "); new_line;
       saisieDate(regMedicament(nuMedicament).dateAMM);
       regPersonnel(regMedicament(nuMedicament).respRecherche).nbProduit := regPersonnel(regMedicament(nuMedicament).respRecherche).nbProduit -1;
+      Put_Line("Date AMM Ajoute");
+      skip_line;
     else
       put("Ce medicament a deja recu une AMM"); new_line;
+      skip_line;
     end if;
   else
     put("Numero medicament inccorect, recommencer SVP"); new_line;
+    skip_line;
   end if;
 
 end receptionAMM;
@@ -158,7 +162,13 @@ begin -- affichageProduitEnProdSurSite
     for i in regMedicament'range loop
       for j in regMedicament(i).chefProd'range loop
         if regMedicament(i).chefProd(j).libre = false and then regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site = choixNuSite and then regMedicament(i).EnProd then
-          put("- "); afficherTexte(regMedicament(i).nom); new_line;
+          put("- "); afficherTexte(regMedicament(i).nom);
+          case regMedicament(i).typePatient is
+            when ttPublic => put(" - TOUT PUBLIC");
+            when adulte => put(" - ADULTE UNIQUEMENT");
+            when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+          end case;
+          new_line;
         end if;
       end loop;
     end loop;
@@ -166,6 +176,7 @@ begin -- affichageProduitEnProdSurSite
     put("Le site n'est pas un site de production"); new_line;
   end if;
 
+  skip_line;
 end affichageProduitEnProdSurSite;
 
 
@@ -193,13 +204,20 @@ begin -- affichageProduitEnRetDSurSite
 
     for i in regMedicament'range loop
       if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = choixNuSite and then regMedicament(i).AMM = false then
-        put("- "); afficherTexte(regMedicament(i).nom); new_line;
+        put("- "); afficherTexte(regMedicament(i).nom);
+        case regMedicament(i).typePatient is
+          when ttPublic => put(" - TOUT PUBLIC");
+          when adulte => put(" - ADULTE UNIQUEMENT");
+          when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+        end case;
+        new_line;
       end if;
     end loop;
   else
     put("Le site n'est pas un site de R&D"); new_line;
   end if;
 
+  skip_line;
 end affichageProduitEnRetDSurSite;
 
 -----------------------------------------------------------------------------------
@@ -227,13 +245,20 @@ begin -- affichageProduitGereParResponable
 
     for i in regMedicament'range loop
       if regMedicament(i).libre = false and then regMedicament(i).respRecherche = choixNuEmpolye then
-        put("- "); afficherTexte(regMedicament(i).nom); new_line;
+        put("- "); afficherTexte(regMedicament(i).nom);
+        case regMedicament(i).typePatient is
+          when ttPublic => put(" - TOUT PUBLIC");
+          when adulte => put(" - ADULTE UNIQUEMENT");
+          when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+        end case;
+        new_line;
       end if;
     end loop;
   else
     put("Cet employe n'est pas un responsable de R&D"); new_line;
   end if;
 
+  skip_line;
 end affichageProduitGereParResponable;
 
 -----------------------------------------------------------------------------------
@@ -248,10 +273,17 @@ begin -- affichageMedicamentAMMAvantDate
   for i in regMedicament'range loop
     if regMedicament(i).libre = false and regMedicament(i).AMM then
       if dateEstAvant(choixDate, regMedicament(i).dateAMM) then
-        put("- "); afficherTexte(regMedicament(i).nom); new_line;
+        put("- "); afficherTexte(regMedicament(i).nom);
+        case regMedicament(i).typePatient is
+          when ttPublic => put(" - TOUT PUBLIC");
+          when adulte => put(" - ADULTE UNIQUEMENT");
+          when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+        end case;
+         new_line;
       end if;
     end if;
   end loop;
+  skip_line;
 end affichageMedicamentAMMAvantDate;
 
 
@@ -270,7 +302,13 @@ begin -- AffichageProduitEnProdSurVille
       if regMedicament(i).libre = false then
         for j in regMedicament(i).chefProd'range loop
           if regMedicament(i).chefProd(j).libre = false and then regSite(regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site).ville = choixVille and then regMedicament(i).EnProd then
-            put("- "); afficherTexte(regMedicament(i).nom); new_line;
+            put("- "); afficherTexte(regMedicament(i).nom);
+            case regMedicament(i).typePatient is
+              when ttPublic => put(" - TOUT PUBLIC");
+              when adulte => put(" - ADULTE UNIQUEMENT");
+              when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+            end case;
+            new_line;
           end if;
         end loop;
       end if;
@@ -292,7 +330,13 @@ begin -- AffichageProduitEnRetDSurVille
     for i in regMedicament'range loop
       if regMedicament(i).libre = false and then regMedicament(i).respRecherche>0 and then regSite(regPersonnel(regMedicament(i).respRecherche).site).ville = choixVille and then regMedicament(i).AMM = false then
         -- Si seulement si en recherche et donc pas en prod
-        put("- "); afficherTexte(regMedicament(i).nom); new_line;
+        put("- "); afficherTexte(regMedicament(i).nom);
+        case regMedicament(i).typePatient is
+          when ttPublic => put(" - TOUT PUBLIC");
+          when adulte => put(" - ADULTE UNIQUEMENT");
+          when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+        end case;
+        new_line;
       end if;
     end loop;
 
@@ -362,6 +406,7 @@ begin -- miseEnProduction
           else
             put_line("Le medicament n'a pas recu d'AMM, il ne peux pas etre mis en production");
             choixQuitter:=true; -- on impose la sortie de la procedure
+            skip_line;
           end if;
 
         else
@@ -390,7 +435,7 @@ begin -- miseEnProduction
         new_line;
         put_line("Quel sera le numero du chef de production pour ce medicament ?");
       end if;
-      saisieInteger(1, MaxS, choixPersonnel);
+      saisieInteger(1, MaxEmp, choixPersonnel);
 
       if regPersonnel(choixPersonnel).libre = false and then regPersonnel(choixPersonnel).prod then
         if regPersonnel(choixPersonnel).nbProduit < MaxProdCh then

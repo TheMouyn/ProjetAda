@@ -96,6 +96,7 @@ BEGIN
 
       ELSE
        Put("Le registre est sature");
+       exit;
       END IF;
       new_line;
 
@@ -185,6 +186,7 @@ BEGIN
       end loop;
 
       if estUtilise then
+        skip_line;
         exit;
 
       else

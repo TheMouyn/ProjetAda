@@ -24,7 +24,7 @@ package body Outils is
           put("=> ");
           get(nombre);
           exit when nombre in bornInf..bornSupp;
-          put("Votre saisie n'est pas entre "); put(bornInf); put(" et "); put(bornSupp); new_line;
+          put("Votre saisie n'est pas entre "); put(bornInf, 1); put(" et "); put(bornSupp, 1); new_line;
             exception
               when others => put("Votre saisie n'est pas un nombre"); skip_line; new_line;
       end;
