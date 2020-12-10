@@ -67,9 +67,9 @@ BEGIN
          LOOP
             put("Quel est votre choix ? =>"); get(choix); skip_line; new_line;
             CASE Choix IS
-               WHEN 'A' => T(Numlibre).RetD := true; T(Numlibre).Prod := false; exit;
-               WHEN 'B' => T(Numlibre).RetD := False; T(Numlibre).Prod := True; exit;
-               when 'C' => T(Numlibre).RetD := True; T(Numlibre).Prod := True; exit;
+               WHEN 'A' | 'a' => T(Numlibre).RetD := true; T(Numlibre).Prod := false; exit;
+               WHEN 'B' | 'b' => T(Numlibre).RetD := False; T(Numlibre).Prod := True; exit;
+               when 'C' | 'c' => T(Numlibre).RetD := True; T(Numlibre).Prod := True; exit;
                WHEN OTHERS => Put("Le choix n'est pas propose"); new_line;
             END CASE;
          END LOOP;
@@ -186,7 +186,6 @@ BEGIN
       end loop;
 
       if estUtilise then
-        skip_line;
         exit;
 
       else

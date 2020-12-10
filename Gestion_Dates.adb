@@ -45,6 +45,7 @@ package body Gestion_Dates is
       begin
         put("Saisir un jour => ");
         get(nuJour);
+        skip_line;
         exit when nuJour in 1..31;
         put_line("Votre saisie n'est pas entre 1 et 31");
         exception
@@ -56,6 +57,7 @@ package body Gestion_Dates is
       begin
         put("Saisir un mois => ");
         get(nuMois);
+        skip_line;
         exit when nuMois in 1..12;
         put_line("Votre saisie n'est pas entre 1 et 12");
         exception
@@ -67,6 +69,7 @@ package body Gestion_Dates is
       begin
         put("Saisir une annee => ");
         get(nuAnnee);
+        skip_line;
         exit;
         exception
           when others => put("La saisie n'est pas un nombre"); skip_line; new_line;

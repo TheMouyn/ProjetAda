@@ -125,14 +125,11 @@ begin -- receptionAMM
       saisieDate(regMedicament(nuMedicament).dateAMM);
       regPersonnel(regMedicament(nuMedicament).respRecherche).nbProduit := regPersonnel(regMedicament(nuMedicament).respRecherche).nbProduit -1;
       Put_Line("Date AMM Ajoute");
-      skip_line;
     else
       put("Ce medicament a deja recu une AMM"); new_line;
-      skip_line;
     end if;
   else
     put("Numero medicament inccorect, recommencer SVP"); new_line;
-    skip_line;
   end if;
 
 end receptionAMM;
@@ -176,7 +173,6 @@ begin -- affichageProduitEnProdSurSite
     put("Le site n'est pas un site de production"); new_line;
   end if;
 
-  skip_line;
 end affichageProduitEnProdSurSite;
 
 
@@ -217,7 +213,6 @@ begin -- affichageProduitEnRetDSurSite
     put("Le site n'est pas un site de R&D"); new_line;
   end if;
 
-  skip_line;
 end affichageProduitEnRetDSurSite;
 
 -----------------------------------------------------------------------------------
@@ -228,19 +223,26 @@ procedure affichageProduitGereParResponable(regMedicament : in T_registreMedicam
   choixBool : boolean;
 
 begin -- affichageProduitGereParResponable
-  put("Quel est le numero employe ? "); new_line;
-  put("Voulez vous voir le registre du personnel ? ");
-  saisieBoolean(choixBool); new_line;
-
-  if choixBool then
-    VisualisationPersonnel(regPersonnel, regSite);
-    new_line;
+  loop
     put("Quel est le numero employe ? "); new_line;
-  end if;
+    put("Voulez vous voir le registre du personnel ? ");
+    saisieBoolean(choixBool); new_line;
 
-  saisieInteger(1, MaxEmp, choixNuEmpolye); new_line;
+    if choixBool then
+      VisualisationPersonnel(regPersonnel, regSite);
+      new_line;
+      put("Quel est le numero employe ? "); new_line;
+    end if;
 
-  if  regPersonnel(choixNuEmpolye).libre = false and then regPersonnel(choixNuEmpolye).RetD then
+    saisieInteger(1, MaxEmp, choixNuEmpolye); new_line;
+    if regPersonnel(choixNuEmpolye).libre = false then
+      exit;
+    else
+      put_line("Ce personnel n'est pas dans le registre");
+    end if;
+  end loop;
+
+  if regPersonnel(choixNuEmpolye).RetD then
     put("Liste des medicaments gere par ce responsable : "); new_line;
 
     for i in regMedicament'range loop
@@ -254,11 +256,24 @@ begin -- affichageProduitGereParResponable
         new_line;
       end if;
     end loop;
-  else
-    put("Cet employe n'est pas un responsable de R&D"); new_line;
+  else -- ce personnel est chef de prod
+    for i in regMedicament'range loop
+      if regMedicament(i).libre = false and then regMedicament(i).EnProd then
+        for j in regMedicament(i).chefProd'range loop
+          if regMedicament(i).chefProd(j).libre = false and then regMedicament(i).chefProd(j).nuEmpolye = choixNuEmpolye then
+            put("- "); afficherTexte(regMedicament(i).nom);
+            case regMedicament(i).typePatient is
+              when ttPublic => put(" - TOUT PUBLIC");
+              when adulte => put(" - ADULTE UNIQUEMENT");
+              when pediatrique => put("PEDIATRIQUE UNIQUEMENT");
+            end case;
+            new_line;
+          end if;
+        end loop;
+      end if;
+    end loop;
   end if;
 
-  skip_line;
 end affichageProduitGereParResponable;
 
 -----------------------------------------------------------------------------------
@@ -272,7 +287,7 @@ begin -- affichageMedicamentAMMAvantDate
   put("Liste des medicaments qui ont recu une AMM avant le "); affichageDate(choixDate); new_line;
   for i in regMedicament'range loop
     if regMedicament(i).libre = false and regMedicament(i).AMM then
-      if dateEstAvant(choixDate, regMedicament(i).dateAMM) = false then
+      if dateEstAvant(regMedicament(i).dateAMM, choixDate) then
         put("- "); afficherTexte(regMedicament(i).nom);
         case regMedicament(i).typePatient is
           when ttPublic => put(" - TOUT PUBLIC");
@@ -283,7 +298,6 @@ begin -- affichageMedicamentAMMAvantDate
       end if;
     end if;
   end loop;
-  skip_line;
 end affichageMedicamentAMMAvantDate;
 
 
@@ -406,7 +420,6 @@ begin -- miseEnProduction
           else
             put_line("Le medicament n'a pas recu d'AMM, il ne peux pas etre mis en production");
             choixQuitter:=true; -- on impose la sortie de la procedure
-            skip_line;
           end if;
 
         else

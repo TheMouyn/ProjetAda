@@ -247,7 +247,6 @@ BEGIN
                Put_Line("Q : Revenir au menu precedent");
                Put("Que souhaitez vous faire ? (1,2,Q)");New_Line;
                Get(Choix4); Skip_Line;
-               Put("Vous avez selectionne : ");Put(Choix4); New_Line;
 
                CASE Choix4 IS
                   WHEN 'Q' | 'q' => clear_screen(black); EXIT;

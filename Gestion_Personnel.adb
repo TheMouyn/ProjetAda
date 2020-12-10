@@ -98,11 +98,11 @@ BEGIN
           Get(Choix);
           Skip_Line;
           CASE Choix IS
-             WHEN 'A' =>
+             WHEN 'A' | 'a' =>
                 RetDEmp := True;
                 ProdEmp := False;
                 EXIT;
-             WHEN 'B' =>
+             WHEN 'B' | 'b' =>
                 RetDEmp := False;
                 ProdEmp := True;
                 EXIT;
@@ -451,7 +451,7 @@ BEGIN
 
        EXIT;
     ELSE
-       Put("Recommencer la saisie ou quitter");
+       Put_Line("Recommencer la saisie ou quitter");
        ChoixQuitter := DesirQuitter;
     END IF;
 
