@@ -17,7 +17,7 @@ PROCEDURE Programme_Principale IS
 
   begin -- titre
     put_line("          ******************************************          ");
-    put_line("                     GESION PHARMACEUTIQUE                    ");
+    put_line("                     GESTION PHARMACEUTIQUE                    ");
     put_line("          ******************************************          ");
     New_Line; New_Line;
   end titre;
@@ -39,12 +39,12 @@ PROCEDURE Programme_Principale IS
 
 
   -------------------------------------------------------------------------------------
-  -- Gesiton des fichiers
+  -- Gestion des fichiers
 
   procedure sauvegarde(regMedicament : in T_registreMedicament; regPersonnel : in T_registrePersonnel; regSite : in T_registreSite) is
 
   begin -- sauvegarde
-    begin -- registre medcaments
+    begin -- registre medicament
       create(varFichier_T_registreMedicament, name=>"RegistreMedicament");
       write(varFichier_T_registreMedicament, regMedicament);
       close(varFichier_T_registreMedicament);
@@ -79,7 +79,7 @@ PROCEDURE Programme_Principale IS
   procedure restauration(regMedicament : in out T_registreMedicament; regPersonnel : in out T_registrePersonnel; regSite : in out T_registreSite) is
 
   begin -- restauration
-    begin -- registre medcaments
+    begin -- registre medicament
       open(varFichier_T_registreMedicament, in_file, "RegistreMedicament");
       read(varFichier_T_registreMedicament, regMedicament);
       close(varFichier_T_registreMedicament);
@@ -126,7 +126,7 @@ BEGIN
       Put_Line("4 : Sauvegarde/Restauration des donnees");
       Put_Line("5 : Initialisation des donnees de tests");
       Put_Line("Q : Quitter le programme");
-      Put("Que souhaitez vous faire ? (1,2,3,4,Q)");New_Line;
+      Put("Que souhaitez vous faire ? (1,2,3,4,5,Q)");New_Line;
       Get(Choix); Skip_Line;
 
       CASE Choix IS
@@ -146,7 +146,7 @@ BEGIN
                   WHEN '1' => clear_screen(black); put_line("Voici le registre des sites :"); VisualisationSite(regSite); suivant; exit;
                   WHEN '2' => clear_screen(black); AjoutSite(regSite, Ok); suivant; exit;
                   WHEN '3' => clear_screen(black); FermetureSite(regMedicament, regPersonnel, regSite); suivant; exit;
-                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
+                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuillez-recommencer"); New_Line;
                END CASE;
             END LOOP;
 
@@ -167,7 +167,7 @@ BEGIN
                   WHEN '2' => clear_screen(black); AjoutPersonnel(regPersonnel,regSite); suivant; exit;
                   WHEN '3' => clear_screen(black); DepartProd(regMedicament, regPersonnel, regSite); suivant; exit;
                   WHEN '4' => clear_screen(black); DepartRetD(regPersonnel, regMedicament, regSite); suivant; exit;
-                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
+                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuillez-recommencer"); New_Line;
                END CASE;
             END LOOP;
 
@@ -201,7 +201,7 @@ BEGIN
                            WHEN '1' => clear_screen(black); receptionAMM(regMedicament,regPersonnel,regSite); suivant; exit;
                            WHEN '2' => clear_screen(black); miseEnProduction(regMedicament,regPersonnel,regSite); suivant; exit;
                            When '3' => clear_screen(black); arretDeProduction(regMedicament,regPersonnel,regSite); suivant; exit;
-                           WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
+                           WHEN others => put_line("Le choix n'est pas propose");put_line("Veuillez-recommencer"); New_Line;
                         END CASE;
                      END LOOP;
 
@@ -217,7 +217,7 @@ BEGIN
                         Put_Line("6 : Affichage des medicaments d'une categorie donnee");
                         Put_Line("7 : Affichage des medicaments ayant recu leur AMM avant une date donnee");
                         Put_Line("Q : Revenir au menu precedent");
-                        Put("Que souhaitez vous faire ? (1,2,3,4,5,Q)");New_Line;
+                        Put("Que souhaitez vous faire ? (1,2,3,4,5,6,7,Q)");New_Line;
                         Get(choix3B); Skip_Line;
 
                         CASE choix3B IS
@@ -229,12 +229,12 @@ BEGIN
                            WHEN '5' => clear_screen(black); affichageProduitGereParResponable(regMedicament,regPersonnel,regSite); suivant; exit;
                            WHEN '6' => clear_screen(black); affichageMedicamentCategorie(regMedicament,regPersonnel,regSite); suivant; exit;
                            WHEN '7' => clear_screen(black); affichageMedicamentAMMAvantDate(regMedicament); suivant; exit;
-                           WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
+                           WHEN others => put_line("Le choix n'est pas propose");put_line("Veuillez-recommencer"); New_Line;
                         END CASE;
                      END LOOP;
 
                   WHEN '5' => clear_screen(black); supressionMedicament(regMedicament,regPersonnel,regSite); suivant; exit;
-                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
+                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuillez-recommencer"); New_Line;
 
                END CASE;
             END LOOP;
@@ -252,12 +252,12 @@ BEGIN
                   WHEN 'Q' | 'q' => clear_screen(black); EXIT;
                   WHEN '1' => clear_screen(black); sauvegarde(regMedicament,regPersonnel,regSite); suivant; exit;
                   WHEN '2' => clear_screen(black); restauration(regMedicament,regPersonnel,regSite); suivant; exit;
-                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuilez-recommencer"); New_Line;
+                  WHEN others => put_line("Le choix n'est pas propose");put_line("Veuillez-recommencer"); New_Line;
                END CASE;
             END LOOP;
 
           when '5' => New_Line; initalisation(regMedicament, regPersonnel, regSite); New_Line; put_line("Initialisation terminee"); suivant;
-         WHEN OTHERS => Put_Line("Le choix n'est pas propose"); put_line("Veuilez-recommencer"); New_Line; suivant;
+         WHEN OTHERS => Put_Line("Le choix n'est pas propose"); put_line("Veuillez-recommencer"); New_Line; suivant;
 
       END CASE;
     END LOOP;

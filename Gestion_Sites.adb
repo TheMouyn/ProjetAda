@@ -119,7 +119,7 @@ BEGIN
       LOOP --saisie du site a supprimer
          Put("Quel est le numero du site que vous voulez supprimer ?");
          New_Line;
-         Put_Line("Voulez vous voir le registre des sites ?");
+         Put_Line("Voulez-vous voir le registre des sites ?");
          SaisieBoolean(ChoixBool);
          IF ChoixBool THEN
             VisualisationSite(regSite);
@@ -147,24 +147,24 @@ BEGIN
          EXIT;
       END IF;
 
-      -- verification si il y a des medicaments en recherche sur ce site
+      -- verification s'il y a des medicaments en recherche sur ce site
       if regSite(ChoixSite).RetD then
         for i in regMedicament'RANGE loop
           if regMedicament(i).libre = false and then regPersonnel(regMedicament(i).respRecherche).site = ChoixSite and then regMedicament(i).AMM = false then
-            put_line("Supression impossible il y a encore de(s) médicament(s) en recherche sur ce site");
+            put_line("Suppression impossible il y a encore de(s) medicament(s) en recherche sur ce site");
             estUtilise := true;
             exit;
           end if;
         end loop;
       end if;
 
-      -- verification si il y a des medicaments en production sur ce site
+      -- verification s'il y a des medicaments en production sur ce site
       if regSite(ChoixSite).prod then
         for i in regMedicament'range loop
           if regMedicament(i).libre = false and then regMedicament(i).EnProd then
             for j in regMedicament(i).chefProd'range loop
               if regMedicament(i).chefProd(j).libre = false and then regPersonnel(regMedicament(i).chefProd(j).nuEmpolye).site = ChoixSite then
-                put_line("Supression impossible il y a encore de(s) medicament(s) en productions sur ce site");
+                put_line("Suppression impossible, il y a encore de(s) medicament(s) en production sur ce site");
                 estUtilise := true;
                 exit;
               end if;
@@ -176,10 +176,10 @@ BEGIN
         end loop;
       end if;
 
-      -- verification si il y a du personnel en fonction sur ce site
+      -- verification s'il y a du personnel en fonction sur ce site
       for i in regPersonnel'range loop
         if regPersonnel(i).libre = false and then regPersonnel(i).site = ChoixSite then
-          put_line("Supression impossible il y a encore de(s) personnel(s) en fonction sur ce site");
+          put_line("Suppression impossible, il y a encore de(s) personnel(s) en fonction sur ce site");
           estUtilise := true;
           exit;
         end if;
@@ -190,7 +190,7 @@ BEGIN
 
       else
         -- confirmation
-        put_line("Vous voulez supprimer le site nuemro ");
+        put_line("Vous voulez supprimer le site numero ");
         put(ChoixSite, 1);
         put(" - ");
         afficherTexte(regSite(ChoixSite).ville);

@@ -128,7 +128,7 @@ BEGIN
              IF (RetDEmp AND S(SiteEmp).RetD) OR (ProdEmp AND S(SiteEmp).Prod) THEN -- TODO: a verifier
                 EXIT;
              ELSE
-                Put_Line("Le site selectionne n'est pas coherant avec votre domaine");
+                Put_Line("Le site selectionne n'est pas coherent avec votre domaine");
                 ChoixQuitter := DesirQuitter;
              END IF;
 
@@ -202,7 +202,7 @@ PROCEDURE DepartProd (regMedicament : IN OUT T_registreMedicament; regPersonnel 
    choixBool : Boolean := False;
    choixEmp : integer;
    choixQuitter : boolean;
-   medicamentAArreter : boolean := false; -- est vrai il y a des medicament en prod a stopper
+   medicamentAArreter : boolean := false; -- est vrai il y a des medicaments en prod a stopper
 
 BEGIN
   loop -- boucle de confirmation
@@ -246,9 +246,9 @@ BEGIN
   afficherTexte(regPersonnel(choixEmp).nom); Put(" "); afficherTexte(regPersonnel(choixEmp).prenom); Put(" Type d'activite : chef de production"); new_line;
   Put("Site : "); Put(regPersonnel(choixEmp).site, 1); Put(" - "); afficherTexte(regSite(regPersonnel(choixEmp).site).Ville); new_line;
 
-  -- Afficher les medicmants dont la production va etre transfere aux collegues si possible
+  -- Afficher les medicaments dont la production va etre transfere aux collegues si possible
 
-  -- permet de verifier si il y a au moins un medicmaent a stopper la production
+  -- permet de verifier s'l y a au moins un medicament a stopper dans la production
   for i in regMedicament'range loop
     if regMedicament(i).libre = false and then regMedicament(i).EnProd then
       for j in regMedicament(i).chefProd'range loop
@@ -263,9 +263,9 @@ BEGIN
     end if;
   end loop;
 
-  --Afiche la liste des medicaments qui vont etre transfere ou stopper uniquement si il y en a
+  --Afiche la liste des medicaments qui vont etre transferes ou stopper uniquement s'il y en a
   if medicamentAArreter then
-    put_line("La production de(s) medicament(s) suivant(s) sera transfere ou arreter :");
+    put_line("La production de(s) medicament(s) suivant(s) sera transferee ou arretee :");
     for i in regMedicament'range loop
       if regMedicament(i).libre = false and then regMedicament(i).EnProd then
         for j in regMedicament(i).chefProd'range loop
@@ -284,7 +284,7 @@ BEGIN
   Put_Line("Vous confirmez ?");
   SaisieBoolean(choixBool);
   if choixBool then
-    if medicamentAArreter then -- si il y a des med a stopper
+    if medicamentAArreter then -- s'il y a des med a stopper
       --transfere ou stop
       -- changer le numero d'emp dans le tableau prod du med
       -- faire +1 au nb produit charge dans la limite de MaxProdCh
@@ -306,9 +306,9 @@ BEGIN
           end loop;
         end if;
       end loop;
-      -- les tranferes on ete fait.
+      -- les transferes ont ete faits.
 
-      --arret des chaines de prod si il reste des medicmants a la charge de choixEmp
+      --arret des chaines de prod s'il reste des medicaments a la charge de choixEmp
 
       if regPersonnel(choixEmp).nbProduit > 0 then
         for i in regMedicament'range loop
@@ -318,7 +318,7 @@ BEGIN
                 regMedicament(i).chefProd(j).nuEmpolye := 0;
                 regMedicament(i).chefProd(j).libre := true;
 
-                --verifie si il y a encore des chaines de prod acitve -> bool enprod a mettre en false
+                --verifie s'il y a encore des chaines de prod actives -> bool enprod a mettre en false
                 for z in regMedicament(i).chefProd'range loop
                   if regMedicament(i).chefProd(z).libre = false then
                     regMedicament(i).EnProd := true;
@@ -411,9 +411,9 @@ BEGIN
     afficherTexte(T(choixEmp).nom); Put(" "); afficherTexte(T(choixEmp).prenom); Put(" Type d'activite : Recherche et developpement"); new_line;
     Put("Site : "); Put(T(choixEmp).site, 1); Put(" - "); afficherTexte(S(T(choixEmp).site).Ville); new_line;
 
-    -- Afficher les medicmants qui vont etre supprimés car ils ne sont qu'en recherche
+    -- Afficher les medicaments qui vont etre supprimes car ils ne sont qu'en recherche
     if T(choixEmp).nbProduit > 0 then
-      put_line("Le(s) medicament(s) suivants vont etre supprimés :");
+      put_line("Le(s) medicament(s) suivant(s) vont etre supprimes :");
       for i in M'range loop
         if M(i).libre = false and then M(i).respRecherche = choixEmp and then M(i).AMM = false then
           afficherTexte(M(i).nom); put(" ");
@@ -434,7 +434,7 @@ BEGIN
             M(i).EnProd := false;
             M(i).libre := true;
 
-          else -- si il n'est en recherche : en prod ou en attente de prod
+          else -- s'il n'est en recherche : en prod ou en attente de prod
             M(i).respRecherche := -1;
 
           end if;

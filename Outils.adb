@@ -8,7 +8,7 @@ package body Outils is
     quitter : boolean;
 
   begin -- desirQuitter
-    put("Voulez-vous quitter la procedure acctuelle ?"); new_line;
+    put("Voulez-vous quitter la procedure actuelle ?"); new_line;
     saisieBoolean(quitter);
     return(quitter);
   end desirQuitter;
@@ -62,7 +62,7 @@ package body Outils is
       put("=> ");
       get_line(texte, k); new_line;
       exit when k<=50;
-      put("Votre mot est supperieur a 50 caracteres, veuillez ecrire un mot plus court"); new_line;
+      put("Votre mot est superieur a 50 caracteres, veuillez ecrire un mot plus court"); new_line;
     end loop;
 
   end saisieString;
@@ -207,7 +207,7 @@ package body Outils is
     regPersonnel(7).RetD := false;
     regPersonnel(7).libre := false;
 
-    -- initalisation des medicaments
+    -- initialisation des medicaments
     regMedicament(1).nom(1..8) := "AirFrais";
     regMedicament(1).categorie := antihistaminiques;
     regMedicament(1).typePatient := ttPublic;

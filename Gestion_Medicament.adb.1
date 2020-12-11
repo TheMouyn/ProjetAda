@@ -644,7 +644,7 @@ begin -- arretDeProduction
       choixQuitter:=TRUE;
 
     else
-      put_line("Arret de  production annule");
+      put_line("Arret de  production annulee");
       put_line("Voulez-vous recommencer ?");
       saisieBoolean(choixBool);
       if choixBool = false then
@@ -690,7 +690,7 @@ begin -- nouveauMedicament
         exit;
       end if;
 
-      -- gesiton du nom medicament, verifie s'il n'y a pas un medicament qui a le meme nom et donc verifier la categorie
+      -- gesiton du nom mediament, verifie si il n'y a pas un medicament qui a le meme nom et donc vérifier la catégorie
 
         put_line("Veuillez saisir le nom du nouveau medicament :");
         saisieString(nomMed);
@@ -715,7 +715,7 @@ begin -- nouveauMedicament
 
 
         if existeDejaTTpublic then
-          put_line("Un medicament sous ce nom existe deja pour le tout publique, vous ne pouvez pas ajouter une autre forme");
+          put_line("Un mediament sous ce nom existe deja pour le tout publique, vous ne pouvez pas ajouter une autre forme");
           choixQuitter := true;
         end if;
 
@@ -739,26 +739,26 @@ begin -- nouveauMedicament
       end if;
 
 
-      -- saisie de la categorie si nouveau medicament si non on reprend la categorie de l'autre medicament deja present dans le registre
-      -- Saisie du type de patient pour ce medicament ou automatique si l'autre est deja present
+      -- saisie de la categorie si nouveau mediament si non on reprends la categorie de l'autre medicament deja present dans le registre
+      -- Saisie du type de patient pour ce medicmant ou automatique si l'autre est deja present
 
       if existeDejaAdulte or existeDejaPediatrique then
         for i in regMedicament'range loop
           if regMedicament(i).nom = nomMed then
             categorieMed := regMedicament(i).categorie;
 
-            if regMedicament(i).typePatient = adulte then -- copie du type patient sur nouveau medicament
+            if regMedicament(i).typePatient = adulte then -- copie du type patient sur nouveau mediament
               typePatientMed := pediatrique;
             else
               typePatientMed := adulte;
             end if;
 
-            --verifier que le resp peut encore etre a la charge d'un produit en plus
+            --vérifier que le resp peut encore etre à la charge d'un produit en plus
             if regPersonnel(regMedicament(i).respRecherche).nbProduit = MaxProdCh then
               put_line("Le responsable de recherche qui gere ce produit a atteint le nombre maximal de produit a charge simultanement");
               choixQuitter:=true;
             else
-              respRetDMed := regMedicament(i).respRecherche; -- copie du numero employe du resp recherche de l'autre medicament
+              respRetDMed := regMedicament(i).respRecherche; -- copie du numero employe du resp recherche de l'autre mediament
             end if;
 
 
@@ -766,7 +766,7 @@ begin -- nouveauMedicament
           end if;
         end loop;
 
-      else -- si nouveau medicament non connu dans le registre
+      else -- si nouveau mediament non connu dans le registre
         saisieCategorie(categorieMed); new_line;
 
         -- saisie du type de patient via petit menu
@@ -789,7 +789,7 @@ begin -- nouveauMedicament
             exit;
           end if;
 
-          put_line("Quel est le numero du responsable de recherche de ce medicament ?");
+          put_line("Quel est le numero du responsable de recherche de ce mediament ?");
           put_line("Voulez-vous voir le registre des personnels ? ");
           saisieBoolean(choixBool);
           if choixBool then
@@ -803,7 +803,7 @@ begin -- nouveauMedicament
             put_line("Ce personnel n'est pas un responsable de recherche");
             choixQuitter:=desirQuitter;
           else
-            --verifier que le resp peut encore etre a la charge d'un produit en plus
+            --vérifier que le resp peut encore etre à la charge d'un produit en plus
             if regPersonnel(respRetDMed).nbProduit = MaxProdCh then
               put_line("Ce personnel a atteint le nombre maximal de produit a charge simultanement");
               choixQuitter:=desirQuitter;
@@ -820,7 +820,7 @@ begin -- nouveauMedicament
       end if;
 
       -- Confirmation
-      put("Vous voulez ajouter un medicament "); afficherTexte(nomMed); put(" de categorie "); put(T_categorie'image(categorieMed)); new_line;
+      put("Vous voulez ajouter un mediament "); afficherTexte(nomMed); put(" de categorie "); put(T_categorie'image(categorieMed)); new_line;
       put("Pour le type patient ");
       case typePatientMed is
         when ttPublic => put("TOUT PUBLIC");
@@ -830,14 +830,14 @@ begin -- nouveauMedicament
       new_line;
       put("Le responsable de recherche est "); afficherTexte(regPersonnel(respRetDMed).nom); put(" "); afficherTexte(regPersonnel(respRetDMed).prenom); new_line;
       put("Sur le site numero "); put(regPersonnel(respRetDMed).site, 1); put(" - "); afficherTexte(regSite(regPersonnel(respRetDMed).site).ville); new_line;
-      put_line("Le medicament que vous ajoutez est en phase de recherche");
+      put_line("Le medicament que vous ajouter est en phase de recherche");
 
       new_line;
-      put_line("Vous confirmez ?");
+      put_line("Vous confirmer ?");
       saisieBoolean(choixBool);
 
       if choixBool then
-        -- toutes les conditions sont validees -> association des variables dans le registre
+        -- toutes les condition sont validees -> association des varaibles dans le registre
         for i in regMedicament'range loop
           if regMedicament(i).libre then
             regMedicament(i).nom := nomMed;
@@ -864,7 +864,7 @@ begin -- nouveauMedicament
     end loop; -- fin boucle confirmation
 
   else
-    put_line("Registre medicament sature, ajout impossible");
+    put_line("Registre medcaments sature, ajout impossible");
   end if;
 
 end nouveauMedicament;
@@ -879,13 +879,13 @@ procedure supressionMedicament(regMedicament : in out T_registreMedicament; regP
   choixArretProd : boolean := false;
 
 begin -- supressionMedicament
-  -- choix de medicament
-    -- verifier qu'il existe
-    -- verifier s'il est en prod (ce med est encore en prod sur les sites : )-> arret prod automatique ?
+  -- choix de mediament
+    -- vérifier qu'il existe
+    -- vérifier si il est en prod (ce med est encore en prod sur les sites : )-> arret prod automatique ?
   loop -- boucle de confirmation
-    loop --boucle saisie medicament
+    loop --boucle saisie medciament
       put_line("Quel est le numero du medicament a supprimer ?");
-      put_line("Voulez-vous voir le registre des medicaments ?");
+      put_line("Vous vous voir le registre des medicaments ?");
       saisieBoolean(choixBool);
       if choixBool then
         VisualtisationMedicament(regMedicament, regPersonnel, regSite);
@@ -907,15 +907,15 @@ begin -- supressionMedicament
         exit;
       end if;
 
-    end loop; --boucle saisie medicament
+    end loop; --boucle saisie medciament
 
     if choixQuitter then
       exit;
     end if;
 
-    -- si le medicament est toujours en production
+    -- si le mediament est toujours en production
     if estEnProd then
-      put_line("Ce medicament est encore en production, voulez-vous arreter le(s) chaine(s) de production automatiquement?");
+      put_line("Ce mediament est encore en production, voulez vous arreter le(s) chaine(s) de produciton automatiquement?");
       saisieBoolean(choixBool);
       if choixBool then
         choixArretProd := true;
@@ -948,7 +948,7 @@ begin -- supressionMedicament
     new_line;
 
     if estEnProd and choixArretProd then
-      put("Qui est en production sur le(s) site(s) : ");
+      put("Qui est en produciton sur le(s) site(s) : ");
       for i in regMedicament(choixMedicament).chefProd'range loop
         if regMedicament(choixMedicament).chefProd(i).libre = false then
           put(regPersonnel(regMedicament(choixMedicament).chefProd(i).nuEmpolye).site, 1);
@@ -962,11 +962,11 @@ begin -- supressionMedicament
     end if;
 
     new_line;
-    put_line("Vous confirmez ?");
+    put_line("Vous confirmer ?");
     saisieBoolean(choixBool);
 
     if choixBool then
-      -- suppression
+      -- supression
       if estEnProd and choixArretProd then
         for i in regMedicament(choixMedicament).chefProd'range loop
           if regMedicament(choixMedicament).chefProd(i).libre = false then

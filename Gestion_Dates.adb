@@ -5,9 +5,9 @@ USE Ada.Text_Io, Ada.Integer_Text_Io;
 package body Gestion_Dates is
 
   function dateEstAvant(date1, date2 : in T_date) return boolean is
-    -- permet de de savoir si la date 1 est avant la date 2
+    -- permet de savoir si la date 1 est avant la date 2
     -- le boolean estAvant est TRUE si oui et FALSE si non
-    -- si les deux date sont les meme alors ressort FALSE
+    -- si les deux dates sont les memes alors ressort FALSE
     estAvant : boolean;
 
   begin -- dateEstAvant
