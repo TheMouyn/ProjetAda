@@ -35,6 +35,7 @@ package body Outils is
 
 -------------------------------------------------------------------------------------
 
+  -- non utilise
 
   -- procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float) is -- permet la saisie d'un float entre deux bornes
   --
@@ -64,6 +65,69 @@ package body Outils is
       exit when k<=50;
       put("Votre mot est superieur a 50 caracteres, veuillez ecrire un mot plus court"); new_line;
     end loop;
+
+    -- traitement de la casse
+    for i in texte'range loop
+      case texte(i) is
+        when 'A' => texte(i):='a';
+        when 'B' => texte(i):='b';
+        when 'C' => texte(i):='c';
+        when 'D' => texte(i):='d';
+        when 'E' => texte(i):='e';
+        when 'F' => texte(i):='f';
+        when 'G' => texte(i):='g';
+        when 'H' => texte(i):='h';
+        when 'I' => texte(i):='i';
+        when 'J' => texte(i):='j';
+        when 'K' => texte(i):='k';
+        when 'L' => texte(i):='l';
+        when 'M' => texte(i):='m';
+        when 'N' => texte(i):='n';
+        when 'O' => texte(i):='o';
+        when 'P' => texte(i):='p';
+        when 'Q' => texte(i):='q';
+        when 'R' => texte(i):='r';
+        when 'S' => texte(i):='s';
+        when 'T' => texte(i):='t';
+        when 'U' => texte(i):='u';
+        when 'V' => texte(i):='v';
+        when 'W' => texte(i):='w';
+        when 'X' => texte(i):='x';
+        when 'Y' => texte(i):='y';
+        when 'Z' => texte(i):='z';
+        when others => null;
+      end case;
+    end loop;
+
+    case texte(1) is
+      when 'a' => texte(1):='A';
+      when 'b' => texte(1):='B';
+      when 'c' => texte(1):='C';
+      when 'd' => texte(1):='D';
+      when 'e' => texte(1):='E';
+      when 'f' => texte(1):='F';
+      when 'g' => texte(1):='G';
+      when 'h' => texte(1):='H';
+      when 'i' => texte(1):='I';
+      when 'j' => texte(1):='J';
+      when 'k' => texte(1):='K';
+      when 'l' => texte(1):='L';
+      when 'm' => texte(1):='M';
+      when 'n' => texte(1):='N';
+      when 'o' => texte(1):='O';
+      when 'p' => texte(1):='P';
+      when 'q' => texte(1):='Q';
+      when 'r' => texte(1):='R';
+      when 's' => texte(1):='S';
+      when 't' => texte(1):='T';
+      when 'u' => texte(1):='U';
+      when 'v' => texte(1):='V';
+      when 'w' => texte(1):='W';
+      when 'x' => texte(1):='X';
+      when 'y' => texte(1):='Y';
+      when 'z' => texte(1):='Z';
+      when others => null;
+    end case;
 
   end saisieString;
 
@@ -208,7 +272,7 @@ package body Outils is
     regPersonnel(7).libre := false;
 
     -- initialisation des medicaments
-    regMedicament(1).nom(1..8) := "AirFrais";
+    regMedicament(1).nom(1..8) := "Airfrais";
     regMedicament(1).categorie := antihistaminiques;
     regMedicament(1).typePatient := ttPublic;
     regMedicament(1).AMM := false;
@@ -240,7 +304,7 @@ package body Outils is
     regMedicament(3).respRecherche := 6;
     regMedicament(3).libre := false;
 
-    regMedicament(4).nom(1..7) := "SunLike";
+    regMedicament(4).nom(1..7) := "Sunlike";
     regMedicament(4).categorie := vitamines;
     regMedicament(4).typePatient := ttPublic;
     regMedicament(4).AMM := false;
