@@ -60,6 +60,7 @@ package body Outils is
 
   begin -- saisieString
     loop
+      texte := (others => ' ');
       put("=> ");
       get_line(texte, k); new_line;
       exit when k<=50;
