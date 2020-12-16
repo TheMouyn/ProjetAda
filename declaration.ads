@@ -16,7 +16,6 @@ package declaration is
 
 
   type T_site is record
-    --TODO:peut etre numero d'unite
     ville : T_mot := (others => ' '); --nom de la ville
     prod, RetD : boolean := false; --boolean qui permet de savoir quel type travail
     libre : boolean := true; -- permet la gestion des cases libres/pleines

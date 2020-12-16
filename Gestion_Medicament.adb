@@ -146,7 +146,7 @@ begin -- affichageProduitEnProdSurSite
   put("Voulez vous voir le registre des sites ? ");
   saisieBoolean(choixBool); new_line;
   if choixBool then
-    VisualisationSite(regSite); --TODO: A ajuster en fonction du nombre de la fonction dans le package
+    VisualisationSite(regSite);
     new_line;
     put("Quel est le numero du site desire ?"); new_line;
   end if;
@@ -188,7 +188,7 @@ begin -- affichageProduitEnRetDSurSite
   put("Voulez vous voir le registre des sites ? ");
   saisieBoolean(choixBool); new_line;
   if choixBool then
-    VisualisationSite(regSite); --TODO: A ajuster en fonction du nombre de la fonction dans le package
+    VisualisationSite(regSite);
     new_line;
     put("Quel est le numero du site desire ?"); new_line;
   end if;
@@ -444,7 +444,7 @@ begin -- miseEnProduction
       put_line("Voulez-vous voir le registre des personnels ? ");
       saisieBoolean(choixBool);
       if choixBool then
-        VisualisationPersonnel(regPersonnel, regSite); --TODO: verifier parametres
+        VisualisationPersonnel(regPersonnel, regSite);
         new_line;
         put_line("Quel sera le numero du chef de production pour ce medicament ?");
       end if;

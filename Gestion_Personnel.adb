@@ -125,7 +125,7 @@ BEGIN
           SaisieInteger(1, MaxS, SiteEmp);
 
           IF S(SiteEmp).Libre = False THEN
-             IF (RetDEmp AND S(SiteEmp).RetD) OR (ProdEmp AND S(SiteEmp).Prod) THEN -- TODO: a verifier
+             IF (RetDEmp AND S(SiteEmp).RetD) OR (ProdEmp AND S(SiteEmp).Prod) THEN
                 EXIT;
              ELSE
                 Put_Line("Le site selectionne n'est pas coherent avec votre domaine");
