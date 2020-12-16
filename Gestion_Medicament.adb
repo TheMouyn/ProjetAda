@@ -715,7 +715,7 @@ begin -- nouveauMedicament
 
 
         if existeDejaTTpublic then
-          put_line("Un medicament sous ce nom existe deja pour le tout publique, vous ne pouvez pas ajouter une autre forme");
+          put_line("Un medicament sous ce nom existe deja pour le tout public, vous ne pouvez pas ajouter une autre forme");
           choixQuitter := true;
         end if;
 
