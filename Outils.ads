@@ -7,6 +7,7 @@ package Outils is
 
   function desirQuitter return boolean;
   procedure saisieInteger(bornInf, bornSupp : in integer; nombre : out integer);
+  -- non utilise
   -- procedure saisieFloat(bornInf, bornSupp : in float; nombre : out float);
   procedure saisieString(texte : out T_mot);
   procedure saisieBoolean(bool : out boolean);
